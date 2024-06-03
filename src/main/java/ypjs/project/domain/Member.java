@@ -51,7 +51,7 @@ public class Member {
     @Column(name = "member_join_date")
     private Date joinDate;
 
-    @Column(name = "mebmer_out_date")
+    @Column(name = "member_out_date")
     private Date outDate;
 
     @Column(name = "member_status")
