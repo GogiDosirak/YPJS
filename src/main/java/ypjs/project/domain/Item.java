@@ -21,6 +21,7 @@ public class Item {
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
 
+    //연관관계 메서드
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemRatings> ItemRatings = new ArrayList<>();
 

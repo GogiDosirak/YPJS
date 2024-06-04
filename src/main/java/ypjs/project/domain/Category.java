@@ -15,6 +15,7 @@ public class Category {
     @Column(name = "CATEGORY_ID")
     private int CategoryId;
 
+    //연관관계 메서드
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
 
@@ -33,10 +34,13 @@ public class Category {
     private List<Category> CategoryChild = new ArrayList<>();
 
     //연관관계 메서드
-//    public void addChildCategory(Category child) {
-//        this.CategoryChild.add(child);
-//        child.setCategoryParentId(this);
-//    }
+    public void addChildCategory(Category child) {
+        this.CategoryChild.add(child);
+        child.setCategoryParentId(this);
+    }
+
+    private void setCategoryParentId(Category category) {
+    }
 
 
 }
