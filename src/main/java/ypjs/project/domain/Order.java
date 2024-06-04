@@ -26,7 +26,7 @@ public class Order {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = " delivery_id")
-    private Delivery deliveryId;  //배송정보
+    private Delivery delivery;  //배송정보
 
     @Column(name = "order_price")
     private int orderPrice;  //주문금액
