@@ -1,5 +1,6 @@
 package ypjs.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -26,7 +27,7 @@ public class Order {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = " delivery_id")
-    private Delivery deliveryId;  //배송정보
+    private Delivery delivery;  //배송정보
 
     @Column(name = "order_price")
     private int orderPrice;  //주문금액
@@ -37,4 +38,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private CommonEnum.OrderStatus orderStatus;  //주문상태 [ORDER, CANCEL}
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
+    private Payment payment;
 }

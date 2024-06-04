@@ -1,5 +1,6 @@
 package ypjs.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -47,6 +48,11 @@ public class Item {
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime ItemCreateDate;
 
+    //==연관관계 메서드==//
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "item")
+    private List<Like> likes = new ArrayList<>();
 
 
 

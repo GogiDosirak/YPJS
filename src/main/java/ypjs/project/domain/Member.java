@@ -1,9 +1,12 @@
 package ypjs.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -57,6 +60,12 @@ public class Member {
     @Column(name = "member_status")
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    //==연관관계 메서드==//
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "member")
+    private List<Like> likes = new ArrayList<>();
 
 
 }
