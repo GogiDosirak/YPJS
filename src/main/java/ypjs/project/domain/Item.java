@@ -15,38 +15,50 @@ public class Item {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
-    private int ItemId;
+    private Long ItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
 
-    //연관관계 메서드
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemRatings> ItemRatings = new ArrayList<>();
+    private List<ItemRatings> itemRatings = new ArrayList<>();
 
 
     @Column(name = "ITEM_NAME")
-    private String ItemName;
+    private String itemName;
 
     @Lob
     @Column(name = "ITEM_CONTENT", columnDefinition = "LONGTEXT")
-    private String ItemContent;
+    private String itemContent;
 
     @Column(name = "ITEM_PRICE")
-    private int ItemPrice;
+    private int itemPrice;
 
     @Column(name = "ITEM_STOCK")
-    private int ItemStock;
+    private int itemStock;
 
     @Column(name = "ITEM_FILENAME")
-    private String ItemFilename;
+    private String itemFilename;
 
     @Column(name = "ITEM_FILEPATH")
-    private String ItemFilepath;
+    private String itemFilepath;
 
     @Column(name = "ITEM_CREATEDATE")
-    private LocalDateTime ItemCreateDate;
+    private LocalDateTime itemCreateDate;
+
+
+    //연관관계 메서드
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+
+    public void addItemRatings(ItemRatings itemRating) {
+        itemRatings.add(itemRating);
+        itemRating.setItem(this);
+    }
 
 
 

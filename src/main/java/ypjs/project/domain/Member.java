@@ -2,6 +2,8 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import ypjs.project.domain.enums.Role;
+import ypjs.project.domain.enums.Status;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public class Member {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
-    private int memberId;
+    private Long memberId;
 
     @Column(name = "member_account_id")
     private String accountId;
@@ -61,9 +63,10 @@ public class Member {
     private Status status;
 
 
-    //연관관계 메서드
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<ItemRatings> itemRatings = new ArrayList<>();
+
+
+
+
 
 
 

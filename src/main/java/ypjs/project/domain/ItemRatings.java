@@ -9,7 +9,7 @@ public class ItemRatings {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_RATING_ID")
-    private int ItemRatingId;
+    private Long itemRatingId;
 
     @ManyToOne
     @JoinColumn(name = "ITEM_ID")
@@ -20,6 +20,11 @@ public class ItemRatings {
     private Member member;
 
     @Column(name = "ITEM_SCORE")
-    private Integer ItemScore;
+    private Integer itemScore;
 
+
+    //연관관계 메서드
+    public void setItem(Item item) {
+        this.item = item;
+    }
 }

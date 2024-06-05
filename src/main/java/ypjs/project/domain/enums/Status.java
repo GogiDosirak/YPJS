@@ -1,4 +1,4 @@
-package ypjs.project.domain;
+package ypjs.project.domain.enums;
 
 public enum Status {
     member, withdrawal
