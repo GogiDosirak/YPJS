@@ -22,18 +22,22 @@ public class MemberApiController {
 
     @PostMapping("/ypjs/member/join")
     public CreateMemberResponse join(@RequestBody @Valid CreateMemberRequest request) {
-        Member member = new Member();
-        member = member.createMember(request.getAccountId(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(), request.getGender(),
-                request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber(), request.getJoinDate());
+        Member member = getJoinMemberData(request);
 
         Long memberId = memberService.join(member);
         return new CreateMemberResponse(memberId);
 
     }
 
+    private Member getJoinMemberData(CreateMemberRequest request) {
+        Member member = new Member();
+        member = member.createMember(request.getAccountId(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(), request.getGender(),
+                request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber(), request.getJoinDate());
+        return member;
+    }
 
 
-        @Data
+    @Data
         static class CreateMemberRequest {
             @NotEmpty
             private String accountId;
