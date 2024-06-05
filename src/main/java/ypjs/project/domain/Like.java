@@ -1,21 +1,18 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
 @Table(name = "LIKES")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Like {
     @Id
     @GeneratedValue
     @Column(name = "like_id")
-    private int likeId;
+    private Long likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

@@ -16,7 +16,7 @@ public class Order {
     @Id
     @GeneratedValue
     @Column(name = "order_id")
-    private int orderId;  //주문번호
+    private Long orderId;  //주문번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

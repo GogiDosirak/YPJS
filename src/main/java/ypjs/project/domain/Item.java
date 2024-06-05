@@ -1,6 +1,5 @@
 package ypjs.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -16,7 +15,7 @@ public class Item {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
-    private int ItemId;
+    private Long ItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
@@ -50,7 +49,6 @@ public class Item {
 
     //==연관관계 메서드==//
 
-    @JsonIgnore
     @OneToMany(mappedBy = "item")
     private List<Like> likes = new ArrayList<>();
 

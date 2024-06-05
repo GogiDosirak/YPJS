@@ -3,6 +3,8 @@ package ypjs.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import ypjs.project.domain.enums.Role;
+import ypjs.project.domain.enums.Status;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ public class Member {
     @Id
     @GeneratedValue
     @Column(name = "member_id")
-    private int memberId;
+    private Long memberId;
 
     @Column(name = "member_account_id")
     private String accountId;

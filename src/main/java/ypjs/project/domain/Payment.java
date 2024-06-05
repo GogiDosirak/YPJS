@@ -3,6 +3,7 @@ package ypjs.project.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ypjs.project.domain.enums.PayStatus;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class Payment {
     @Id @GeneratedValue
     @Column(name = "pay_id")
-    private int payId;
+    private Long payId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
@@ -23,7 +24,7 @@ public class Payment {
 
     private String payName;
 
-    private String payPhonenumber;
+    private String payPhoneNumber;
 
     private String payEmail;
 
@@ -36,12 +37,12 @@ public class Payment {
 
     //==생성 메서드==//
 
-    public static Payment createPayment(Order order, int payPrice, String payName, String payPhonenumber, String payEmail, LocalDateTime payDate, PayStatus payStatus, String payPaymentUid) {
+    public static Payment createPayment(Order order, int payPrice, String payName, String payPhoneNumber, String payEmail, LocalDateTime payDate, PayStatus payStatus, String payPaymentUid) {
         Payment payment = new Payment();
         payment.order = order;
         payment.payPrice = payPrice;
         payment.payName = payName;
-        payment.payPhonenumber = payPhonenumber;
+        payment.payPhoneNumber = payPhoneNumber;
         payment.payEmail = payEmail;
         payment.payDate = payDate;
         payment.payStatus = payStatus;

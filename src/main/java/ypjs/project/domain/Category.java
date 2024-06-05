@@ -13,7 +13,7 @@ public class Category {
 
     @Id @GeneratedValue
     @Column(name = "CATEGORY_ID")
-    private int CategoryId;
+    private Long CategoryId;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
