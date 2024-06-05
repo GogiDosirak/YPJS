@@ -26,10 +26,10 @@ public class Category {
     //자신을 부모타입으로 가짐
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_PARENT_ID")
-    private Category CategoryParentId;
+    private Category CategoryParent;
 
     //자식은 여러개 가질 수 있음
-    @OneToMany(mappedBy = "CategoryParentId")
+    @OneToMany(mappedBy = "CategoryParent")
     private List<Category> CategoryChild = new ArrayList<>();
 
     //연관관계 메서드

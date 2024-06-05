@@ -13,15 +13,15 @@ public class Cart {
     @Id
     @GeneratedValue
     @Column(name = "cart_id")
-    private int cartId;  //장바구니번호
+    private Long cartId;  //장바구니번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;  //멤버번호
+    private Member member;  //멤버번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item itemId;  //상품번호
+    private Item item;  //상품번호
 
     @Column(name = "cart_item_quantity")
     private int cartItemQuantity;  //장바구니상품수량

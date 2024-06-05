@@ -2,6 +2,8 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import ypjs.project.domain.enums.Role;
+import ypjs.project.domain.enums.Status;
 
 import java.sql.Date;
 
