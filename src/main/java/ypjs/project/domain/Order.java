@@ -15,11 +15,11 @@ public class Order {
     @Id
     @GeneratedValue
     @Column(name = "order_id")
-    private int orderId;  //주문번호
+    private Long orderId;  //주문번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;  //멤버번호
+    private Member member;  //멤버
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();  //주문상품리스트

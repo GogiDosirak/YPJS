@@ -16,4 +16,13 @@ public class Address {
     private String addressDetail;
     @Column(name = "member_zipcode")
     private String zipcode;
+
+    public Address() {
+    }
+
+    public Address(String address, String addressDetail, String zipcode) {
+        this.address = address;
+        this.addressDetail = addressDetail;
+        this.zipcode = zipcode;
+    }
 }
