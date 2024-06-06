@@ -3,6 +3,7 @@ package ypjs.project.repository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Like;
 
@@ -13,6 +14,10 @@ import java.util.List;
 public class ItemRepository {
 
     private final EntityManager em;
+
+
+
+
 
 
     //상품저장

@@ -15,6 +15,8 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
+
+
     //상품등록(등록이여서 읽기전용 아님)
     @Transactional
     public void saveItem(Item item) {
@@ -24,6 +26,7 @@ public class ItemService {
 
     //단건상품 조회
     public Item findOneItem(Long ItemId) {
+
         return itemRepository.findOne(ItemId);
     }
 

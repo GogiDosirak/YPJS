@@ -24,6 +24,27 @@ public class CategoryRepository {
         }
     }
 
+
+    //categoryId 단건조회
+//    public Category findOneCategory(Long categoryId) {
+//        return em.find(Category.class, categoryId);
+//    }
+
+
+    public Category findOneCategory(Long categoryId) {
+        if (categoryId == null) {
+            throw new IllegalArgumentException("Category ID must not be null");
+        }
+        Category category = em.find(Category.class, categoryId);
+
+        if (category == null) {
+            throw new IllegalArgumentException("Category not found for ID: " + categoryId);
+        }
+        return category;
+    }
+
+
+
     //CategoryParentId통해서 조회
     public List<Category> findByParentId(Category categoryParent) {
         return em.createQuery("select c from Category c where c.categoryParent = :categoryParent", Category.class)

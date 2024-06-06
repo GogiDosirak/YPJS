@@ -22,6 +22,11 @@ public class CategoryService {
     }
 
 
+    //categoryId단건조회
+    public Category findOneCategory(Long categoryId) {
+        return categoryRepository.findOneCategory(categoryId);
+    }
+
     //categoryParentId조회
     public List<Category> findCategoryParent(Category categoryParent) {
         return categoryRepository.findByParentId(categoryParent);

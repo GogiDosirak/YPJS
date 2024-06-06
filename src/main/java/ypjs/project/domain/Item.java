@@ -2,16 +2,15 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
+@Getter @Setter
 public class Item {
-
-
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -47,6 +46,23 @@ public class Item {
 
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime itemCreateDate;
+
+
+    //생성자
+
+    public Item() {}
+    public Item(Category category, String itemName, String itemContent, int itemPrice, int itemStock) {
+        this.category = category;
+        this.itemName = itemName;
+        this.itemContent = itemContent;
+        this.itemPrice = itemPrice;
+        this.itemStock = itemStock;
+
+    }
+
+
+
+
 
 
     //연관관계 메서드

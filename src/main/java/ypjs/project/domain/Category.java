@@ -20,18 +20,28 @@ public class Category {
     private List<Item> items = new ArrayList<>();
 
 
-    @Column(name = "CATEGORY_NAME")
-    private String categoryName;
-
-
     //자신을 부모타입으로 가짐
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_PARENT_ID")
     private Category categoryParent;
 
+    @Column(name = "CATEGORY_NAME")
+    private String categoryName;
+
     //자식은 여러개 가질 수 있음
     @OneToMany(mappedBy = "categoryParent")
     private List<Category> categoryChild = new ArrayList<>();
+
+
+    //생성자
+    public Category() {}
+
+
+    public Category (Category categoryParent, String categoryName) {
+        this.categoryParent = categoryParent;
+        this.categoryName = categoryName;
+    }
+
 
 
     //연관관계 메서드
