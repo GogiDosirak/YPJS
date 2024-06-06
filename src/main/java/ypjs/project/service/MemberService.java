@@ -35,6 +35,20 @@ public class MemberService {
         }
     }
 
+    @Transactional
+    public void update(Long memberId, String accountId, String password, String nickname, String name) {
+        Member member = memberRepository.findOne(memberId);
+        member.updateMember(accountId, password, nickname, name);
+    }
+
+    public Member findOne(Long memberId) {
+        return memberRepository.findOne(memberId);
+    }
+
+    public List<Member> findAll() {
+        return memberRepository.findAll();
+    }
+
 
 
     }

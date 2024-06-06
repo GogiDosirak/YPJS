@@ -68,18 +68,27 @@ public class Member {
 
     // 멤버 생성 메소드
     public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber, LocalDateTime joinDate) {
-       Member member = new Member();
-       member.accountId = accountId;
-       member.password = password;
-       member.nickname = nickname;
-       member.name = name;
-       member.birth = birth;
-       member.gender = gender;
-       member.address = new Address(address,addressDetail,zipcode);
-       member.email = email;
-       member.phonenumber = phonenumber;
-       member.joinDate = joinDate;
-       return member;
+        Member member = new Member();
+        member.accountId = accountId;
+        member.password = password;
+        member.nickname = nickname;
+        member.name = name;
+        member.birth = birth;
+        member.gender = gender;
+        member.address = new Address(address,addressDetail,zipcode);
+        member.email = email;
+        member.phonenumber = phonenumber;
+        member.joinDate = joinDate;
+        return member;
+    }
+
+    // 멤버 수정 메소드
+    public void updateMember(String accountId, String password, String nickname, String name) {
+        this.accountId = accountId;
+        this.password = password;
+        this.nickname = nickname;
+        this.name = name;
+
     }
 
 
