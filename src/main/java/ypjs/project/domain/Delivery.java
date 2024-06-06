@@ -12,24 +12,40 @@ public class Delivery {
     @Id
     @GeneratedValue
     @Column(name = "delivery_id")
-    private Long deliveryId;  //배송번호
+    private Long id;  //배송번호
 
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;  //주문번호
 
     @Column(name = "delivery_name")
-    private String deliveryName;  //배송지이름
+    private String name;  //배송지명
+
+    @Column(name = "delivery_receiver")
+    private String receiver;  //받으실 분
+
+    @Column(name = "delivery_phonenumber")
+    private String phoneNumber;  //휴대전화 번호
 
     @Embedded
-    private Address deliveryAddress;  //배송주소
+    private Address address;  //배송주소
 
     @Enumerated
     @Column(name = "delivery_status")
-    private DeliveryStatus deliveryStatus;  //배송상태
+    private DeliveryStatus status;  //배송상태
+
+    //==생성자==//
+    public Delivery(String name, String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
+        this.name = name;
+        this.receiver = receiver;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.status = deliveryStatus;
+    }
 
     //==연관관계 메서드==//
     public void setOrder(Order order) {
         this.order = order;
     }
+
 
 }

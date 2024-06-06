@@ -17,7 +17,7 @@ public class Order {
     @Id
     @GeneratedValue
     @Column(name = "order_id")
-    private Long orderId;  //주문번호
+    private Long id;  //주문번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -31,13 +31,13 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();  //주문상품리스트
 
     @Column(name = "order_price")
-    private int orderPrice;  //주문금액
+    private int price;  //주문금액
 
     @Column(name = "order_created")
-    private LocalDateTime orderCreated;  //주문시간
+    private LocalDateTime created;  //주문시간
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;  //주문상태 [ORDER, CANCEL]
+    private OrderStatus status;  //주문상태 [ORDER, CANCEL]
 
 
     //==연관관계 메서드==//
@@ -52,7 +52,7 @@ public class Order {
 
 
     //==생성 메서드==//
-    public Order create(Member member, Delivery delivery, OrderItem... orderItems) {
+    public static Order create(Member member, Delivery delivery, List<OrderItem> orderItems) {
         int totalPrice = 0;
         Order order = new Order();
         order.member = member;
@@ -60,11 +60,11 @@ public class Order {
         order.setDeliveryOrder(delivery);
         for(OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
-            totalPrice += orderItem.getOrderItemPrice();
+            totalPrice += orderItem.getTotalPrice();
         }
-        order.orderPrice = totalPrice;
-        order.orderCreated = LocalDateTime.now();
-        order.orderStatus = OrderStatus.ORDER;
+        order.price = totalPrice;
+        order.created = LocalDateTime.now();
+        order.status = OrderStatus.ORDER;
 
         return order;
     }
@@ -72,12 +72,12 @@ public class Order {
 
     //==취소 메서드==//
     public void cancel() {
-        if(delivery.getDeliveryStatus() == DeliveryStatus.SHIPPING) {
+        if(delivery.getStatus() == DeliveryStatus.SHIPPING) {
             throw new IllegalStateException("배송중인 상품은 취소가 불가능합니다.");
-        } else if(delivery.getDeliveryStatus() == DeliveryStatus.DELIVERED) {
+        } else if(delivery.getStatus() == DeliveryStatus.DELIVERED) {
             throw new IllegalStateException("배송완료된 상품은 취소가 불가능합니다.");
         }
-        this.orderStatus = OrderStatus.CANCEL;
+        this.status = OrderStatus.CANCEL;
         for(OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }

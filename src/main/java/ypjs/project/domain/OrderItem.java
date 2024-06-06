@@ -11,7 +11,7 @@ public class OrderItem {
     @Id
     @GeneratedValue
     @Column(name = "order_item_id")
-    private Long orderItemId;  //주문상품번호
+    private Long id;  //주문상품번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
@@ -22,10 +22,10 @@ public class OrderItem {
     private Order order;  //주문번호
 
     @Column(name = "order_item_price")
-    private int orderItemPrice;  //주문상품가격
+    private int price;  //주문상품가격
 
     @Column(name = "order_item_count")
-    private int orderItemCount;  //주문상품수량
+    private int count;  //주문상품수량
 
 
     //==연관관계 메서드==//
@@ -38,8 +38,8 @@ public class OrderItem {
     public OrderItem create(Item item, int orderItemPrice, int orderItemCount) {
         OrderItem orderItem = new OrderItem();
         orderItem.item = item;
-        orderItem.orderItemPrice = orderItemPrice;
-        orderItem.orderItemCount = orderItemCount;
+        orderItem.price = orderItemPrice;
+        orderItem.count = orderItemCount;
         //item.removeStock(orderItemCount);  //item 재고 제거 메서드 연결
         return orderItem;
     }
@@ -53,7 +53,7 @@ public class OrderItem {
 
     //==주문상품별 총액 조회==//
     public int getTotalPrice() {
-        return getOrderItemPrice() * getOrderItemCount();
+        return getPrice() * getCount();
     }
 
 

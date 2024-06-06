@@ -1,14 +1,21 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import ypjs.project.domain.Order;
+import ypjs.project.dto.OrderSearchDto;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor  //final 필드 또는 @NonNull 필드를 초기화하는 생성자 자동 생성
 public class OrderRepository {
 
+    @PersistenceContext  //엔티티 메니저 주입
     private final EntityManager em;
 
     public void save(Order order) {
@@ -19,6 +26,44 @@ public class OrderRepository {
         return em.find(Order.class, orderId);
     }
 
-    //public List<Orders> findAll(OrderSearch orderSearch) { ~ }
+    public List<Order> findAllWithStatusOrMemberName(OrderSearchDto orderSearchDto) {
+        //JPQL
+        String jpql = "select o from order o join o.member m";
+        boolean isFirstCondition = true;
+
+        //주문 상태 검색
+        if(orderSearchDto.getOrderStatus() != null) {
+            if(isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " o.status = :status";
+        }
+        //멤버 이름 검색
+        if(StringUtils.hasText(orderSearchDto.getMemberName())) {
+            if(isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " m.name like :name";
+        }
+
+        TypedQuery<Order> query = em.createQuery(jpql, Order.class)
+                .setMaxResults(1000);  //검색 결과 최대 1000건
+
+        if(orderSearchDto.getOrderStatus() != null) {
+            query = query.setParameter("status", orderSearchDto.getOrderStatus());
+        }
+        if(StringUtils.hasText(orderSearchDto.getMemberName())) {
+            query = query.setParameter("name", orderSearchDto.getMemberName());
+        }
+
+        return query.getResultList();
+
+    }
 
 }

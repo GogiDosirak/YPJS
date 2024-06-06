@@ -13,7 +13,7 @@ public class Cart {
     @Id
     @GeneratedValue
     @Column(name = "cart_id")
-    private Long cartId;  //장바구니번호
+    private Long id;  //장바구니번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -23,9 +23,22 @@ public class Cart {
     @JoinColumn(name = "item_id")
     private Item item;  //상품번호
 
-    @Column(name = "cart_item_quantity")
-    private int cartItemQuantity;  //장바구니상품수량
+    @Column(name = "cart_item_count")
+    private int itemCount;  //장바구니상품수량
 
     @Column(name = "cart_added")
-    private LocalDateTime cartAdded;  //장바구니추가일시
+    private LocalDateTime added;  //장바구니추가일시
+
+    public Cart(Member member, Item item, int itemCount) {
+        this.member = member;
+        this.item = item;
+        this.itemCount = itemCount;
+        this.added = LocalDateTime.now();
+    }
+
+    public void updateItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
+
 }
