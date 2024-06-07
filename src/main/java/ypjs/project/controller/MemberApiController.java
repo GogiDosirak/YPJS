@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
+import ypjs.project.domain.Role;
 import ypjs.project.service.MemberService;
 
 import java.sql.Date;
@@ -21,6 +22,7 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
+    // 멤버 가입
     @PostMapping("/ypjs/member/join")
     public CreateMemberResponse join(@RequestBody @Valid CreateMemberRequest request) {
         Member member = getJoinMemberData(request);
@@ -37,6 +39,7 @@ public class MemberApiController {
         return member;
     }
 
+    // 멤버 수정
     @PutMapping("/ypjs/member/update/{memberId}")
     public UpdateMemberResponse updateMember (@PathVariable("memberId") Long memberId,
                                               @RequestBody @Valid UpdateMemberRequest request)  {
@@ -45,6 +48,7 @@ public class MemberApiController {
         return new UpdateMemberResponse(member.getMemberId(), member.getAccountId());
     }
 
+    // 멤버 전체 조회
     @GetMapping("/ypjs/member/members")
     public Result members() {
         List<Member> findMembers = memberService.findAll();
@@ -55,6 +59,21 @@ public class MemberApiController {
         return new Result(result);
     }
 
+    // 마이페이지
+    @GetMapping("/ypjs/member/mypage/{memberId}")
+    public Result mypage(@PathVariable("memberId") Long memberId) {
+        MypageDto result = getMypageData(memberId);
+        return new Result(result);
+
+    }
+
+    // member를 Dto로 감싸주는 역할
+    private MypageDto getMypageData(Long memberId) {
+        Member member = memberService.findOne(memberId);
+        MypageDto result = new MypageDto(member.getAccountId(),member.getPassword(),member.getNickname(), member.getName(), member.getEmail(),member.getAddress(),
+                member.getPhonenumber(), member.getJoinDate(), member.getRole());
+        return result;
+    }
 
 
     @Data
@@ -111,6 +130,20 @@ public class MemberApiController {
         private Long memberId;
         private String accountId;
         private String nickname;
+        }
+
+        @Data
+    @AllArgsConstructor
+    static class MypageDto {
+        private String accountId;
+        private String password;
+        private String nickname;
+        private String name;
+        private String email;
+        private Address address;
+        private String phonenumber;
+        private LocalDateTime joinDate;
+        private Role role;
         }
     }
 
