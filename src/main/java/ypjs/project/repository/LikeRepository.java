@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Like;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class LikeRepository {
@@ -22,13 +24,13 @@ public class LikeRepository {
     public void delete(Like like) {
     }
 
-    public Like findByMemberAndItem(Long memberId, Long itemId) {
+    public List<Like> findByMemberAndItem(Long memberId, Long itemId) {
 
         return em.createQuery("select l from Like l " +
                         "where l.member.id = :memberId " +
                         "and l.item.id = :itemId", Like.class)
                 .setParameter("memberId", memberId)
                 .setParameter("itemId", itemId)
-                .getSingleResult();
+                .getResultList();
     }
 }

@@ -16,13 +16,13 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/api/v2/like")
+    @PostMapping("/ypjs/like")
     public LikeResponseDTO insertLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO ) throws Exception {
         likeService.insertLike(likeRequestDTO);
         return LikeResponseDTO.success("좋아요를 눌렀습니다!");
     }
 
-    @DeleteMapping("/api/v2/like")
+    @DeleteMapping("/ypjs/like")
     public LikeResponseDTO deleteLike(@RequestBody @Valid LikeRequestDTO likeRequestDTO) throws Exception {
         likeService.deleteLike(likeRequestDTO);
         return LikeResponseDTO.success("좋아요를 취소했습니다!");

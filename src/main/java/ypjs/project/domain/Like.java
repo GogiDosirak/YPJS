@@ -23,9 +23,12 @@ public class Like {
     private Item item;
 
 
+    //==생성 메서드==//
     public Like(Member member, Item item){
         this.member = member;
         this.item = item;
     }
+
+
 
 }
