@@ -10,19 +10,18 @@ public class ItemRequestDto {
     private Long categoryId;
     private String itemName;
     private String itemContent;
-    private int price;
-    private int stock;
-   // private List<CategoryRequestDto> cateroies;
+    private int itemPrice;
+    private int itemStock;
+
 
     public ItemRequestDto() {}
 
-    public ItemRequestDto(Long categoryId, String itemName, String itemContent, int price, int stock,
-                          List<CategoryRequestDto> cateroies) {
+    public ItemRequestDto(Long categoryId, String itemName, String itemContent, int itemPrice, int itemStock) {
         this.categoryId = categoryId;
         this.itemName = itemName;
         this.itemContent = itemContent;
-        this.price = price;
-        this.stock = stock;
-        //this.cateroies = cateroies;
+        this.itemPrice = itemPrice;
+        this.itemStock = itemStock;
+
     }
 }

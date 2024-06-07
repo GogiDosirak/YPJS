@@ -1,6 +1,7 @@
 package ypjs.project.dto.response;
 
 import lombok.Getter;
+import ypjs.project.domain.Item;
 
 import java.util.List;
 
@@ -10,21 +11,23 @@ public class ItemResponseDto {
     private Long itemId;
     private String itemName;
     private String itemContent;
-    private int price;
-    private int stock;
-   // private List<CategoryRespnseDto> cateroies;
+    private int itemPrice;
+    private int itemStock;
+
 
     public ItemResponseDto() {}
 
-    public ItemResponseDto(Long categoryId, Long itemId, String itemName, String itemContent, int price, int stock
+    public ItemResponseDto(Long categoryId, Long itemId, String itemName, String itemContent, int itemPrice, int itemStock
                            ) {
 
         this.categoryId = categoryId;
         this.itemId = itemId;
         this.itemName = itemName;
         this.itemContent = itemContent;
-        this.price = price;
-        this.stock = stock;
-        //this.cateroies = cateroies;
+        this.itemPrice = itemPrice;
+        this.itemStock = itemStock;
+
     }
+
+
 }

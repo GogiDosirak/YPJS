@@ -8,14 +8,14 @@ import ypjs.project.domain.Category;
 public class CategoryRequestDto {
 
     @NotNull
-    private Long parentId;
+    private Long categoryParent;
     private String categoryName;
 
 
     public CategoryRequestDto() {}
-    public CategoryRequestDto(Long parentId, String categoryName) {
+    public CategoryRequestDto(Long categoryParent, String categoryName) {
 
-        this.parentId = parentId;
+        this.categoryParent = categoryParent;
         this.categoryName = categoryName;
     }
 }

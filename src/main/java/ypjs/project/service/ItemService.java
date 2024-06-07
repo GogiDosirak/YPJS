@@ -35,4 +35,17 @@ public class ItemService {
         return itemRepository.findAllItems();
     }
 
+
+    //조회수
+    @Transactional
+    public void increaseItemCnt(Long itemId) {
+        itemRepository.increaseCnt(itemId);
+
+    }
+
+
+
+
+
+
 }

@@ -2,6 +2,7 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import ypjs.project.service.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,11 @@ public class Category {
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;
     }
+
+
+
+
+
 
 
 

@@ -60,6 +60,17 @@ public class CategoryRepository {
     }
 
 
+    //패치조인
+    public List<Category> findAllWithItem() {
+        return em.createQuery(
+                "select distinct c from Category c" +
+                        " join fetch c.items i" +
+                        " join fetch c.categoryParent cp" +
+                        " join fetch c.categoryChild cc", Category.class)
+                .getResultList();
+
+    }
+
 
 
 

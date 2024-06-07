@@ -3,6 +3,7 @@ package ypjs.project.repository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Like;
@@ -45,6 +46,22 @@ public class ItemRepository {
        return em.createQuery("select i from Item i", Item.class)
                 .getResultList();
     }
+
+
+    //조회수
+    @Transactional
+    public void increaseCnt(Long itemId) {
+        em.createQuery("update Item i set i.itemCnt = i.itemCnt + 1 where i.itemId = :itemId")
+                .setParameter("itemId", itemId)
+                .executeUpdate();
+
+
+}
+
+
+
+
+
 
 
 }

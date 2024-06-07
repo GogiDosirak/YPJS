@@ -14,7 +14,7 @@ public class Item {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
-    private Long ItemId;
+    private Long itemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
@@ -47,10 +47,17 @@ public class Item {
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime itemCreateDate;
 
+    @Column(name = "Item_Cnt")
+    private int itemCnt;
+
+//    @Column(name = "LIKE_CONT")
+//    private int likeCont;
+
 
     //생성자
 
     public Item() {}
+
     public Item(Category category, String itemName, String itemContent, int itemPrice, int itemStock) {
         this.category = category;
         this.itemName = itemName;
