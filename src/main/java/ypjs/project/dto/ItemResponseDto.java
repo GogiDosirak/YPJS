@@ -1,27 +1,33 @@
-package ypjs.project.dto.request;
+package ypjs.project.dto;
 
 import lombok.Getter;
+import ypjs.project.domain.Item;
 
 import java.util.List;
 
 @Getter
-public class ItemRequestDto {
-
+public class ItemResponseDto {
     private Long categoryId;
+    private Long itemId;
     private String itemName;
     private String itemContent;
     private int itemPrice;
     private int itemStock;
 
 
-    public ItemRequestDto() {}
+    public ItemResponseDto() {}
 
-    public ItemRequestDto(Long categoryId, String itemName, String itemContent, int itemPrice, int itemStock) {
+    public ItemResponseDto(Long categoryId, Long itemId, String itemName, String itemContent, int itemPrice, int itemStock
+                           ) {
+
         this.categoryId = categoryId;
+        this.itemId = itemId;
         this.itemName = itemName;
         this.itemContent = itemContent;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
 
     }
+
+
 }

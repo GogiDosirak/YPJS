@@ -19,8 +19,6 @@ public class ItemRepository {
 
 
 
-
-
     //상품저장
     public void saveItem(Item item) {
         //새로운 객체 생성(새로운 상품 등록)
@@ -46,6 +44,14 @@ public class ItemRepository {
        return em.createQuery("select i from Item i", Item.class)
                 .getResultList();
     }
+
+
+    //상품 삭제
+    public void deleteItem(Long itemId) {
+        Item findItem = em.find(Item.class, itemId);
+        em.remove(findItem);
+    }
+
 
 
     //조회수

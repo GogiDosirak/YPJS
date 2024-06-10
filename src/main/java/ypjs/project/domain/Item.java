@@ -22,7 +22,7 @@ public class Item {
 
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<ItemRatings> itemRatings = new ArrayList<>();
+    private List<ItemReview> itemReviews = new ArrayList<>();
 
 
     @Column(name = "ITEM_NAME")
@@ -68,6 +68,17 @@ public class Item {
     }
 
 
+    //상품변경메서드
+    public Long changeItem(Category category, String itemName, String itemContent, int itemPrice, int itemStock) {
+        this.category = category;
+        this.itemName = itemName;
+        this.itemContent = itemContent;
+        this.itemPrice = itemPrice;
+        this.itemStock = itemStock;
+
+        return this.itemId;
+    }
+
 
 
 
@@ -78,9 +89,9 @@ public class Item {
     }
 
 
-    public void addItemRatings(ItemRatings itemRating) {
-        itemRatings.add(itemRating);
-        itemRating.setItem(this);
+    public void addItemRatings(ItemReview itemReview) {
+        itemReviews.add(itemReview);
+        itemReview.setItem(this);
     }
 
 

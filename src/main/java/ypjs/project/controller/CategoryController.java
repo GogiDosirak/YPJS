@@ -2,14 +2,12 @@ package ypjs.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
-import ypjs.project.dto.request.CategoryRequestDto;
-import ypjs.project.dto.response.CategoryDto;
-import ypjs.project.dto.response.CategoryRespnseDto;
+import ypjs.project.dto.CategoryRequestDto;
+import ypjs.project.dto.CategoryListDto;
+import ypjs.project.dto.CategoryRespnseDto;
+import ypjs.project.dto.CategoryUpdateDto;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.service.CategoryService;
 
@@ -23,20 +21,12 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
 
+
+    //category등록
     @PostMapping("/ypjs/category/post")
-    public CategoryRespnseDto saveCategory(@RequestBody @Valid CategoryRequestDto request){
-        Category parentCategory = categoryService.findOneCategory(request.getCategoryParent());
+    public CategoryRespnseDto saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDtorequest){
 
-        //System.out.println(parentCategory);
-
-        Category category = new Category(
-                parentCategory,
-                request.getCategoryName()
-        );
-
-        //System.out.println(category);
-
-        categoryService.saveCategory(category);
+       Category category = categoryService.saveCategory(categoryRequestDtorequest);
 
         return new CategoryRespnseDto(category.getCategoryId(), category.getCategoryParent(), category.getCategoryName());
     }
@@ -44,19 +34,32 @@ public class CategoryController {
 
     //categoryList보기
     @GetMapping("/ypjs/category/get")
-    public List<CategoryDto> getCategoryList() {
+    public List<CategoryListDto> getCategoryList(CategoryListDto categoryListDto) {
 
-        List<Category> categories = categoryService.findAllCategory();
-        //List<Category> categories = categoryRepository.findAllWithItem();
+        return categoryService.findAllCategory(categoryListDto);
 
-
-        List<CategoryDto> result = categories.stream()
-                .map(c -> new CategoryDto(c))
-                .collect(Collectors.toList());
-
-        return result;
     }
 
+
+
+    //category수정
+   @PutMapping("ypjs/category/update/{categoryId}")
+    public CategoryUpdateDto updateCategory(@PathVariable("categoryId") Long categoryId,
+                               @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
+
+        categoryService.updateCategory(categoryUpdateDto);
+        Category findCategory = categoryService.findOneCategory(categoryId);
+
+
+       return new CategoryUpdateDto(findCategory.getCategoryId(), findCategory.getCategoryParent().getCategoryId(), findCategory.getCategoryName());
+   }
+
+
+   //category삭제
+    @DeleteMapping("ypjs/category/delete/{categoryId}")
+    public void deleteCategory(@PathVariable("categoryId") Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+    }
 
 
 

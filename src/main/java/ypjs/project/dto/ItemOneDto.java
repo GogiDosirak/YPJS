@@ -1,4 +1,4 @@
-package ypjs.project.dto.response;
+package ypjs.project.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

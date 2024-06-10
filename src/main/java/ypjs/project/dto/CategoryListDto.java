@@ -1,16 +1,14 @@
-package ypjs.project.dto.response;
+package ypjs.project.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.service.CategoryService;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class CategoryDto {
+public class CategoryListDto {
 
 
     private Long categoryId;
@@ -19,9 +17,9 @@ public class CategoryDto {
 
     private List<ItemDto> items;
 
-    public CategoryDto() {}
+    public CategoryListDto() {}
 
-    public CategoryDto(Category category) {
+    public CategoryListDto(Category category) {
 
 
         categoryId = category.getCategoryId();

@@ -1,19 +1,18 @@
-package ypjs.project.dto.response;
+package ypjs.project.dto;
 
 import lombok.Getter;
 import ypjs.project.domain.Category;
 
 @Getter
-public class CategoryRespnseDto {
+public class CategoryUpdateDto {
 
     private Long categoryId;
-    private Category categoryParent;
+    private Long categoryParent;
     private String categoryName;
 
+    public CategoryUpdateDto() {}
 
-    public CategoryRespnseDto() {}
-    public CategoryRespnseDto(Long categoryId, Category categoryParent, String categoryName) {
-
+    public CategoryUpdateDto(Long categoryId, Long categoryParent, String categoryName) {
         this.categoryId = categoryId;
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;

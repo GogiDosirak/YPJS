@@ -60,6 +60,14 @@ public class CategoryRepository {
     }
 
 
+    //category삭제
+    public void deleteCategory(Long categoryId) {
+        Category findCategory = em.find(Category.class, categoryId);
+        em.remove(findCategory);
+    }
+
+
+
     //패치조인
     public List<Category> findAllWithItem() {
         return em.createQuery(
