@@ -1,5 +1,7 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Role;
+import ypjs.project.domain.Status;
 import ypjs.project.service.MemberService;
 
 import java.sql.Date;
@@ -65,6 +68,13 @@ public class MemberApiController {
         MypageDto result = getMypageData(memberId);
         return new Result(result);
 
+    }
+
+    // 회원탈퇴
+    @PutMapping("/ypjs/member/withdrawal/{memberId}")
+    public WithdrawalMemberResponse withdraw(@PathVariable("memberId") Long memberId) {
+        memberService.witrdraw(memberId);
+        return new WithdrawalMemberResponse(memberId);
     }
 
     // member를 Dto로 감싸주는 역할
@@ -145,7 +155,15 @@ public class MemberApiController {
         private LocalDateTime joinDate;
         private Role role;
         }
+
+
+    @Data
+    @AllArgsConstructor
+    static class WithdrawalMemberResponse {
+        private Long memberId;
     }
+
+}
 
 
 

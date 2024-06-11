@@ -91,5 +91,15 @@ public class Member {
 
     }
 
+    // 멤버 탈퇴 메소드
+    public void withdrawMember() {
+        this.status = Status.WITHDRAWAL;
+    }
+
+    // 비밀번호 확인 메소드
+    public boolean checkPassword(String password) {
+        return this.password.equals(password);
+    }
+
 
 }

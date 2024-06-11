@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Member;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,4 +35,15 @@ public class MemberRepository {
                 .setParameter("accountId", accountId)
                 .getResultList();
     }
+
+    public Member loginAccountId(String accountId) {
+        return em.createQuery(
+                        "select m from Member m where m.accountId =:accountId", Member.class)
+                .setParameter("accountId", accountId)
+                .getSingleResult();
+    }
+
+
+
+
 }
