@@ -44,7 +44,4 @@ public class MemberRepository {
                     .getResultList().stream().findAny();
     }
 
-
-
-
 }

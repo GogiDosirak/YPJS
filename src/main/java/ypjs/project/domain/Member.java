@@ -49,7 +49,7 @@ public class Member {
 
     @Column(name = "member_role")
     @Enumerated(EnumType.STRING)
-    private Role role = Role.CUSTOMER;
+    private Role role;
 
     @Column(name = "member_point")
     @ColumnDefault("0")
@@ -64,7 +64,7 @@ public class Member {
 
     @Column(name = "member_status")
     @Enumerated(EnumType.STRING)
-    private Status status = Status.MEMBER;
+    private Status status;
 
     // 멤버 생성 메소드
     public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber, LocalDateTime joinDate) {
@@ -79,6 +79,8 @@ public class Member {
         member.email = email;
         member.phonenumber = phonenumber;
         member.joinDate = joinDate;
+        member.status = Status.MEMBER;
+        member.role = Role.CUSTOMER;
         return member;
     }
 

@@ -60,25 +60,6 @@ public class MemberService {
             throw  new IllegalStateException("비밀번호가 틀립니다.");
         }
         return member.getMemberId();
-
-    }
-
-    // 로그인 응답 DTO
-    @Data
-    @AllArgsConstructor
-    public static class ResponseLogin {
-        private String accountId;
-        private String password;
-        private String nickname;
-        private String gender;
-        private int point;
-        private String name;
-        private String email;
-        private Address address;
-        private String phonenumber;
-        private LocalDateTime joinDate;
-        private Role role;
-        private Status status;
     }
 
 
