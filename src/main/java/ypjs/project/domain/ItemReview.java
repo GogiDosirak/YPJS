@@ -20,7 +20,7 @@ public class ItemReview {
     private Member member;
 
     @Column(name = "ITEM_SCORE")
-    private Double itemScore;
+    private int itemScore;
 
     @Column(name = "ITEM_REVIEW_NAME")
     private String itemReviewName;
@@ -33,7 +33,7 @@ public class ItemReview {
 
     public ItemReview() {}
 
-    public ItemReview(Item item,Member member, Double itemScore, String itemReviewName, String itemReviewContent) {
+    public ItemReview(Item item,Member member, int itemScore, String itemReviewName, String itemReviewContent) {
 
         this.item = item;
         this.member = member;
@@ -45,7 +45,7 @@ public class ItemReview {
 
 
     //리뷰변경 메서드
-    public Long changeItemReview(Item item,Member member, Double itemScore, String itemReviewName, String itemReviewContent) {
+    public Long changeItemReview(Item item,Member member, int itemScore, String itemReviewName, String itemReviewContent) {
         this.item = item;
         this.member = member;
         this.itemScore = itemScore;

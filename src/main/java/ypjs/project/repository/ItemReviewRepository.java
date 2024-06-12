@@ -4,8 +4,10 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.ItemReview;
+import ypjs.project.dto.ItemReviewListDto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,12 +31,30 @@ public class ItemReviewRepository {
         return em.find(ItemReview.class, itemReviewId);
     }
 
-    //리뷰 전체조회
-    public List<ItemReview> findAllReviews() {
-        return em.createQuery("select ir from ItemReview ir", ItemReview.class)
-                .getResultList();
+
+
+    //리뷰 삭제
+    public void deleteItemReview(Long itemReviewId) {
+        ItemReview findItemReivew = em.find(ItemReview.class, itemReviewId);
+        em.remove(findItemReivew);
     }
 
+
+    //아이템 당 리뷰 조회 (페치조인 안한것)
+//    public List<ItemReview> findAllItemReview(Long itemId) {
+//       return em.createQuery("select ir from ItemReview ir WHERE ir.item.itemId = :itemId", ItemReview.class)
+//                .setParameter("itemId", itemId)
+//                .getResultList();
+//    }
+
+    //페치조인 (아이템 당 리뷰 조회)
+    public List<ItemReview> findAllItemReview(Long itemId) {
+        return em.createQuery(
+                        "select ir from ItemReview ir" +
+                               " join fetch ir.item i WHERE i.itemId = :itemId", ItemReview.class)
+                .setParameter("itemId", itemId)
+                .getResultList();
+    }
 
 
 }

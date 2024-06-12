@@ -47,7 +47,7 @@ public class CategoryController {
     public CategoryUpdateDto updateCategory(@PathVariable("categoryId") Long categoryId,
                                @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
-        categoryService.updateCategory(categoryUpdateDto);
+        categoryService.updateCategory(categoryId, categoryUpdateDto);
         Category findCategory = categoryService.findOneCategory(categoryId);
 
 

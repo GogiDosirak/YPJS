@@ -7,10 +7,14 @@ import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemReview;
 import ypjs.project.domain.Member;
 import ypjs.project.dto.ItemReviewDto;
+import ypjs.project.dto.ItemReviewListDto;
 import ypjs.project.dto.ItemUpdateDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.ItemReviewRepository;
 import ypjs.project.repository.MemberRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -37,7 +41,17 @@ public class ItemReviewService {
                 itemReviewDto.getItemReviewContent()
         );
 
+        //리뷰 저장
         itemReviewRepository.saveReview(itemReview);
+
+        // 새로운 리뷰가 추가된 후 아이템의 리뷰 리스트를 업데이트
+        item.getItemReviews().add(itemReview);
+
+        //평점 업데이트
+        item.updateItemRatings();
+
+        itemRepository.saveItem(item);
+
 
         return itemReview;
     }
@@ -47,6 +61,20 @@ public class ItemReviewService {
     public ItemReview findOneItemReview(Long itemReviewId) {
         return itemReviewRepository.findOneReview(itemReviewId);
     }
+
+
+    //아이템 당 리뷰조회
+    public List<ItemReviewListDto> findAllItemReview(Long itemId) {
+        //List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
+        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
+
+        List<ItemReviewListDto> result = reviews.stream()
+                .map(ItemReviewListDto::new)
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
 
 
 
@@ -70,8 +98,34 @@ public class ItemReviewService {
                 itemReviewDto.getItemReviewName(),
                 itemReviewDto.getItemReviewContent()
         );
+
+        // 새로운 리뷰가 추가된 후 아이템의 리뷰 리스트를 업데이트
+        item.getItemReviews().add(itemReview);
+
+        //평점 업데이트
+        item.updateItemRatings();
+
+        itemRepository.saveItem(item);
     }
 
+
+
+    //리뷰 삭제
+    @Transactional
+    public void deleteItemReview(Long itemReviewId) {
+        ItemReview itemReview = findOneItemReview(itemReviewId);
+        Item item = itemReview.getItem();
+
+        itemReviewRepository.deleteItemReview(itemReviewId);
+
+        item.removeItemReview(itemReview);
+
+        item.updateItemRatings();
+
+
+
+
+    }
 
 
 

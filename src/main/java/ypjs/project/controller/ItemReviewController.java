@@ -5,8 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.ItemReview;
 import ypjs.project.dto.ItemReviewDto;
+import ypjs.project.dto.ItemReviewListDto;
 import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class ItemReviewController {
 
 
     //리뷰등록
-    @PostMapping("/ypjs/itemReivew/post/{itemId}")
+    @PostMapping("/ypjs/itemReview/post/{itemId}")
     public ItemReviewDto saveItemReview(@PathVariable("itemId") Long itemId,
                                         @RequestBody @Valid ItemReviewDto requestDto) {
 
@@ -29,8 +32,10 @@ public class ItemReviewController {
     }
 
 
+
+
     //수정
-    @PutMapping("/ypjs/itemReivew/update/{itemReviewId}")
+    @PutMapping("/ypjs/itemReview/update/{itemReviewId}")
     public ItemReviewDto updateItemReview(@PathVariable("itemReviewId") Long itemReviewId,
                                           @RequestBody @Valid ItemReviewDto itemReviewDto) {
 
@@ -40,5 +45,11 @@ public class ItemReviewController {
         return new ItemReviewDto(findItemReview.getItem().getItemId(), findItemReview.getMember().getMemberId(), findItemReview.getItemScore(), findItemReview.getItemReviewName(), findItemReview.getItemReviewContent());
     }
 
+
+    //삭제
+    @DeleteMapping("/ypjs/itemReview/delete/{itemReviewId}")
+    public void deleteItemReview(@PathVariable("itemReviewId") Long itemReviewId){
+        itemReviewService.deleteItemReview(itemReviewId);
+    }
 
 }

@@ -5,19 +5,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.dto.ItemRequestDto;
-import ypjs.project.dto.ItemOneDto;
-import ypjs.project.dto.ItemResponseDto;
-import ypjs.project.dto.ItemUpdateDto;
+import ypjs.project.dto.*;
+import ypjs.project.repository.ItemRepository;
+import ypjs.project.repository.ItemReviewRepository;
 import ypjs.project.service.CategoryService;
+import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class ItemController {
 
     private final ItemService itemService;
+    private final ItemReviewService itemReviewService;
     private final CategoryService categoryService;
+    private final ItemReviewRepository itemReviewRepository;
 
 
     //item등록
@@ -40,6 +44,11 @@ public class ItemController {
 
         //조회수
         itemService.increaseItemCnt(itemId);
+
+        //리뷰리스트
+        itemReviewService.findAllItemReview(itemId);
+
+
 
         return new ItemOneDto(item);
 
@@ -65,7 +74,7 @@ public class ItemController {
 
 
     //삭제
-    @DeleteMapping("ypjs/item/delete/{itemId}")
+    @DeleteMapping("/ypjs/item/delete/{itemId}")
     public void deleteItem(@PathVariable("itemId") Long itemId){
         itemService.deleteItem(itemId);
     }

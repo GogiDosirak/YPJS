@@ -3,6 +3,10 @@ package ypjs.project.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import ypjs.project.domain.Item;
+import ypjs.project.domain.ItemReview;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ItemOneDto {
@@ -10,10 +14,13 @@ public class ItemOneDto {
     private String itemName;
     private String itemContent;
     private int itemPrice;
-    private int itemStock;
+    private double itemRatings;
+
+    private List<ItemReviewListDto> itemReviews;
 
 
-    public ItemOneDto() {}
+    public ItemOneDto() {
+    }
 
     public ItemOneDto(Item item) {
 
@@ -21,7 +28,20 @@ public class ItemOneDto {
         itemName = item.getItemName();
         itemContent = item.getItemContent();
         itemPrice = item.getItemPrice();
-        itemStock = item.getItemStock();
+        itemRatings = item.getItemRatings();
+
+        itemReviews = item.getItemReviews().stream()
+                .map(itemReview -> new ItemReviewListDto(itemReview))
+                .collect(Collectors.toList());
 
     }
+
+
 }
+
+
+
+
+
+
+

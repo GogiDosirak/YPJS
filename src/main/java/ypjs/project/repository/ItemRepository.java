@@ -54,6 +54,8 @@ public class ItemRepository {
 
 
 
+
+
     //조회수
     @Transactional
     public void increaseCnt(Long itemId) {
@@ -63,6 +65,7 @@ public class ItemRepository {
 
 
 }
+
 
 
 

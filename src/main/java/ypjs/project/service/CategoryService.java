@@ -46,6 +46,7 @@ public class CategoryService {
         return categoryRepository.findOneCategory(categoryId);
     }
 
+
     //categoryParentId조회
     public List<Category> findCategoryParent(Category categoryParent) {
         return categoryRepository.findByParentId(categoryParent);
@@ -66,8 +67,8 @@ public class CategoryService {
 
     //category수정
     @Transactional
-    public void updateCategory(CategoryUpdateDto categoryUpdateDto) {
-        Category category = categoryRepository.findOneCategory(categoryUpdateDto.getCategoryId());
+    public void updateCategory(Long categoryId, CategoryUpdateDto categoryUpdateDto) {
+        Category category = categoryRepository.findOneCategory(categoryId);
 
         Category parentCategory = categoryRepository.findOneCategory(categoryUpdateDto.getCategoryParent());
 

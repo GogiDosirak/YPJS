@@ -7,7 +7,7 @@ public class ItemReviewDto {
 
     private Long itemId;
     private Long memberId;
-    private Double itemScore;
+    private int itemScore;
     private String itemReviewName;
     private String itemReviewContent;
 
@@ -15,7 +15,7 @@ public class ItemReviewDto {
     public ItemReviewDto() {}
 
 
-    public ItemReviewDto(Long itemId, Long memberId, Double itemScore, String itemReviewName, String itemReviewContent) {
+    public ItemReviewDto(Long itemId, Long memberId, int itemScore, String itemReviewName, String itemReviewContent) {
         this.itemId = itemId;
         this.memberId = memberId;
         this.itemScore = itemScore;

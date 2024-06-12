@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
 import ypjs.project.dto.ItemRequestDto;
-import ypjs.project.dto.ItemResponseDto;
 import ypjs.project.dto.ItemUpdateDto;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.repository.ItemRepository;
@@ -49,6 +48,7 @@ public class ItemService {
     }
 
 
+
     //수정
     @Transactional
     public void updateItem(Long itemId, ItemUpdateDto itemUpdateDto) {
@@ -88,6 +88,10 @@ public class ItemService {
 
 
 
-
-
 }
+
+
+
+
+
+

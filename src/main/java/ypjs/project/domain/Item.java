@@ -47,11 +47,14 @@ public class Item {
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime itemCreateDate;
 
-    @Column(name = "Item_Cnt")
+    @Column(name = "ITEM_CNT")
     private int itemCnt;
 
-//    @Column(name = "LIKE_CONT")
-//    private int likeCont;
+    @Column(name = "ITEM_RATINGS")
+    private double itemRatings;
+
+    @Column(name = "LIKE_CONT")
+    private int likeCont;
 
 
     //생성자
@@ -83,15 +86,51 @@ public class Item {
 
 
 
+
+    //평점계산
+    public void updateItemRatings() {
+
+        if (itemReviews == null || itemReviews.isEmpty()) {
+            this.itemRatings = 0;
+        }
+
+        double totalScore = 0;
+        int count = 0; // 평가된 리뷰의 개수를 세기 위한 변수
+        for (ItemReview review : itemReviews) {
+            if (review.getItemScore() != 0) {
+                //double score = Math.min(Math.max(review.getItemScore(), 1.0), 5.0);
+                //totalScore += score;
+                totalScore += review.getItemScore();
+                count++;
+            }
+        }
+        if (count > 0) {
+            double averageScore = totalScore / count;
+            // 소숫점 첫째자리까지 반환
+            this.itemRatings = Math.round(averageScore * 10.0) / 10.0;
+        } else {
+            this.itemRatings = 0;
+        }
+
+    }
+
+
+
+
+
     //연관관계 메서드
     public void setCategory(Category category) {
         this.category = category;
     }
 
 
-    public void addItemRatings(ItemReview itemReview) {
+    public void addItemReview(ItemReview itemReview) {
         itemReviews.add(itemReview);
         itemReview.setItem(this);
+    }
+
+    public void removeItemReview(ItemReview itemReview) {
+        itemReviews.remove(itemReview);
     }
 
 
