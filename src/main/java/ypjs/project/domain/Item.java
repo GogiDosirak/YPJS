@@ -11,11 +11,9 @@ import java.util.List;
 @Getter
 public class Item {
 
-
-
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
-    private int ItemId;
+    private Long ItemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
@@ -47,7 +45,15 @@ public class Item {
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime ItemCreateDate;
 
+    //==재고 제거 메서드==//
+    public void removeStock(int count) {
+        this.ItemStock -= count;
+    }
 
+    //==재고 추가 메서드==//
+    public void addStock(int count) {
+        this.ItemStock += count;
+    }
 
 
 }

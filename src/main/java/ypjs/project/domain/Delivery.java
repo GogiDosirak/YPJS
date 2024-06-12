@@ -17,9 +17,6 @@ public class Delivery {
     @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)
     private Order order;  //주문번호
 
-    @Column(name = "delivery_name")
-    private String name;  //배송지명
-
     @Column(name = "delivery_receiver")
     private String receiver;  //받으실 분
 
@@ -34,8 +31,7 @@ public class Delivery {
     private DeliveryStatus status;  //배송상태
 
     //==생성자==//
-    public Delivery(String name, String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
-        this.name = name;
+    public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
         this.receiver = receiver;
         this.phoneNumber = phoneNumber;
         this.address = address;

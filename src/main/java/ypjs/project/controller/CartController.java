@@ -1,15 +1,18 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.CartAddDto;
+import ypjs.project.dto.CartResponseDto;
 import ypjs.project.dto.CartUpdateDto;
+import ypjs.project.dto.OrderItemDto;
 import ypjs.project.service.CartService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,6 +20,20 @@ import ypjs.project.service.CartService;
 public class CartController {
 
     private final CartService cartService;
+
+    //==멤버별 장바구니 전체 조회==//
+    @GetMapping("/list")
+    public String list(HttpSession session, Model model) {
+        //멤버정보
+        Long memberId = (Long) session.getAttribute("loginMemberId");
+
+        if(memberId == null) {
+            return "redirect:/member/login";
+        }
+
+        model.addAttribute("cartList", cartService.findAllByMemberId(memberId));
+        return "cartList";
+    }
 
     //==장바구니 추가==//
     @PostMapping("/add")
@@ -26,18 +43,26 @@ public class CartController {
 
     //==장바구니 수량 변경==//
     @PostMapping("/update")
-    public void update(@RequestBody @Valid CartUpdateDto cartUpdateDto) {
+    public String update(@RequestBody @Valid CartUpdateDto cartUpdateDto) {
         cartService.update(cartUpdateDto);
-    }
-
-    //==멤버별 장바구니 전체 조회==//
-    public void findAllWithMemberId(@PathVariable @Valid Long memberId) {
-        cartService.findAllWithMemberId(memberId);
+        return "redirect:/cart/list";
     }
 
     //==장바구니 삭제==//
-    @PostMapping("/delete/{cartId}")
-    public void delete(@PathVariable @Valid Long cartId) {
+    @DeleteMapping("/delete/{cartId}")
+    public String delete(@PathVariable @Valid Long cartId) {
         cartService.delete(cartId);
+        return "redirect:/cart/list";
+    }
+
+    //==장바구니 상품 주문하기==//
+    @PostMapping("/order")
+    public String order(@RequestBody @Valid List<CartResponseDto> cartDtos, Model model) {
+
+        List<OrderItemDto> orderItemDtos = cartService.createOrderItems(cartDtos);
+
+        model.addAttribute("orderItemDtos", orderItemDtos);
+
+        return "redirect:/order/create";
     }
 }

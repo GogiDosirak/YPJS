@@ -6,12 +6,15 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.dto.OrderCreateDto;
+import ypjs.project.dto.OrderResponseDto;
 import ypjs.project.dto.OrderSearchDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,21 +29,13 @@ public class OrderService {
     @Transactional
     public Long create(OrderCreateDto orderCreateDto) {
         //멤버정보 생성
-        Member member = memberRepository.findOne(orderCreateDto.getMemberId());
-
-        //주소 객체 생성
-        Address address = new Address(
-                orderCreateDto.getDeliveryDto().getAddress(),
-                orderCreateDto.getDeliveryDto().getAddressDetail(),
-                orderCreateDto.getDeliveryDto().getZipcode()
-        );
+        Member member = memberRepository.findById(orderCreateDto.getMemberId());
 
         //배송정보 생성
         Delivery delivery = new Delivery(
-                orderCreateDto.getDeliveryDto().getName(),
                 orderCreateDto.getDeliveryDto().getReceiver(),
                 orderCreateDto.getDeliveryDto().getPhoneNumber(),
-                address,
+                orderCreateDto.getDeliveryDto().getAddress(),
                 DeliveryStatus.READY
         );
 
@@ -58,20 +53,35 @@ public class OrderService {
 
     }
 
+    //==멤버별 주문 전체 조회==//
+    public List<OrderResponseDto> findAllByMemberId(Long memberId) {
+        List<Order> orders = orderRepository.findAllByMemberId(memberId);
+        return orders
+                .stream()
+                .map(OrderResponseDto::new)
+                .collect(toList());
+    }
+
+
     //==주문 취소==//
     @Transactional
     public void cancel(Long orderId) {
 
         //주문 엔티티 조회
-        Order order = orderRepository.findOne(orderId);
+        Order order = orderRepository.findById(orderId);
 
         //주문 취소
         order.cancel();
     }
 
     //==주문 검색==//
-    public List<Order> search(OrderSearchDto orderSearchDto) {
-        return orderRepository.findAllWithStatusOrMemberName(orderSearchDto);
+    public List<OrderResponseDto> search(OrderSearchDto orderSearchDto) {
+        List<Order> orders =  orderRepository.findAllByStatusOrMemberName(orderSearchDto);
+        List<OrderResponseDto> orderResponseDtos = orders.stream()
+                .map(o -> new OrderResponseDto(o))
+                .collect(toList());
+
+        return orderResponseDtos;
     }
 
 }

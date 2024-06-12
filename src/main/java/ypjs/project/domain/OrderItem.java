@@ -40,14 +40,14 @@ public class OrderItem {
         orderItem.item = item;
         orderItem.price = orderItemPrice;
         orderItem.count = orderItemCount;
-        //item.removeStock(orderItemCount);  //item 재고 제거 메서드 연결
+        item.removeStock(orderItemCount);  //item 재고 제거 메서드 연결
         return orderItem;
     }
 
 
     //==취소 메서드==//
     public void cancel() {
-        //getItem().addStock(count);  //item 재고 추가 메서드 연결
+        getItem().addStock(count);  //item 재고 추가 메서드 연결
     }
 
 

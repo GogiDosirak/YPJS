@@ -22,11 +22,23 @@ public class OrderRepository {
         em.persist(order);
     }
 
-    public Order findOne(Long orderId) {
+    public Order findById(Long orderId) {
         return em.find(Order.class, orderId);
     }
 
-    public List<Order> findAllWithStatusOrMemberName(OrderSearchDto orderSearchDto) {
+    public List<Order> findAllByMemberId(Long memberId) {
+        //JPQL
+        String jpql = "select o from order o join fetch o.member m where m.memberId = :id";
+
+        TypedQuery<Order> query = em.createQuery(jpql, Order.class)
+                .setMaxResults(1000);
+
+        query = query.setParameter("id", memberId);
+
+        return query.getResultList();
+    }
+
+    public List<Order> findAllByStatusOrMemberName(OrderSearchDto orderSearchDto) {
         //JPQL
         String jpql = "select o from order o join o.member m";
         boolean isFirstCondition = true;

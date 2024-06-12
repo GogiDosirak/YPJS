@@ -2,14 +2,13 @@ package ypjs.project.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import ypjs.project.dto.DeliveryDto;
 
 @Embeddable
 @Getter
 @Setter  //Address 클래스는 Setter 사용해도 상관없나요?
+@NoArgsConstructor
 @AllArgsConstructor
 public class Address {
 
@@ -21,4 +20,5 @@ public class Address {
 
     @Column(name = "member_zipcode")
     private String zipcode;
+
 }

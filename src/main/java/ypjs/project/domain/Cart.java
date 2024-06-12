@@ -24,16 +24,12 @@ public class Cart {
     private Item item;  //상품번호
 
     @Column(name = "cart_item_count")
-    private int itemCount;  //장바구니상품수량
-
-    @Column(name = "cart_added")
-    private LocalDateTime added;  //장바구니추가일시
+    private int itemCount;  //상품수량
 
     public Cart(Member member, Item item, int itemCount) {
         this.member = member;
         this.item = item;
         this.itemCount = itemCount;
-        this.added = LocalDateTime.now();
     }
 
     public void updateItemCount(int itemCount) {

@@ -11,7 +11,7 @@ public class MemberRepository {
     @PersistenceContext  //엔티티 메니저 주입
     private EntityManager em;
 
-    public Member findOne(Long id) {
+    public Member findById(Long id) {
         return em.find(Member.class, id);
     }
 }
