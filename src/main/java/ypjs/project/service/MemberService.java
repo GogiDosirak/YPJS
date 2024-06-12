@@ -54,11 +54,12 @@ public class MemberService {
 
     // 로그인
     public Long login(String accountId, String password) {
-        Optional<Member> member = memberRepository.loginAccountId(accountId);
-        if(!member.orElseThrow(()->new IllegalStateException("해당 이메일이 존재하지 않습니다.")).checkPassword(password)){
-            throw new IllegalStateException("이메일과 비밀번호가 일치하지 않습니다.");
+        Member member = memberRepository.loginAccountId(accountId)
+                .orElseThrow(() -> new IllegalStateException("가입되지 않은 아이디입니다."));
+        if(!member.checkPassword(password)) {
+            throw  new IllegalStateException("비밀번호가 틀립니다.");
         }
-        return member.get().getMemberId();
+        return member.getMemberId();
 
     }
 

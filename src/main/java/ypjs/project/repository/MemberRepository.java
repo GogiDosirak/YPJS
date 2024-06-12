@@ -1,6 +1,7 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Member;
@@ -36,11 +37,11 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public Member loginAccountId(String accountId) {
-        return em.createQuery(
-                        "select m from Member m where m.accountId =:accountId", Member.class)
-                .setParameter("accountId", accountId)
-                .getSingleResult();
+    public Optional<Member> loginAccountId(String accountId) {
+            return em.createQuery(
+                            "select m from Member m where m.accountId =:accountId", Member.class)
+                    .setParameter("accountId", accountId)
+                    .getResultList().stream().findAny();
     }
 
 

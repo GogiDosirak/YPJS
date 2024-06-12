@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Role;
@@ -28,11 +26,8 @@ public class LoginController {
 
     // 로그인
     @PostMapping("/ypjs/member/login")
-    public String login(@Valid LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "/ypjs/member/login";
-        }
-        Long memberId = memberService.login(loginForm.getAccountId(), loginForm.getPassword());
+    public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
+        Long memberId = memberService.login(loginForm.getAccountId(),loginForm.getPassword());
         Member member = memberService.findOne(memberId);
         ResponseLogin responseLogin = new ResponseLogin(member.getAccountId(),member.getPassword(),member.getNickname(),member.getGender(),member.getPoint(),
                 member.getName(),member.getEmail(),member.getAddress(),member.getPhonenumber(),member.getJoinDate(),member.getRole(),member.getStatus());
@@ -51,15 +46,6 @@ public class LoginController {
         return "redirect:/";
     }
 
-
-
-    @Data
-    public class LoginForm {
-        @NotBlank(message = "아이디는 필수입니다.")
-        private String accountId;
-        @NotBlank(message = "패스워드는 필수입니다.")
-        private String password;
-    }
 
     // 로그인 응답 DTO
     @Data
