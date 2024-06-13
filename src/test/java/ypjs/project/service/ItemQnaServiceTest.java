@@ -6,14 +6,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.enums.ItemQnaStatus;
 import ypjs.project.dto.ItemQnaCreateDto;
 import ypjs.project.dto.ItemQnaResponseDto;
+import ypjs.project.dto.OrderResponseDto;
 import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -59,6 +64,17 @@ public class ItemQnaServiceTest {
         //성공시
         System.out.println("테스트 성공");
 
+    }
+
+    @Test
+    public void  상품문의내역조회() throws Exception {
+        Pageable pageable = PageRequest.of(1, 5);
+
+        List<ItemQnaResponseDto> iQs = itemQnaService.findAllByItemId(1L,pageable);
+
+        for(ItemQnaResponseDto iQ : iQs) {
+            System.out.println(iQ);
+        }
     }
 
 

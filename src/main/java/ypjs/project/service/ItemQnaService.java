@@ -1,6 +1,8 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -57,16 +59,16 @@ public class ItemQnaService {
         return new ItemQnaResponseDto(itemQna);
     }
 
-    public List<ItemQnaResponseDto> findAllByItemId(Long itemId) {
-        List<ItemQna> itemQnas = itemQnaRepository.findAllByItemId(itemId);
+    public List<ItemQnaResponseDto> findAllByItemId(Long itemId, Pageable pageable) {
+        List<ItemQna> itemQnas = itemQnaRepository.findAllByItemId(itemId, pageable);
 
         return itemQnas.stream()
                 .map(iQ -> new ItemQnaResponseDto(iQ))
                 .collect(toList());
     }
 
-    public List<ItemQnaResponseDto> findAllByMemberId(Long memberId) {
-        List<ItemQna> itemQnas = itemQnaRepository.findAllByMemberId(memberId);
+    public List<ItemQnaResponseDto> findAllByMemberId(Long memberId, Pageable pageable) {
+        List<ItemQna> itemQnas = itemQnaRepository.findAllByMemberId(memberId, pageable);
 
         return itemQnas
                 .stream()

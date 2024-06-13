@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Address;
@@ -14,6 +15,7 @@ import ypjs.project.domain.enums.OrderStatus;
 import ypjs.project.dto.DeliveryDto;
 import ypjs.project.dto.OrderCreateDto;
 import ypjs.project.dto.OrderItemDto;
+import ypjs.project.dto.OrderResponseDto;
 import ypjs.project.repository.OrderRepository;
 
 import java.util.ArrayList;
@@ -56,13 +58,23 @@ public class OrderServiceTest {
         Order findOrder = orderRepository.findById(orderId);
 
         //테스트 실패시
-        assertEquals("상품 주문시 상태는 ORDER", OrderStatus.ORDER,
+        assertEquals("상품 주문시 상태는 주문완료", OrderStatus.주문완료,
                 findOrder.getStatus());
         assertEquals("주문한 상품 종류 수가 정확해야 한다.",1,
                 findOrder.getOrderItems().size());
         
         //테스트 성공시
         System.out.println("테스트 성공");
+    }
+
+    @Test
+    public void  주문내역조회() throws Exception {
+
+        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L,1,5, "");
+
+        for(OrderResponseDto o : orders) {
+            System.out.println(o);
+        }
     }
 
 }

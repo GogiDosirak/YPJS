@@ -1,6 +1,7 @@
 package ypjs.project.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import ypjs.project.domain.Delivery;
 import ypjs.project.domain.Order;
@@ -10,6 +11,7 @@ import ypjs.project.domain.enums.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Data
 @Getter
 public class OrderResponseDto {
 

@@ -1,6 +1,9 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
@@ -54,10 +57,13 @@ public class OrderService {
     }
 
     //==멤버별 주문 전체 조회==//
-    public List<OrderResponseDto> findAllByMemberId(Long memberId) {
-        List<Order> orders = orderRepository.findAllByMemberId(memberId);
-        return orders
-                .stream()
+    public List<OrderResponseDto> findAllByMemberId(Long memberId, int page, int size, String orderStatus) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Order> orders = orderRepository.findAllByMemberId(memberId, pageable, orderStatus);
+
+        //Page<Order> -> Page<OrderResponseDto> 변환
+        //return orders.map(OrderResponseDto::new);
+        return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(toList());
     }
@@ -74,6 +80,7 @@ public class OrderService {
         order.cancel();
     }
 
+/*
     //==주문 검색==//
     public List<OrderResponseDto> search(OrderSearchDto orderSearchDto) {
         List<Order> orders =  orderRepository.findAllByStatusOrMemberName(orderSearchDto);
@@ -83,5 +90,6 @@ public class OrderService {
 
         return orderResponseDtos;
     }
+ */
 
 }

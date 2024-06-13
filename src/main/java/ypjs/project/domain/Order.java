@@ -2,6 +2,7 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.BatchSize;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.domain.enums.OrderStatus;
 
@@ -37,6 +38,7 @@ public class Order {
     private LocalDateTime created;  //주문시간
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "order_status")
     private OrderStatus status;  //주문상태 [ORDER, CANCEL]
 
 
@@ -64,7 +66,7 @@ public class Order {
         }
         order.price = totalPrice;
         order.created = LocalDateTime.now();
-        order.status = OrderStatus.ORDER;
+        order.status = OrderStatus.주문완료;  //!!결제완료 시 주문완료 되도록 수정 필요
 
         return order;
     }
@@ -77,7 +79,7 @@ public class Order {
         } else if(delivery.getStatus() == DeliveryStatus.DELIVERED) {
             throw new IllegalStateException("배송완료된 상품은 취소가 불가능합니다.");
         }
-        this.status = OrderStatus.CANCEL;
+        this.status = OrderStatus.주문취소;
         for(OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }

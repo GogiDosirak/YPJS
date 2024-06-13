@@ -4,9 +4,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import ypjs.project.domain.Order;
+import ypjs.project.domain.enums.OrderStatus;
 import ypjs.project.dto.OrderSearchDto;
 
 import java.util.List;
@@ -26,18 +30,33 @@ public class OrderRepository {
         return em.find(Order.class, orderId);
     }
 
-    public List<Order> findAllByMemberId(Long memberId) {
-        //JPQL
-        String jpql = "select o from order o join fetch o.member m where m.memberId = :id";
+    public List<Order> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
+        //JPQL 쿼리
+        String jpql = "select o from Order o join fetch o.member m where m.memberId = :id";
 
+        //orderStatus 조건이 있는 경우 조건 추가
+        if(StringUtils.hasText(orderStatus)) {
+                jpql += " and o.status = :status";
+        }
+
+        jpql += " order by o.id desc";
+
+        //쿼리 생성
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)
-                .setMaxResults(1000);
+                .setParameter("id", memberId)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
 
-        query = query.setParameter("id", memberId);
+        //orderStatus 조건이 있는 경우 매개변수 대입
+        if(StringUtils.hasText(orderStatus)) {
+            query.setParameter("status", orderStatus);
+        }
 
+        //결과 리스트 가져와서 리턴
         return query.getResultList();
     }
 
+/*
     public List<Order> findAllByStatusOrMemberName(OrderSearchDto orderSearchDto) {
         //JPQL
         String jpql = "select o from order o join o.member m";
@@ -75,7 +94,7 @@ public class OrderRepository {
         }
 
         return query.getResultList();
-
     }
+ */
 
 }

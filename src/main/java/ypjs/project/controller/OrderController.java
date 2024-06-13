@@ -49,24 +49,34 @@ public class OrderController {
         orderService.create(orderCreateDto);
     }
 
+
     //==멤버별 주문 전체 조회==//
     @GetMapping("/list")
-    public String list(HttpSession session, Model model) {
+    public String list(
+            HttpSession session, Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam String orderStatus) {
         Long memberId = (Long) session.getAttribute("loginMemberId");
-        model.addAttribute("orderList", orderService.findAllByMemberId(memberId));
+        model.addAttribute("orderList", orderService.findAllByMemberId(memberId, page, size, orderStatus));
         return "#";
     }
 
-    //==검색 조회==//
-    @PostMapping("/search")
-    public void search(@RequestBody @Valid OrderSearchDto orderSearchDto) {
-        orderService.search(orderSearchDto);
-    }
-    
+
     //==취소==//
     @GetMapping("/cancel/{orderId}")
     public ResponseDto<?> cancel(Long orderId) {
         orderService.cancel(orderId);
         return new ResponseDto<>(HttpStatus.OK.value(), "취소 완료");
     }
+
+/*
+    //==검색 조회==//
+    @PostMapping("/search")
+    public void search(@RequestBody @Valid OrderSearchDto orderSearchDto) {
+        orderService.search(orderSearchDto);
+    }
+ */
+
+
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.ItemQna;
 
@@ -30,26 +31,26 @@ public class ItemQnaRepository {
         return em.find(ItemQna.class, id);
     }
 
-    public List<ItemQna> findAllByItemId(Long itemId) {
-        //JPQL
-        String jpql = "select i from itemQna join fetch i.item where i.itemId = :id";
+    public List<ItemQna> findAllByItemId(Long itemId, Pageable pageable) {
+        //JPQL 쿼리
+        String jpql = "select i from itemQna join fetch i.item where i.itemId = :id order by i.id desc";
 
         TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
-                .setMaxResults(1000);
-
-        query = query.setParameter("id", itemId);
+                .setParameter("id", itemId)
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
 
         return query.getResultList();
     }
 
-    public List<ItemQna> findAllByMemberId(Long memberId) {
+    public List<ItemQna> findAllByMemberId(Long memberId, Pageable pageable) {
         //JPQL
-        String jpql = "select i from itemQna join fetch i.member where m.memberId = :id";
+        String jpql = "select i from itemQna join fetch i.member where m.memberId = :id order by i.id desc";
 
         TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
-                .setMaxResults(1000);  //검색 결과 최대 1000건
-
-        query = query.setParameter("id", memberId);
+                .setParameter("id", memberId)
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
 
         return query.getResultList();
     }

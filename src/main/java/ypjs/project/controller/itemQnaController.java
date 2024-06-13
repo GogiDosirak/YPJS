@@ -2,6 +2,8 @@ package ypjs.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,14 +24,22 @@ public class itemQnaController {
     private final MemberService memberService;
 
     @GetMapping("/list/{itemId}")
-    public String listByItemId(@PathVariable @Valid Long itemId, Model model) {
-        model.addAttribute("itemQnaDtos", itemQnaService.findAllByItemId(itemId));
+    public String listByItemId(
+            @PathVariable @Valid Long itemId, Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        model.addAttribute("itemQnaDtos", itemQnaService.findAllByItemId(itemId, pageable));
         return "html";
     }
 
     @GetMapping("/list/{memberId}")
-    public  String listByMemberId(@PathVariable @Valid Long memberId, Model model) {
-        model.addAttribute("itemQnaDtos", itemQnaService.findAllByMemberId(memberId));
+    public  String listByMemberId(
+            @PathVariable @Valid Long memberId, Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        model.addAttribute("itemQnaDtos", itemQnaService.findAllByMemberId(memberId, pageable));
         return "html";
     }
 
