@@ -12,6 +12,7 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
+        default_batch_fetch_size: 500
         show_sql: true
         format_sql: true
 

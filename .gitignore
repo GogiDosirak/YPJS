@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+###API비밀번호###
+application-config.properties
