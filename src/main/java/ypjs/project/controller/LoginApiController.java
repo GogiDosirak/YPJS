@@ -23,7 +23,7 @@ public class LoginApiController {
     @PostMapping("/ypjs/member/login")
     public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
         Long memberId = memberService.login(loginForm.getAccountId(),loginForm.getPassword());
-        Member member = memberService.findOne(memberId);
+        Member member = memberService.attendancePoint(memberId);
         ResponseLogin responseLogin = new ResponseLogin(member.getMemberId(),member.getAccountId(),member.getPassword(),member.getNickname(),member.getGender(),member.getPoint(),
                 member.getName(),member.getEmail(),member.getAddress(),member.getPhonenumber(),member.getJoinDate(),member.getRole(),member.getStatus());
         HttpSession session = request.getSession();

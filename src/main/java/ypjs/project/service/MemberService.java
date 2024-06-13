@@ -62,6 +62,14 @@ public class MemberService {
         return member.getMemberId();
     }
 
+    // 출석포인트
+    @Transactional
+    public Member attendancePoint(Long memberId) {
+        Member member = memberRepository.findOne(memberId);
+        member.attendancePoint();
+        return member;
+    }
+
 
     public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);

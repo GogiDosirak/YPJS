@@ -18,9 +18,11 @@ public class NoticeRepository {
     }
 
     // 공지사항 전체 조회
-    public List<Notice> findAll() {
+    public List<Notice> findAll(int offset, int limit) {
         return em.createQuery(
                 "select n from Notice n", Notice.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 

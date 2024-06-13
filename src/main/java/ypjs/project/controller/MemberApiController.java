@@ -51,7 +51,7 @@ public class MemberApiController {
         return new UpdateMemberResponse(member.getMemberId(), member.getAccountId());
     }
 
-    // 멤버 전체 조회
+    // 멤버 전체 조회 (관리자 페이지)
     @GetMapping("/ypjs/member/members")
     public Result members() {
         List<Member> findMembers = memberService.findAll();

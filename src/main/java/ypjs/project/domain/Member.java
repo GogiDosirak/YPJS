@@ -66,6 +66,9 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(name = "member_point_date")
+    private LocalDateTime pointDate;
+
     // 멤버 생성 메소드
     public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber, LocalDateTime joinDate) {
         Member member = new Member();
@@ -102,6 +105,18 @@ public class Member {
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+
+    // 출석 포인트 적립 메소드
+    public void attendancePoint() {
+        if(pointDate == null) {
+            this.pointDate = LocalDateTime.now();
+            this.point += 500; // 첫출석 포인트
+        } else if(pointDate.getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) {
+            this.pointDate = LocalDateTime.now();
+            this.point += 50;
+        }
+    }
+
 
 
 }
