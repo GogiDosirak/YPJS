@@ -5,12 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
+import ypjs.project.dto.CategoryListDto;
+import ypjs.project.dto.ItemListDto;
 import ypjs.project.dto.ItemRequestDto;
 import ypjs.project.dto.ItemUpdateDto;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.repository.ItemRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,6 +52,8 @@ public class ItemService {
 
 
 
+
+
     //수정
     @Transactional
     public void updateItem(Long itemId, ItemUpdateDto itemUpdateDto) {
@@ -84,6 +89,34 @@ public class ItemService {
         itemRepository.increaseCnt(itemId);
 
     }
+
+
+    //카테고리 당 아이템 조회
+    public List<ItemListDto> findAllItem(Long categoryId) {
+        List<Item> items = itemRepository.findAllItem(categoryId);
+
+        List<ItemListDto> result = items.stream()
+                .map(ItemListDto::new)
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+
+
+    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬
+    public List<ItemListDto> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
+        List<Item> items = itemRepository.findAllItemSortBy(categoryId, offset, limit, sortBy);
+
+        List<ItemListDto> result = items.stream()
+                .map(ItemListDto::new)
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
+
+
 
 
 

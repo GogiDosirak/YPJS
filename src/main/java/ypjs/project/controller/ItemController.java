@@ -56,6 +56,36 @@ public class ItemController {
 
 
 
+
+    //category당 아이템 조회
+//    @GetMapping("/ypjs/category/get/{categoryId}")
+//    public CategoryOneDto getOneCategory(@PathVariable("categoryId") Long categoryId) {
+//
+//        Category category =  categoryService.findOneCategory(categoryId);
+//
+//        itemService.findAllItem(categoryId);
+//
+//        return new  CategoryOneDto(category);
+//    }
+
+
+
+    //카테고리당 아이템 조회 (페이징, 정렬)
+    @GetMapping("/ypjs/categoryItem/get/{categoryId}")
+    public CategoryOneDto getAllItem(@PathVariable("categoryId") Long categoryId,
+                                         @RequestParam(value = "offset", defaultValue = "0") int offset,
+                                         @RequestParam(value = "limit", defaultValue = "2") int limit,
+                                         @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy) {
+
+        Category category = categoryService.findOneCategory(categoryId);
+
+        List<ItemListDto> items = itemService.findAllItemSortBy(categoryId, offset, limit, sortBy);
+
+        return new CategoryOneDto(category, items);
+    }
+
+
+
     //수정
     @PutMapping("/ypjs/item/update/{itemId}")
     public void updateItem(@PathVariable("itemId") Long itemId,

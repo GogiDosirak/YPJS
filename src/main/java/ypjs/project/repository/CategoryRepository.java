@@ -1,6 +1,7 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Category;
@@ -53,13 +54,6 @@ public class CategoryRepository {
     }
 
 
-    //category전체 조회
-    public List<Category> findAll() {
-        return em.createQuery("select c from Category c", Category.class)
-                .getResultList();
-    }
-
-
     //category삭제
     public void deleteCategory(Long categoryId) {
         Category findCategory = em.find(Category.class, categoryId);
@@ -67,17 +61,29 @@ public class CategoryRepository {
     }
 
 
+    //category전체 조회
+//    public List<Category> findAll() {
+//        return em.createQuery("select c from Category c", Category.class)
+//                .getResultList();
+//    }
 
-    //패치조인
+
+
+    //패치조인 (category전체 조회)
     public List<Category> findAllWithItem() {
         return em.createQuery(
                 "select distinct c from Category c" +
                         " join fetch c.items i" +
-                        " join fetch c.categoryParent cp" +
-                        " join fetch c.categoryChild cc", Category.class)
+                        " join fetch c.categoryParent cp",
+                        Category.class)
+
                 .getResultList();
 
     }
+
+
+
+
 
 
 

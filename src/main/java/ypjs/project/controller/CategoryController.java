@@ -4,12 +4,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
-import ypjs.project.dto.CategoryRequestDto;
-import ypjs.project.dto.CategoryListDto;
-import ypjs.project.dto.CategoryRespnseDto;
-import ypjs.project.dto.CategoryUpdateDto;
+import ypjs.project.domain.Item;
+import ypjs.project.dto.*;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.service.CategoryService;
+import ypjs.project.service.ItemService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
+    private final ItemService itemService;
 
 
     //category등록
@@ -32,13 +31,17 @@ public class CategoryController {
     }
 
 
+
     //categoryList보기
     @GetMapping("/ypjs/category/get")
-    public List<CategoryListDto> getCategoryList(CategoryListDto categoryListDto) {
+    public List<CategoryListDto> getCategoryList(CategoryListDto categoryListDto){
+
 
         return categoryService.findAllCategory(categoryListDto);
 
     }
+
+
 
 
 

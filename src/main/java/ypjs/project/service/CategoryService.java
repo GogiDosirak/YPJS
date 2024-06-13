@@ -55,7 +55,8 @@ public class CategoryService {
 
     //category전체 조회
     public List<CategoryListDto> findAllCategory(CategoryListDto categoryListDto) {
-       List<Category> categories = categoryRepository.findAll();
+      // List<Category> categories = categoryRepository.findAll();
+       List<Category> categories = categoryRepository.findAllWithItem();
 
         List<CategoryListDto> result = categories.stream()
                 .map(c -> new CategoryListDto(c))
@@ -63,6 +64,8 @@ public class CategoryService {
 
         return result;
     }
+
+
 
 
     //category수정
