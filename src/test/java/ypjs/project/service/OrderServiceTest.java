@@ -6,16 +6,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.OrderStatus;
-import ypjs.project.dto.DeliveryDto;
-import ypjs.project.dto.OrderCreateDto;
-import ypjs.project.dto.OrderItemDto;
-import ypjs.project.dto.OrderResponseDto;
+import ypjs.project.dto.deliverydto.DeliveryDto;
+import ypjs.project.dto.orderdto.OrderCreateDto;
+import ypjs.project.dto.orderdto.OrderItemDto;
+import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.OrderRepository;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class OrderServiceTest {
         Long orderId = orderService.create(o);
 
         /*Then*/
-        Order findOrder = orderRepository.findById(orderId);
+        Order findOrder = orderRepository.findOne(orderId);
 
         //테스트 실패시
         assertEquals("상품 주문시 상태는 주문완료", OrderStatus.주문완료,
@@ -69,8 +70,9 @@ public class OrderServiceTest {
 
     @Test
     public void  주문내역조회() throws Exception {
+        Pageable pageable = PageRequest.of(1,5);
 
-        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L,1,5, "");
+        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L, pageable, "");
 
         for(OrderResponseDto o : orders) {
             System.out.println(o);

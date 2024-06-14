@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.orderdto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.orderdto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -3,14 +3,15 @@ package ypjs.project.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.DeliveryDto;
-import ypjs.project.dto.OrderCreateDto;
-import ypjs.project.dto.OrderSearchDto;
+import ypjs.project.dto.deliverydto.DeliveryDto;
+import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
@@ -34,7 +35,9 @@ public class OrderController {
         //멤버정보 -> 배송정보 생성
         //Long memberId = (Long) session.getAttribute("loginMemberId");
         //Member m = memberService.findById(memberId);
-        Member m = memberService.findById(1L);
+        Member m = memberService.findOne(1L);
+
+        model.addAttribute("memberId", 1);
 
         model.addAttribute("orderCreateDto", new OrderCreateDto());
         model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhoneNumber(), m.getAddress()));
@@ -58,7 +61,8 @@ public class OrderController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam String orderStatus) {
         Long memberId = (Long) session.getAttribute("loginMemberId");
-        model.addAttribute("orderList", orderService.findAllByMemberId(memberId, page, size, orderStatus));
+        Pageable pageable = PageRequest.of(page, size);
+        model.addAttribute("orderList", orderService.findAllByMemberId(memberId, pageable, orderStatus));
         return "#";
     }
 

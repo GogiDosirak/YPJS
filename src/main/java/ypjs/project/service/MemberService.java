@@ -13,7 +13,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public Member findById(Long id) {
-        return memberRepository.findById(id);
+    public Member findOne(Long id) {
+        return memberRepository.findOne(id);
     }
 }

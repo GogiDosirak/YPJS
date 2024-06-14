@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ypjs.project.dto.CartAddDto;
-import ypjs.project.dto.CartResponseDto;
-import ypjs.project.dto.CartUpdateDto;
-import ypjs.project.dto.OrderItemDto;
+import ypjs.project.dto.cartdto.CartAddDto;
+import ypjs.project.dto.cartdto.CartResponseDto;
+import ypjs.project.dto.cartdto.CartUpdateDto;
+import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.service.CartService;
 
 import java.util.List;

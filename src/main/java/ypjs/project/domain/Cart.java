@@ -32,6 +32,21 @@ public class Cart {
         this.itemCount = itemCount;
     }
 
+    //테스트용 생성자 3개
+    public Cart() {
+    }
+
+    public Cart(Long id) {
+        this.id = id;
+    }
+
+    public Cart(Long id, Member member, Item item, int itemCount) {
+        this.id = id;
+        this.member = member;
+        this.item = item;
+        this.itemCount = itemCount;
+    }
+
     public void updateItemCount(int itemCount) {
         this.itemCount = itemCount;
     }

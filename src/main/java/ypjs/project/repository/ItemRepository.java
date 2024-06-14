@@ -13,7 +13,7 @@ public class ItemRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public Item findById(Long id) {
+    public Item findOne(Long id) {
         return em.find(Item.class, id);
     }
 }

@@ -4,14 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import ypjs.project.domain.Order;
-import ypjs.project.domain.enums.OrderStatus;
-import ypjs.project.dto.OrderSearchDto;
 
 import java.util.List;
 
@@ -26,7 +22,7 @@ public class OrderRepository {
         em.persist(order);
     }
 
-    public Order findById(Long orderId) {
+    public Order findOne(Long orderId) {
         return em.find(Order.class, orderId);
     }
 

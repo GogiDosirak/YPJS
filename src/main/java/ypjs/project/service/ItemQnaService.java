@@ -1,7 +1,6 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,10 +8,10 @@ import org.springframework.util.StringUtils;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemQna;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.ItemQnaAnswerDto;
-import ypjs.project.dto.ItemQnaCreateDto;
-import ypjs.project.dto.ItemQnaResponseDto;
-import ypjs.project.dto.ItemQnaUpdateDto;
+import ypjs.project.dto.itemqnadto.ItemQnaAnswerDto;
+import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
+import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
+import ypjs.project.dto.itemqnadto.ItemQnaUpdateDto;
 import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
@@ -36,10 +35,10 @@ public class ItemQnaService {
     public Long create(ItemQnaCreateDto itemQnaCreateDto) {
 
         //상품정보 조회
-        Item item = itemRepository.findById(itemQnaCreateDto.getItemId());
+        Item item = itemRepository.findOne(itemQnaCreateDto.getItemId());
 
         //멤버정보 조회
-        Member member = memberRepository.findById(itemQnaCreateDto.getMemberId());
+        Member member = memberRepository.findOne(itemQnaCreateDto.getMemberId());
 
         ItemQna itemQna = new ItemQna(
                 item,
@@ -55,7 +54,7 @@ public class ItemQnaService {
 
     //==조회==//
     public ItemQnaResponseDto finById(Long id) {
-        ItemQna itemQna = itemQnaRepository.findById(id);
+        ItemQna itemQna = itemQnaRepository.findOne(id);
         return new ItemQnaResponseDto(itemQna);
     }
 
@@ -80,10 +79,10 @@ public class ItemQnaService {
     @Transactional
     public void answer(ItemQnaAnswerDto itemQnaAnswerDto) {
         //상품문의정보 조회
-        ItemQna itemQna = itemQnaRepository.findById(itemQnaAnswerDto.getItemQnaId());
+        ItemQna itemQna = itemQnaRepository.findOne(itemQnaAnswerDto.getItemQnaId());
 
         //멤버정보 조회
-        Member member = memberRepository.findById(itemQnaAnswerDto.getMemberId());
+        Member member = memberRepository.findOne(itemQnaAnswerDto.getMemberId());
 
         itemQna.answer(member, itemQnaAnswerDto.getAnswer());
 
@@ -94,7 +93,7 @@ public class ItemQnaService {
     @Transactional
     public void update(ItemQnaUpdateDto itemQnaUpdateDto) {
         //상품문의정보 조회
-        ItemQna itemQna = itemQnaRepository.findById(itemQnaUpdateDto.getItemQnaId());
+        ItemQna itemQna = itemQnaRepository.findOne(itemQnaUpdateDto.getItemQnaId());
 
         if(StringUtils.hasText(itemQnaUpdateDto.getQuestion()) && !StringUtils.hasText(itemQnaUpdateDto.getAnswer())) {
             //질문 수정
@@ -109,7 +108,7 @@ public class ItemQnaService {
     //==삭제==//
     @Transactional
     public void delete(Long itemQnaId) {
-        ItemQna itemQna = itemQnaRepository.findById(itemQnaId);
+        ItemQna itemQna = itemQnaRepository.findOne(itemQnaId);
         itemQnaRepository.delete(itemQna);
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Cart;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.CartAddDto;
-import ypjs.project.dto.CartResponseDto;
-import ypjs.project.dto.CartUpdateDto;
-import ypjs.project.dto.OrderItemDto;
+import ypjs.project.dto.cartdto.CartAddDto;
+import ypjs.project.dto.cartdto.CartResponseDto;
+import ypjs.project.dto.cartdto.CartUpdateDto;
+import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.repository.CartRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
@@ -32,10 +32,10 @@ public class CartService {
     @Transactional
     public void add(CartAddDto cartAddDto) {
         //멤버정보 조회
-        Member member = memberRepository.findById(cartAddDto.getMemberId());
+        Member member = memberRepository.findOne(cartAddDto.getMemberId());
 
         //상품정보 조회
-        Item item = itemRepository.findById(cartAddDto.getItemId());
+        Item item = itemRepository.findOne(cartAddDto.getItemId());
 
         //장바구니 생성
         Cart cart = new Cart(
@@ -52,11 +52,19 @@ public class CartService {
     @Transactional
     public void update(CartUpdateDto cartUpdateDto) {
         //장바구니정보 조회
-        Cart cart = cartRepository.findById(cartUpdateDto.getCartId());
+        Cart cart = cartRepository.findOne(cartUpdateDto.getCartId());
 
         //수량 변경
         cart.updateItemCount(cartUpdateDto.getItemCount());
 
+    }
+
+    //==멤버별 장바구니 개수 조회==//
+    public Long count(Long memberId) {
+        return cartRepository.count(memberId);
+
+        //return cartRepository.findAllByMemberId(memberId).size();
+        //select 문으로 전체 정보를 다 검색해와서 부적합
     }
 
 
@@ -75,7 +83,7 @@ public class CartService {
     @Transactional
     public void delete(Long cartId) {
         //장바구니정보 생성
-        Cart cart = cartRepository.findById(cartId);
+        Cart cart = cartRepository.findOne(cartId);
         //장바구니 삭제
         cartRepository.delete(cart);
     }

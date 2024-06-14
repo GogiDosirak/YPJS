@@ -26,13 +26,24 @@ public class CartRepository {
     }
 
     //==조회==//
-    public Cart findById(Long cartId) {
+    public Cart findOne(Long cartId) {
         return em.find(Cart.class, cartId);
     }
 
+    //==멤버별 개수 조회==//
+    public Long count(Long memberId) {
+        String jpql = "select count(c) from Cart c where c.member.memberId = :id";
+
+        TypedQuery<Long> query = em.createQuery(jpql, Long.class)
+                .setParameter("id", memberId);
+
+        return query.getSingleResult();
+    }
+
+    //==멤버별 전체 조회==//
     public List<Cart> findAllByMemberId(Long memberId) {
         //JPQL
-        String jpql = "select c from cart c join fetch c.member m where m.memberId = :id";
+        String jpql = "select c from Cart c join fetch c.member m where m.memberId = :id";
 
         TypedQuery<Cart> query = em.createQuery(jpql, Cart.class)
                 .setMaxResults(100);  //검색 결과 최대 100건

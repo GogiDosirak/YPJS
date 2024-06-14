@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.itemqnadto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemQnaCreateDto {
+public class ItemQnaUpdateDto {
 
-    private Long itemId;
-
-    private Long memberId;
+    private Long itemQnaId;
 
     private String question;
+
+    private String answer;
 
 }

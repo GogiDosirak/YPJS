@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.deliverydto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

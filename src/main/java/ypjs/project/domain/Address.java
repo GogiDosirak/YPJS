@@ -3,7 +3,6 @@ package ypjs.project.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
-import ypjs.project.dto.DeliveryDto;
 
 @Embeddable
 @Getter

@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.itemqnadto;
 
 import lombok.Data;
 import ypjs.project.domain.ItemQna;

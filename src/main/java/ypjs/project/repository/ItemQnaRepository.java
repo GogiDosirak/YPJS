@@ -27,7 +27,7 @@ public class ItemQnaRepository {
     }
 
     //==조회==//
-    public ItemQna findById(Long id) {
+    public ItemQna findOne(Long id) {
         return em.find(ItemQna.class, id);
     }
 

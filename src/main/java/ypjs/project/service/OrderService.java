@@ -1,16 +1,13 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
-import ypjs.project.dto.OrderCreateDto;
-import ypjs.project.dto.OrderResponseDto;
-import ypjs.project.dto.OrderSearchDto;
+import ypjs.project.dto.orderdto.OrderCreateDto;
+import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
@@ -32,7 +29,7 @@ public class OrderService {
     @Transactional
     public Long create(OrderCreateDto orderCreateDto) {
         //멤버정보 생성
-        Member member = memberRepository.findById(orderCreateDto.getMemberId());
+        Member member = memberRepository.findOne(orderCreateDto.getMemberId());
 
         //배송정보 생성
         Delivery delivery = new Delivery(
@@ -57,12 +54,10 @@ public class OrderService {
     }
 
     //==멤버별 주문 전체 조회==//
-    public List<OrderResponseDto> findAllByMemberId(Long memberId, int page, int size, String orderStatus) {
-        Pageable pageable = PageRequest.of(page, size);
+    public List<OrderResponseDto> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
         List<Order> orders = orderRepository.findAllByMemberId(memberId, pageable, orderStatus);
 
         //Page<Order> -> Page<OrderResponseDto> 변환
-        //return orders.map(OrderResponseDto::new);
         return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(toList());
@@ -74,7 +69,7 @@ public class OrderService {
     public void cancel(Long orderId) {
 
         //주문 엔티티 조회
-        Order order = orderRepository.findById(orderId);
+        Order order = orderRepository.findOne(orderId);
 
         //주문 취소
         order.cancel();
