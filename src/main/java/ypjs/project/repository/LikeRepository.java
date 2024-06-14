@@ -16,20 +16,12 @@ public class LikeRepository {
 
     //저장
     public void save(Like like) {
-        if (like.getLikeId() == null) {
             em.persist(like);
-        } else {
-            em.merge(like);
-        }
     }
 
     //삭제
     public void delete(Like like) {
-        if(em.contains(like)){
             em.remove(like);
-        }else{
-            em.remove(em.merge(like));
-        }
     }
 
     //아이디에 해당 값 하나 찾기(null 구현을 위해서 Optional 사용)

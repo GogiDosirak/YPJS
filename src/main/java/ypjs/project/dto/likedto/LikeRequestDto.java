@@ -1,16 +1,16 @@
-package ypjs.project.dto.request;
+package ypjs.project.dto.likedto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class LikeRequestDTO {
+public class LikeRequestDto {
 
     private Long memberId;
     private Long itemId;
 
-    public LikeRequestDTO(Long memberId, Long itemId) {
+    public LikeRequestDto(Long memberId, Long itemId) {
         this.memberId = memberId;
         this.itemId = itemId;
     }
