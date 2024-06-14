@@ -1,6 +1,7 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
@@ -92,27 +93,40 @@ public class ItemService {
 
 
     //카테고리 당 아이템 조회
-    public List<ItemListDto> findAllItem(Long categoryId) {
-        List<Item> items = itemRepository.findAllItem(categoryId);
-
-        List<ItemListDto> result = items.stream()
-                .map(ItemListDto::new)
-                .collect(Collectors.toList());
-
-        return result;
-    }
+//    public List<ItemListDto> findAllItem(Long categoryId) {
+//        List<Item> items = itemRepository.findAllItem(categoryId);
+//
+//        List<ItemListDto> result = items.stream()
+//                .map(ItemListDto::new)
+//                .collect(Collectors.toList());
+//
+//        return result;
+//    }
 
 
 
     //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬
-    public List<ItemListDto> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
-        List<Item> items = itemRepository.findAllItemSortBy(categoryId, offset, limit, sortBy);
+//    public List<ItemListDto> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
+//        List<Item> items = itemRepository.findAllItemSortBy(categoryId, offset, limit, sortBy);
+//
+//        List<ItemListDto> result = items.stream()
+//                .map(ItemListDto::new)
+//                .collect(Collectors.toList());
+//
+//        return result;
+//    }
+
+
+    //카테고리당 아이템 조회(정렬,검색,페이징)
+    public List<ItemListDto> finaAllItemPagingSortBy(Long categoryId, String keword, Pageable pageable, String sortBy) {
+        List<Item> items = itemRepository.findAllItemPagingSortByAndKeyword(categoryId, keword, pageable, sortBy);
 
         List<ItemListDto> result = items.stream()
                 .map(ItemListDto::new)
                 .collect(Collectors.toList());
 
         return result;
+
     }
 
 

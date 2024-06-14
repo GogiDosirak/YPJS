@@ -2,6 +2,8 @@ package ypjs.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
@@ -58,30 +60,48 @@ public class ItemController {
 
 
     //category당 아이템 조회
-//    @GetMapping("/ypjs/category/get/{categoryId}")
+//    @GetMapping("/ypjs/categoryItem/get/{categoryId}")
 //    public CategoryOneDto getOneCategory(@PathVariable("categoryId") Long categoryId) {
 //
 //        Category category =  categoryService.findOneCategory(categoryId);
 //
-//        itemService.findAllItem(categoryId);
+//       List<ItemListDto> items = itemService.findAllItem(categoryId);
 //
-//        return new  CategoryOneDto(category);
+//        return new  CategoryOneDto(category, items);
 //    }
 
 
 
     //카테고리당 아이템 조회 (페이징, 정렬)
+//    @GetMapping("/ypjs/categoryItem/get/{categoryId}")
+//    public CategoryOneDto getAllItem(@PathVariable("categoryId") Long categoryId,
+//                                         @RequestParam(value = "offset", defaultValue = "0") int offset,
+//                                         @RequestParam(value = "limit", defaultValue = "2") int limit,
+//                                         @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy) {
+//
+//        Category category = categoryService.findOneCategory(categoryId);
+//
+//        List<ItemListDto> items = itemService.findAllItemSortBy(categoryId, offset, limit, sortBy);
+//
+//        return new CategoryOneDto(category, items);
+//    }
+
+    //카테고리당 아이템 조회(정렬,검색,페이징(페이징받아서 페이징))
     @GetMapping("/ypjs/categoryItem/get/{categoryId}")
     public CategoryOneDto getAllItem(@PathVariable("categoryId") Long categoryId,
-                                         @RequestParam(value = "offset", defaultValue = "0") int offset,
-                                         @RequestParam(value = "limit", defaultValue = "2") int limit,
-                                         @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy) {
+                                     @RequestParam(value = "page",defaultValue = "0") int page,
+                                     @RequestParam(value = "size",defaultValue = "3") int size,
+                                     @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
+                                     @RequestParam(value = "keyword", required = false) String keyword) {
+
+        Pageable pageable = PageRequest.of(page, size);
 
         Category category = categoryService.findOneCategory(categoryId);
 
-        List<ItemListDto> items = itemService.findAllItemSortBy(categoryId, offset, limit, sortBy);
+        List<ItemListDto> items = itemService.finaAllItemPagingSortBy(categoryId, keyword, pageable, sortBy);
 
         return new CategoryOneDto(category, items);
+
     }
 
 
