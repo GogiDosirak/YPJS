@@ -47,11 +47,19 @@ public class Item {
     @Column(name = "ITEM_CREATEDATE")
     private LocalDateTime ItemCreateDate;
 
-    //==연관관계 메서드==//
+    @Column(name = "LIKE_CONT") //처음에 0값을 넣는걸로 만들었구, 관련 메서드에 문제생기면 수현에게 연락바람
+    private int likeCont = 0;
 
-    @OneToMany(mappedBy = "item")
-    private List<Like> likes = new ArrayList<>();
+    //==좋아요 메서드==//
+    public void addLike(){
+        this.likeCont += 1;
+    }
 
+    public void deleteLike(){
+        if (this.likeCont > 0) {
+            this.likeCont -= 1;
+        }
+    }
 
 
 }

@@ -38,7 +38,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private CommonEnum.OrderStatus orderStatus;  //주문상태 [ORDER, CANCEL}
 
+    //연관관계 메서드
     @JsonIgnore
-    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Payment payment;
 }
