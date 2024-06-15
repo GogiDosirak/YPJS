@@ -2,7 +2,6 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.ItemQnaStatus;
 
 import java.time.LocalDateTime;
@@ -10,13 +9,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "item_qna")
 @Getter
-@NoArgsConstructor
 public class ItemQna {
 
     @Id
     @GeneratedValue
     @Column(name = "item_qna_id")
-    private Long id;  //상품문의번호
+    private int itemQnaId;  //상품문의번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")

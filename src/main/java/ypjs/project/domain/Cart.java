@@ -13,7 +13,7 @@ public class Cart {
     @Id
     @GeneratedValue
     @Column(name = "cart_id")
-    private Long id;  //장바구니번호
+    private Long cartId;  //장바구니번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -36,12 +36,12 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Long id) {
-        this.id = id;
+    public Cart(Long cartId) {
+        this.cartId = cartId;
     }
 
-    public Cart(Long id, Member member, Item item, int itemCount) {
-        this.id = id;
+    public Cart(Long cartId, Member member, Item item, int itemCount) {
+        this.cartId = cartId;
         this.member = member;
         this.item = item;
         this.itemCount = itemCount;
