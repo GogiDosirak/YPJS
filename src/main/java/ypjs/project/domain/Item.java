@@ -2,15 +2,16 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 public class Item {
+
+
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
@@ -19,7 +20,6 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
-
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemReview> itemReviews = new ArrayList<>();
@@ -133,7 +133,15 @@ public class Item {
         itemReviews.remove(itemReview);
     }
 
+    //==재고 제거 메서드==//
+    public void removeStock(int count) {
+        this.ItemStock -= count;
+    }
 
+    //==재고 추가 메서드==//
+    public void addStock(int count) {
+        this.ItemStock += count;
+    }
 
 
 }
