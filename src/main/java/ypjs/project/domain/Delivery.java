@@ -2,6 +2,7 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import ypjs.project.domain.enums.DeliveryStatus;
 
 @Entity
 @Table(name = "delivery")
@@ -34,7 +35,7 @@ public class Delivery {
     public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
         this.receiver = receiver;
         this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.deliveryAddress = address;
         this.status = deliveryStatus;
     }
 

@@ -19,11 +19,6 @@ public class Category {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
 
-
-    @Column(name = "CATEGORY_NAME")
-    private String CategoryName;
-
-
     //자신을 부모타입으로 가짐
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_PARENT_ID")

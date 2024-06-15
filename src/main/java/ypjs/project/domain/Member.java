@@ -2,8 +2,12 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
+import ypjs.project.domain.enums.Role;
+import ypjs.project.domain.enums.Status;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter

@@ -135,12 +135,12 @@ public class Item {
 
     //==재고 제거 메서드==//
     public void removeStock(int count) {
-        this.ItemStock -= count;
+        this.itemStock -= count;
     }
 
     //==재고 추가 메서드==//
     public void addStock(int count) {
-        this.ItemStock += count;
+        this.itemStock += count;
     }
 
 
