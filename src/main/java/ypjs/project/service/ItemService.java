@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.dto.CategoryListDto;
-import ypjs.project.dto.ItemListDto;
-import ypjs.project.dto.ItemRequestDto;
-import ypjs.project.dto.ItemUpdateDto;
+import ypjs.project.dto.itemdto.ItemListDto;
+import ypjs.project.dto.itemdto.ItemRequestDto;
+import ypjs.project.dto.itemdto.ItemUpdateDto;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.repository.ItemRepository;
 
@@ -105,7 +104,7 @@ public class ItemService {
 
 
 
-    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬
+    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬(영한아저씨)
 //    public List<ItemListDto> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
 //        List<Item> items = itemRepository.findAllItemSortBy(categoryId, offset, limit, sortBy);
 //

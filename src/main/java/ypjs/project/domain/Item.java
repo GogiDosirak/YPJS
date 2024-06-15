@@ -107,7 +107,7 @@ public class Item {
         if (count > 0) {
             double averageScore = totalScore / count;
             // 소숫점 첫째자리까지 반환
-            this.itemRatings = Math.round(averageScore * 10.0) / 10.0;
+            this.itemRatings = Math.round(averageScore * 10.0) / 10.0; //소숫점 첫째자리까지 반환
         } else {
             this.itemRatings = 0;
         }

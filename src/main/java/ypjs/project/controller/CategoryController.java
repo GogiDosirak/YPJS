@@ -4,14 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
-import ypjs.project.domain.Item;
-import ypjs.project.dto.*;
-import ypjs.project.repository.CategoryRepository;
+import ypjs.project.dto.categorydto.CategoryListDto;
+import ypjs.project.dto.categorydto.CategoryRequestDto;
+import ypjs.project.dto.categorydto.CategoryRespnseDto;
+import ypjs.project.dto.categorydto.CategoryUpdateDto;
 import ypjs.project.service.CategoryService;
 import ypjs.project.service.ItemService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class CategoryController {
     //category수정
    @PutMapping("ypjs/category/update/{categoryId}")
     public CategoryUpdateDto updateCategory(@PathVariable("categoryId") Long categoryId,
-                               @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
+                                            @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
         categoryService.updateCategory(categoryId, categoryUpdateDto);
         Category findCategory = categoryService.findOneCategory(categoryId);

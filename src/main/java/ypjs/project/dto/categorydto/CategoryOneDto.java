@@ -1,10 +1,10 @@
-package ypjs.project.dto;
+package ypjs.project.dto.categorydto;
 
 import lombok.Getter;
 import ypjs.project.domain.Category;
+import ypjs.project.dto.itemdto.ItemListDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class CategoryOneDto {

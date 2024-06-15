@@ -1,4 +1,4 @@
-package ypjs.project.dto;
+package ypjs.project.dto.itemdto;
 
 import lombok.Getter;
 import ypjs.project.domain.Item;

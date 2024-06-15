@@ -4,10 +4,8 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.ItemReview;
-import ypjs.project.dto.ItemReviewListDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,11 +16,7 @@ public class ItemReviewRepository {
 
     //리뷰저장
     public void saveReview(ItemReview itemReview) {
-        if (itemReview.getItemReviewId() == null) {
             em.persist(itemReview);
-        } else {
-            em.merge(itemReview);
-        }
     }
 
 

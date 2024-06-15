@@ -18,11 +18,8 @@ public class CategoryRepository {
 
     //카테고리 저장
     public void saveCategory(Category  category) {
-        if(category.getCategoryId() == null) {
             em.persist(category);
-        } else {
-            em.merge(category);
-        }
+
     }
 
 
@@ -32,6 +29,7 @@ public class CategoryRepository {
 //    }
 
 
+    //categoryId 단건조회
     public Category findOneCategory(Long categoryId) {
         if (categoryId == null) {
             throw new IllegalArgumentException("Category ID must not be null");

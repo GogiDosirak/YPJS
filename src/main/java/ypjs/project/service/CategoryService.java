@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
-import ypjs.project.dto.CategoryListDto;
-import ypjs.project.dto.CategoryRequestDto;
-import ypjs.project.dto.CategoryUpdateDto;
+import ypjs.project.dto.categorydto.CategoryListDto;
+import ypjs.project.dto.categorydto.CategoryRequestDto;
+import ypjs.project.dto.categorydto.CategoryUpdateDto;
 import ypjs.project.repository.CategoryRepository;
 
 import java.util.List;

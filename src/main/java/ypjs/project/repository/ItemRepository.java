@@ -3,15 +3,10 @@ package ypjs.project.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.query.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.domain.Like;
-import ypjs.project.dto.CategoryListDto;
 
 import java.util.List;
 
@@ -26,13 +21,8 @@ public class ItemRepository {
 
     //상품저장
     public void saveItem(Item item) {
-        //새로운 객체 생성(새로운 상품 등록)
-        if(item.getItemId() == null) {
             em.persist(item);
-        } else {
-            //item.getItemId() != null이면 수정
-            em.merge(item);
-        }
+
     }
 
 
@@ -108,29 +98,6 @@ public class ItemRepository {
 //        return query.getResultList();
 //    }
 
-    //페이징,정렬(카테고리당 아이템 조회)
-//    public List<Item> findAllItemPagingSortBy(Long categoryId, Pageable pageable, String sortBy) {
-//        String queryString = "select distinct i from Item i" +
-//                " join fetch i.category c" +
-//                " where i.category.categoryId = :categoryId" +
-//                " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
-//
-//        // 추가적으로 정렬을 적용하는 경우
-//        if ("itemRatings".equals(sortBy)) {
-//            queryString += ", i.itemRatings desc";
-//        } else if ("likeCount".equals(sortBy)) {
-//            queryString += ", i.itemLike desc";
-//        } else if ("itemId".equals(sortBy)) {
-//            // 이미 최신순으로 정렬되어 있으므로 추가적인 정렬 필요 없음
-//        }
-//
-//        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
-//                .setParameter("categoryId", categoryId)
-//                .setFirstResult((int)pageable.getOffset())
-//                .setMaxResults(pageable.getPageSize());
-//
-//        return query.getResultList();
-//    }
 
 
 

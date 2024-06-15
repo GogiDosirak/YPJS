@@ -1,9 +1,7 @@
-package ypjs.project.dto;
+package ypjs.project.dto.itemdto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import ypjs.project.domain.Item;
-import ypjs.project.domain.ItemReview;
 
 import java.util.List;
 import java.util.stream.Collectors;
