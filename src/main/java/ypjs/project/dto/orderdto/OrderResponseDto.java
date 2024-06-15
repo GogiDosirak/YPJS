@@ -34,7 +34,7 @@ public class OrderResponseDto {
     private OrderStatus status;  //주문상태
 
     public OrderResponseDto(Order order) {
-        this.orderId = order.getId();
+        this.orderId = order.getOrderId();
         this.delivery = order.getDelivery();
         this.orderItems = order.getOrderItems();
         this.price = order.getPrice();

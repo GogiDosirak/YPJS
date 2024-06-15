@@ -13,7 +13,7 @@ public class Category {
 
     @Id @GeneratedValue
     @Column(name = "CATEGORY_ID")
-    private Long CategoryId;
+    private Long categoryId;
 
     //연관관계 메서드
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
@@ -21,7 +21,7 @@ public class Category {
 
 
     @Column(name = "CATEGORY_NAME")
-    private String CategoryName;
+    private String categoryName;
 
 
     //자신을 부모타입으로 가짐
@@ -29,8 +29,6 @@ public class Category {
     @JoinColumn(name = "CATEGORY_PARENT_ID")
     private Category categoryParent;
 
-    @Column(name = "CATEGORY_NAME")
-    private String categoryName;
 
     //자식은 여러개 가질 수 있음
     @OneToMany(mappedBy = "categoryParent")

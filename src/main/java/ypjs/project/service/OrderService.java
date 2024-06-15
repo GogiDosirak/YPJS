@@ -49,7 +49,7 @@ public class OrderService {
 
         //주문 저장
         orderRepository.save(order);
-        return order.getId();
+        return order.getOrderId();
 
     }
 
