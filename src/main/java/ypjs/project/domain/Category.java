@@ -2,7 +2,6 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import ypjs.project.service.CategoryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,10 @@ public class Category {
     //연관관계 메서드
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Item> items = new ArrayList<>();
+
+
+    @Column(name = "CATEGORY_NAME")
+    private String CategoryName;
 
 
     //자신을 부모타입으로 가짐

@@ -5,9 +5,6 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
-
-
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,7 +12,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        default_batch_fetch_size: 1000
+        default_batch_fetch_size: 500
+
 
 
 logging:
