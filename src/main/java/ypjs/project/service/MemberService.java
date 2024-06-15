@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
-import ypjs.project.domain.Role;
-import ypjs.project.domain.Status;
 import ypjs.project.repository.MemberRepository;
 
 import java.sql.Date;

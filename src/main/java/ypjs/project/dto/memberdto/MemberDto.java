@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ypjs.project.domain.Address;
-import ypjs.project.domain.Role;
+import ypjs.project.domain.enums.Role;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
