@@ -17,15 +17,39 @@ public class Cart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;  //멤버번호
+    private Member member;  //멤버번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item itemId;  //상품번호
+    private Item item;  //상품번호
 
-    @Column(name = "cart_item_quantity")
-    private int cartItemQuantity;  //장바구니상품수량
+    @Column(name = "cart_item_count")
+    private int itemCount;  //상품수량
 
-    @Column(name = "cart_added")
-    private LocalDateTime cartAdded;  //장바구니추가일시
+    public Cart(Member member, Item item, int itemCount) {
+        this.member = member;
+        this.item = item;
+        this.itemCount = itemCount;
+    }
+
+    //테스트용 생성자 3개
+    public Cart() {
+    }
+
+    public Cart(Long cartId) {
+        this.cartId = cartId;
+    }
+
+    public Cart(Long cartId, Member member, Item item, int itemCount) {
+        this.cartId = cartId;
+        this.member = member;
+        this.item = item;
+        this.itemCount = itemCount;
+    }
+
+    public void updateItemCount(int itemCount) {
+        this.itemCount = itemCount;
+    }
+
+
 }
