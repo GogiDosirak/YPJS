@@ -3,8 +3,9 @@ package ypjs.project.dto.logindto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import ypjs.project.domain.Address;
-import ypjs.project.domain.Role;
-import ypjs.project.domain.Status;
+import ypjs.project.domain.enums.Role;
+import ypjs.project.domain.enums.Status;
+
 
 import java.time.LocalDateTime;
 

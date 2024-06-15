@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
-import ypjs.project.domain.Role;
-import ypjs.project.domain.Status;
 import ypjs.project.dto.memberdto.MemberDto;
 import ypjs.project.service.MemberService;
 
