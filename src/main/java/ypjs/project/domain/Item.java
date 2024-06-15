@@ -15,7 +15,7 @@ public class Item {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_ID")
-    private Long ItemId;
+    private Long itemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CATEGORY_ID")
