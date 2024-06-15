@@ -13,7 +13,7 @@ public class Cart {
     @Id
     @GeneratedValue
     @Column(name = "cart_id")
-    private int cartId;  //장바구니번호
+    private Long cartId;  //장바구니번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
