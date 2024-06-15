@@ -40,7 +40,7 @@ public class OrderController {
         model.addAttribute("memberId", 1);
 
         model.addAttribute("orderCreateDto", new OrderCreateDto());
-        model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhoneNumber(), m.getAddress()));
+        model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
         model.addAttribute("orderItemDtos", model.getAttribute("orderItemDtos"));
 
         return "/order/orderFormTest";
