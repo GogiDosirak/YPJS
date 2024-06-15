@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Payment {
     @Id @GeneratedValue
     @Column(name = "pay_id")
-    private int payId;
+    private Long payId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")

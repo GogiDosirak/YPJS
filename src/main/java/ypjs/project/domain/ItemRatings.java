@@ -9,7 +9,7 @@ public class ItemRatings {
 
     @Id @GeneratedValue
     @Column(name = "ITEM_RATING_ID")
-    private int ItemRatingId;
+    private Long ItemRatingId;
 
     @ManyToOne
     @JoinColumn(name = "ITEM_ID")

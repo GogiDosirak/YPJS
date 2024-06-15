@@ -15,7 +15,7 @@ public class Like {
     @Id
     @GeneratedValue
     @Column(name = "like_id")
-    private int likeId;
+    private Long likeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

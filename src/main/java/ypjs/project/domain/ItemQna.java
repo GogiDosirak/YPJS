@@ -13,11 +13,11 @@ public class ItemQna {
     @Id
     @GeneratedValue
     @Column(name = "item_qna_id")
-    private int itemQnaId;  //상품문의번호
+    private Long itemQnaId;  //상품문의번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Item itemId;  //상품번호
+    private Item item;  //상품번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "q_member_id")
