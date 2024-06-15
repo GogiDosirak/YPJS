@@ -48,7 +48,7 @@ public class ItemQnaService {
 
         itemQnaRepository.save(itemQna);
 
-        return itemQna.getId();
+        return itemQna.getItemQnaId();
 
     }
 

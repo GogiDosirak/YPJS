@@ -27,7 +27,7 @@ public class ItemQnaResponseDto {
     //==생성자==//
     public ItemQnaResponseDto(ItemQna itemQna) {
 
-        itemQnaId = itemQna.getId();
+        itemQnaId = itemQna.getItemQnaId();
         memberName = itemQna.getQMember().getName();
         question = itemQna.getQ();
 

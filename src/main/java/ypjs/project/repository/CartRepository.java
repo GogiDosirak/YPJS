@@ -18,7 +18,7 @@ public class CartRepository {
 
     //==생성|수정==//
     public void save(Cart cart) {
-        if(cart.getId() == null) {
+        if(cart.getCartId() == null) {
             em.persist(cart);  //새로운 엔티티를 영속성 컨텍스트에 저장하고, 데이터베이스에 삽입
         } else {
             em.merge(cart);  //비영속 상태의 엔티티를 영속성 컨텍스트에 병합하거나, 이미 영속성 컨텍스트에 있는 엔티티와 병합
