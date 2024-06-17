@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@Getter
 public class OrderResponseDto {
 
     @NotNull(message = "")
