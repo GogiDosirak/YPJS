@@ -19,8 +19,7 @@ public class LoginApiController {
     public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
         Long memberId = memberService.login(loginForm.getAccountId(),loginForm.getPassword());
         Member member = memberService.attendancePoint(memberId);
-        LoginDto.ResponseLogin responseLogin = new LoginDto.ResponseLogin(member.getMemberId(),member.getAccountId(),member.getPassword(),member.getNickname(),member.getGender(),member.getPoint(),
-                member.getName(),member.getEmail(),member.getAddress(),member.getPhonenumber(),member.getJoinDate(),member.getRole(),member.getStatus());
+        LoginDto.ResponseLogin responseLogin = new LoginDto.ResponseLogin(member.getMemberId(),member.getAccountId(),member.getNickname());
         HttpSession session = request.getSession();
         session.setAttribute("member", responseLogin);
         return "redirect:/";

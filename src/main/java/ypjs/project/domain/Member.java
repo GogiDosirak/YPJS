@@ -67,7 +67,7 @@ public class Member {
     private LocalDateTime pointDate;
 
     // 멤버 생성 메소드
-    public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber, LocalDateTime joinDate) {
+    public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
         Member member = new Member();
         member.accountId = accountId;
         member.password = password;
@@ -78,7 +78,7 @@ public class Member {
         member.address = new Address(address,addressDetail,zipcode);
         member.email = email;
         member.phonenumber = phonenumber;
-        member.joinDate = joinDate;
+        member.joinDate = LocalDateTime.now();
         member.status = Status.MEMBER;
         member.role = Role.CUSTOMER;
         return member;
@@ -95,6 +95,7 @@ public class Member {
 
     // 멤버 탈퇴 메소드
     public void withdrawMember() {
+        this.outDate = LocalDateTime.now();
         this.status = Status.WITHDRAWAL;
     }
 

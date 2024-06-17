@@ -37,7 +37,7 @@ public class MemberApiController {
     private Member getJoinMemberData(MemberDto.CreateMemberRequest request) {
         Member member = new Member();
         member = member.createMember(request.getAccountId(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(), request.getGender(),
-                request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber(), request.getJoinDate());
+                request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber());
         return member;
     }
 
@@ -66,7 +66,6 @@ public class MemberApiController {
     public Result mypage(@PathVariable("memberId") Long memberId) {
         MemberDto.MypageDto result = getMypageData(memberId);
         return new Result(result);
-
     }
 
     // 회원탈퇴
