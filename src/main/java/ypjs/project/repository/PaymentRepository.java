@@ -28,7 +28,7 @@ public class PaymentRepository {
         return em.createQuery(
                         "select o from Order o" +
                                 " left join fetch o.payment p" +
-                                " left join fetch o.memberId m" +
+                                " left join fetch o.member m" +
                                 " where o.orderId = :orderId", Order.class)
                 .setParameter("orderId", orderId)
                 .getResultStream()

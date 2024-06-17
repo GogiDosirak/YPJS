@@ -1,59 +1,57 @@
 package ypjs.project.controller;
 
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import ypjs.project.repository.MemberRepository;
-import ypjs.project.repository.OrderRepository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
+import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.service.PaymentService;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/ypjs/payment") //공통으로 매핑에 주소 경로 추가
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
-/*
+
+    @GetMapping("/")
+    public String home(){
+        return "payment/home";
+    }
+
     @GetMapping("/order")
-    public String order(@RequestParam(name = "message", required = false) String message,
-                        @RequestParam(name = "orderId", required = false) String id,
+    public String order( @RequestParam(name = "orderId", required = false) String orderId,
                         Model model) {
 
-        model.addAttribute("message", message);
-        model.addAttribute("orderId", id);
+        model.addAttribute("orderId", orderId);
 
-        return "order";
+        return "payment/order";
     }
 
-
+    //html 작동 확인을 위한 더미데이터 주입함
+    // payment.order.html 화면에서 폼 안에 입력해서 테스트, 주문이 만약 누군가가 1번으로 한게 있으면 오류남
     @PostMapping("/order")
-    public String autoOrder() {
+    public String findOrder(@RequestParam(name="orderId") String orderId) {
 
-        paymentService.autoRegister();
-        Member member = memberRepository.findOne(1L);
+        //주문생성 여기서?
 
-        paymentService.autoOrder(member);
-        Order order = orderRepository.findOneOrder(1L);
-
-        String message = "주문 실패";
-        if(order != null) {
-            message = "주문 성공";
-        }
-
-        String encode = URLEncoder.encode(message, StandardCharsets.UTF_8);
-
-        return "redirect:/order?message="+encode+"&orderId="+order.getOrderId();
+        return "redirect:/ypjs/payment/payment/" + orderId;
     }
 
-    @GetMapping("/payment/{id}")
-    public String paymentPage(@PathVariable(name = "id", required = false) Long id,
+    @GetMapping("/payment/{orderId}")
+    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
                               Model model) {
 
-        RequestPayDto requestPayDto = paymentService.findRequestDto(id);
+        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
         model.addAttribute("requestPayDto", requestPayDto);
-        return "payment";
+        return "payment/payment";
     }
 
     //응답 엔티티
@@ -70,14 +68,14 @@ public class PaymentController {
     //결제 성공시 화면 연결
     @GetMapping("/success-payment")
     public String successPaymentPage() {
-        return "success-payment";
+        return "payment/success-payment";
     }
 
     //결제 실패시 화면 연결
     @GetMapping("/fail-payment")
     public String failPaymentPage() {
-        return "fail-payment";
+        return "payment/fail-payment";
     }
 
- */
+
 }
