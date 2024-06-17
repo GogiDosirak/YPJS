@@ -53,7 +53,7 @@ public class ItemQnaService {
     }
 
     //==조회==//
-    public ItemQnaResponseDto finById(Long id) {
+    public ItemQnaResponseDto findOne(Long id) {
         ItemQna itemQna = itemQnaRepository.findOne(id);
         return new ItemQnaResponseDto(itemQna);
     }

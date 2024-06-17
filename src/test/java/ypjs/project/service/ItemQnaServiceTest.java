@@ -48,7 +48,7 @@ public class ItemQnaServiceTest {
 
         System.out.println("***itemQnaId: " + itemQnaId);
 
-        ItemQnaResponseDto findI = itemQnaService.finById(itemQnaId);
+        ItemQnaResponseDto findI = itemQnaService.findOne(itemQnaId);
 
         /*Then*/
         //실패시

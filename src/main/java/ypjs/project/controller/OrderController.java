@@ -1,5 +1,6 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,11 @@ import ypjs.project.domain.Member;
 import ypjs.project.dto.deliverydto.DeliveryDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
+import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,19 +35,26 @@ public class OrderController {
 
     //==주문 생성 페이지==//
     @GetMapping("/create")
-    public String create(Model model, HttpSession session) {
+    public String createPage(Model model, HttpServletRequest request) {
+        //System.out.println(model.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
+        //System.out.println(request.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
+        //System.out.println(request.getSession().getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 유지
+
         //멤버정보 -> 배송정보 생성
         //Long memberId = (Long) session.getAttribute("loginMemberId");
         //Member m = memberService.findById(memberId);
         Member m = memberService.findOne(1L);
 
-        model.addAttribute("memberId", 1);
+        request.setAttribute("memberId", 1);  //request랑 model 중에 뭐가 더 데이터 전달에 용이한지 확인 후 고르기
 
-        model.addAttribute("orderCreateDto", new OrderCreateDto());
-        model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
-        model.addAttribute("orderItemDtos", model.getAttribute("orderItemDtos"));
+        //model.addAttribute("memberId", 1);
+        model.addAttribute("delivery", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
+        model.addAttribute("orderItemList", request.getSession().getAttribute("orderItemList"));
 
-        return "/order/orderFormTest";
+        request.getSession().removeAttribute("orderItemList");  //데이터 전달 후 제거
+        System.out.println("**세션 주문상품 삭제 확인-> " + request.getSession().getAttribute("orderItemList"));
+
+        return "order/create";
     }
 
     //==주문 생성==//

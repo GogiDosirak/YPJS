@@ -32,27 +32,23 @@ public class ItemQnaRepository {
     }
 
     public List<ItemQna> findAllByItemId(Long itemId, Pageable pageable) {
-        //JPQL 쿼리
-        String jpql = "select i from itemQna join fetch i.item where i.itemId = :id order by i.id desc";
-
-        TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
+        return em.createQuery("select i from ItemQna i join fetch i.item where i.item.itemId = :id order by i.itemQnaId desc"
+                        , ItemQna.class)
                 .setParameter("id", itemId)
                 .setFirstResult((int)pageable.getOffset())
-                .setMaxResults(pageable.getPageSize());
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
 
-        return query.getResultList();
     }
 
     public List<ItemQna> findAllByMemberId(Long memberId, Pageable pageable) {
-        //JPQL
-        String jpql = "select i from itemQna join fetch i.member where m.memberId = :id order by i.id desc";
-
-        TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
+        return em.createQuery("select i from ItemQna i join fetch i.member where i.member.memberId = :id order by i.itemQnaId desc"
+                        , ItemQna.class)
                 .setParameter("id", memberId)
                 .setFirstResult((int)pageable.getOffset())
-                .setMaxResults(pageable.getPageSize());
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
 
-        return query.getResultList();
     }
 
     //==삭제==//
