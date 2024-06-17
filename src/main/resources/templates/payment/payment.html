@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 페이지</title>
+    <!-- Thymeleaf를 사용하여 head 섹션을 별도로 작성한 경우 -->
+    <th:block th:replace="frame/header :: head"></th:block>
+    <!-- 아임포트 스크립트를 head 섹션에 포함 -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <!-- 기타 필요한 스크립트 포함 -->
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <!-- JavaScript 파일 링크 -->
+    <script th:src="@{/js/payment/payment.js}"></script>
+
+    <!-- JavaScript로 전달할 데이터 속성 설정 -->
+    <script th:inline="javascript">
+        var requestPayDto = {
+            orderId: /*[[${requestPayDto.orderId}]]*/,
+            itemName: /*[[${requestPayDto.itemName}]]*/,
+            orderPrice: /*[[${requestPayDto.orderPrice}]]*/,
+            payName: /*[[${requestPayDto.payName}]]*/,
+            payEmail: /*[[${requestPayDto.payEmail}]]*/,
+            deliveryAddress: /*[[${requestPayDto.deliveryAddress}]]*/,
+            phoneNumber: /*[[${requestPayDto.phoneNumber}]]*/,
+            zipcode: /*[[${requestPayDto.zipcode}]]*/
+        };
+    </script>
+</head>
+<body>
+<h1>결제 페이지</h1>
+<button id="payButton">
+    결제하기
+</button>
+<footer th:replace="frame/footer :: footer"></footer>
+</body>
+</html>

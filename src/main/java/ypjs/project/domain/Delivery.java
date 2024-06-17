@@ -2,11 +2,13 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.DeliveryStatus;
 
 @Entity
 @Table(name = "delivery")
 @Getter
+@NoArgsConstructor
 public class Delivery {
 
     @Id
