@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.PayStatus;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -37,16 +38,16 @@ public class Payment {
 
     //==생성 메서드==//
 
-    public static Payment createPayment(Order order, int payPrice, String payName, String payPhoneNumber, String payEmail, LocalDateTime payDate, PayStatus payStatus, String payPaymentUid) {
+    public static Payment createPayment(Order order, int payPrice, String payName, String payPhoneNumber, String payEmail) {
         Payment payment = new Payment();
         payment.order = order;
         payment.payPrice = payPrice;
         payment.payName = payName;
         payment.payPhoneNumber = payPhoneNumber;
         payment.payEmail = payEmail;
-        payment.payDate = payDate;
-        payment.payStatus = payStatus;
-        payment.payPaymentUid = payPaymentUid;
+        payment.payDate = LocalDateTime.now();
+        payment.payStatus = PayStatus.READY;
+        payment.payPaymentUid = UUID.randomUUID().toString();
         return payment;
     }
 
@@ -55,7 +56,4 @@ public class Payment {
         this.payStatus = payStatus;
         this.payPaymentUid = payPaymentUid;
     }
-
-
-
 }

@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                     // jQuery로 HTTP 요청
                     jQuery.ajax({
-                        url: "/ypjs/payment",
+                        url: "/ypjs/payment/payment",
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
                         data: JSON.stringify({
@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     });
                 } else {
                     alert("success? "+ rsp.success+ ", 결제에 실패하였습니다. 에러 내용: " + JSON.stringify(rsp));
-                    alert('결제 실패!');
                     window.location.href = "/ypjs/payment/fail-payment";
                 }
             });
