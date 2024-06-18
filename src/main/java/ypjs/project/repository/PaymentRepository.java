@@ -1,11 +1,13 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.Payment;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,6 +24,33 @@ public class PaymentRepository {
             em.merge(payment);
         }
     }
+
+    //==paymentId 로 오더 찾기
+    public Payment findByOrderId(Long orderId) {
+        try {
+            return em.createQuery("SELECT p FROM Payment p WHERE p.order.orderId = :orderId", Payment.class)
+                    .setParameter("orderId", orderId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // 데이터가 없는 경우 null을 반환
+        }
+    }
+
+    //회원당 결제 내역 조회
+    public List<Payment> findByOrderMemberId(Long memberId, int offset, int limit) {
+        return em.createQuery("SELECT p FROM Payment p WHERE p.order.member.memberId = :memberId", Payment.class)
+                .setParameter("memberId", memberId)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+    //회원 총 결제 내역 수 조회
+    public long countByOrderMemberId(Long memberId) {
+        return em.createQuery("SELECT COUNT(p) FROM Payment p WHERE p.order.member.memberId = :memberId", Long.class)
+                .setParameter("memberId", memberId)
+                .getSingleResult();
+    }
+
 
     //==Payment 관련 쿼리
     public Optional<Order> findOrderAndPaymentAndMember(Long orderId) {

@@ -8,6 +8,7 @@ import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ypjs.project.domain.Member;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.PayStatus;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
@@ -17,6 +18,7 @@ import ypjs.project.repository.PaymentRepository;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @Transactional
@@ -50,27 +52,66 @@ public class PaymentService {
         );
     }
 
+    //주문 저장메서드
+    public Long findAndCreatePayment(Long orderId){
+
+        //이미 주문정보가 있을 때
+        ypjs.project.domain.Payment findPayment = paymentRepository.findByOrderId(orderId);
+        if(findPayment!=null){
+            if(findPayment.getPayStatus().equals(PayStatus.OK)){
+                throw new IllegalStateException("이미 완료된 주문입니다");
+            }
+            return findPayment.getPayId();
+        }
+
+        //주문정보 생성
+        Order order = orderRepository.findOne(orderId);
+
+        //주문자 정보 생성
+        Member member = order.getMember();
+
+        //주문 정보 생성
+        ypjs.project.domain.Payment payment = ypjs.project.domain.Payment.createPayment(order, order.getPrice(), member.getName(), member.getPhonenumber(), member.getEmail());
+
+        //주문 정보 저장
+        paymentRepository.save(payment);
+        return payment.getPayId();
+    }
+
+    // 결제 내역 조회 메서드
+    public List<ypjs.project.domain.Payment> findPaymentsByMemberId(Long memberId, int offset, int limit) {
+        return paymentRepository.findByOrderMemberId(memberId, offset, limit);
+    }
+
+    //결제 내역 조회 페이징을 위한 결제 갯수 메서드
+    public long countPaymentsByMemberId(Long memberId) {
+        return paymentRepository.countByOrderMemberId(memberId);
+    }
+
     //아임포트랑 연동, 리턴타임의 Payment 는 아임포트에서 제공하는 클래스임
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request){
         try {
 
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
+
             // 주문내역 조회
             Order order = paymentRepository.findOrderAndPayment(request.getOrderId())
                     .orElseThrow(() -> new IllegalArgumentException("주문 내역이 없습니다."));
 
+
             // 결제 완료가 아니면
             if(!iamportResponse.getResponse().getStatus().equals("paid")) {
-
                 throw new RuntimeException("결제 미완료");
             }
 
             // DB에 저장된 결제 금액
             int price = order.getPayment().getPayPrice();
+            System.out.println("DB에 저장된 결제 금액"+price);
 
             // 실 결제 금액
             int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
+            System.out.println("실 결제 금액"+iamportPrice);
 
             // 결제 금액 검증
             if(iamportPrice != price) {

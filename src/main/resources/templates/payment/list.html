@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="frame/header :: head">
+    <title>양박정성</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<header th:replace="frame/header :: header"></header>
+<style>
+    .card {
+        height: 100%;
+    }
+    .card-img {
+        height: 100%;
+        width: auto;
+        object-fit: cover;
+    }
+</style>
+
+<div th:each="payment : ${payments}" class="payment-item">
+    <!-- Open Content -->
+    <section class="bg-light">
+        <div class="container pb-5">
+            <div class="row">
+                <div class="col-lg-5 mt-5">
+                    <div class="card mb-3">
+                        <img class="card-img img-fluid" src="https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAxOTExMTZfMTc3%2FMDAxNTczOTEwODgyNjU4.Wl1nN5Df_0-z0NlUdDpKzJV7gPFTzTZ2lk7EzubAVZEg.MUr5wpdqt50r4qM2O8CUs27O1aVIglH6yiGW0IcJ9RMg.JPEG%2FII-B0VbhmEgIF80dSru92g785_Ao.jpg&type=sc960_832" alt="Card image cap" id="product-detail">
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+                <!-- col end -->
+                <div class="col-lg-7 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="h2">결제내역</h1>
+
+                            <h6>주문 가격 : <span th:text="${payment.payPrice}"></span></h6>
+
+                            <h6>주문 번호 : <span th:text="${payment.order.orderId}"></span></h6>
+
+                            <h6>주문 상태 : <span th:text="${payment.payStatus}"></span></h6>
+
+                            <h6>주문 날짜 : <span th:text="${#temporals.format(payment.payDate, 'yyyy-MM-dd')}"></span></h6>
+
+                            <form action="" method="GET">
+                                <div class="row pb-3">
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="review">리뷰 쓰기</button>
+                                    </div>
+                                    <div class="col d-grid">
+                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="gotoitem">재구매</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Close Content -->
+</div>
+
+<footer th:replace="frame/footer :: footer"></footer>
+</body>
+</html>
