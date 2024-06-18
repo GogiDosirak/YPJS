@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.dto.orderdto.OrderCreateDto;
+import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -27,9 +29,9 @@ public class OrderService {
 
     //==주문==//
     @Transactional
-    public Long create(OrderCreateDto orderCreateDto) {
+    public Long create(Long memberId, OrderCreateDto orderCreateDto) {
         //멤버정보 생성
-        Member member = memberRepository.findOne(orderCreateDto.getMemberId());
+        Member member = memberRepository.findOne(memberId);
 
         //배송정보 생성
         Delivery delivery = new Delivery(
@@ -40,9 +42,17 @@ public class OrderService {
         );
 
         //주문상품리스트 생성
-        List<OrderItem> orderItems = orderCreateDto.getOrderItems().stream()
-                .map(oI -> new OrderItem())
-                .toList();
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for(OrderItemDto oid : orderCreateDto.getOrderItemDtos()) {
+            orderItems.add(
+                    OrderItem.create(
+                            itemRepository.findOne(oid.getItemId()),
+                            oid.getItemCount(),
+                            oid.getItemTotalPrice()
+                    )
+            );
+        }
 
         //주문 생성
         Order order = Order.create(member, delivery, orderItems);

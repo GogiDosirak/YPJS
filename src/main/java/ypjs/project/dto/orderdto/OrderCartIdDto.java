@@ -9,12 +9,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemDto {
+public class OrderCartIdDto {
 
-    private Long itemId;
+    private Long orderId;
 
-    private int itemCount;
-
-    private int itemTotalPrice;
+    private List<Long> cartIds;
 
 }

@@ -1,11 +1,14 @@
 package ypjs.project.dto.cartdto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.Cart;
 
 @Data
-public class CartResponseDto {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CartListDto {
 
     private Long cartId; //장바구니번호
 
@@ -21,7 +24,7 @@ public class CartResponseDto {
 
     private int itemCount;  //상품수량
 
-    public CartResponseDto(Cart cart) {
+    public CartListDto(Cart cart) {
         cartId = cart.getCartId();
         itemId = cart.getItem().getItemId();
         itemName = cart.getItem().getItemName();

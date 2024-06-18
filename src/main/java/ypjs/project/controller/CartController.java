@@ -8,12 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartAddDto;
-import ypjs.project.dto.cartdto.CartResponseDto;
+import ypjs.project.dto.cartdto.CartItemDto;
+import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
-import ypjs.project.dto.deliverydto.DeliveryDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.service.CartService;
 
 import java.util.List;
@@ -34,7 +32,7 @@ public class CartController {
         Long memberId = 1L;  //임시
 
         if(memberId == null) {
-            return "redirect:/member/login";
+            return "redirect:/ypjs/member/login";
         }
 
         model.addAttribute("cartList", cartService.findAllByMemberId(memberId));
@@ -51,7 +49,7 @@ public class CartController {
     @PostMapping("/update")
     public String update(@RequestBody @Valid CartUpdateDto cartUpdateDto) {
         cartService.update(cartUpdateDto);
-        return "redirect:/cart/list";
+        return "redirect:/ypjs/cart/list";
     }
 
     //==장바구니 삭제==//
@@ -63,15 +61,11 @@ public class CartController {
 
     //==장바구니 상품 주문하기==//
     @PostMapping("/order")
-    public ResponseEntity<Void> order(@RequestBody @Valid List<OrderItemDto> orderItemDtos, Model model, HttpSession session, HttpServletRequest request) {
+    public ResponseEntity<Void> order(@RequestBody @Valid List<CartListDto> cartListDtos, HttpServletRequest request) {
+        System.out.printf("**장바구니 상품 주문 요청됨");
+        System.out.println(cartListDtos);
 
-        System.out.println(orderItemDtos);
-
-        request.setAttribute("orderItemList", orderItemDtos);
-
-        model.addAttribute("orderItemList", orderItemDtos);
-
-        request.getSession().setAttribute("orderItemList", orderItemDtos);
+        request.getSession().setAttribute("cartList", cartListDtos);
 
         return ResponseEntity.ok().build();
     }
