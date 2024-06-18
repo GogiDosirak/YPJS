@@ -120,7 +120,7 @@ public class ItemRepository {
         if ("itemRatings".equals(sortBy)) {
             queryString += ", i.itemRatings desc";
         } else if ("likeCount".equals(sortBy)) {
-            queryString += ", i.itemLike desc";
+            queryString += ", i.likeCount desc";
         }
 
         TypedQuery<Item> query = em.createQuery(queryString, Item.class)
@@ -136,6 +136,68 @@ public class ItemRepository {
         return query.getResultList();
     }
 
+
+    //아이템 전체 조회
+    public List<Item> findAllItem(String keyword, Pageable pageable, String sortBy) {
+        String queryString = "select i from Item i";
+
+        // 검색 조건 추가
+        boolean hasKeyword = (keyword != null && !keyword.isEmpty());
+        if (hasKeyword) {
+            queryString += " where i.itemName like :keyword";
+        }
+
+        // 기본 정렬 조건
+        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
+
+        // 추가 정렬 조건
+        if ("itemRatings".equals(sortBy)) {
+            queryString += ", i.itemRatings desc";
+        } else if ("likeCount".equals(sortBy)) {
+            queryString += ", i.likeCount desc";
+        }
+
+        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        // 검색 키워드 파라미터 설정
+        if (hasKeyword) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+
+        return query.getResultList();
+    }
+
+
+//    public List<Item> findAllItem(String keyword, String sortBy) {
+//        String queryString = "select i from Item i";
+//
+//        // 검색 조건 추가
+//        boolean hasKeyword = (keyword != null && !keyword.isEmpty());
+//        if (hasKeyword) {
+//            queryString += " where i.itemName like :keyword";
+//        }
+//
+//        // 기본 정렬 조건
+//        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
+//
+//        // 추가 정렬 조건
+//        if ("itemRatings".equals(sortBy)) {
+//            queryString += ", i.itemRatings desc";
+//        } else if ("likeCount".equals(sortBy)) {
+//            queryString += ", i.likeCount desc";
+//        }
+//
+//        TypedQuery<Item> query = em.createQuery(queryString, Item.class);
+//
+//        // 검색 키워드 파라미터 설정
+//        if (hasKeyword) {
+//            query.setParameter("keyword", "%" + keyword + "%");
+//        }
+//
+//        return query.getResultList();
+//    }
 
 
     //검색기능

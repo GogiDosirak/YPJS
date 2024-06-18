@@ -43,7 +43,7 @@ public class OrderController {
         model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
         model.addAttribute("orderItemDtos", model.getAttribute("orderItemDtos"));
 
-        return "/order/orderFormTest";
+        return "order/orderFormTest";
     }
 
     //==주문 생성==//

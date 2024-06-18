@@ -2,6 +2,7 @@ package ypjs.project.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
 import ypjs.project.dto.categorydto.CategoryListDto;
@@ -13,7 +14,7 @@ import ypjs.project.service.ItemService;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -34,10 +35,11 @@ public class CategoryController {
 
     //categoryList보기
     @GetMapping("/ypjs/category/get")
-    public List<CategoryListDto> getCategoryList(CategoryListDto categoryListDto){
+    public String getCategoryList(CategoryListDto categoryListDto){
 
+        List<CategoryListDto> categoryList =  categoryService.findAllCategory(categoryListDto);
 
-        return categoryService.findAllCategory(categoryListDto);
+        return "item/itemList";
 
     }
 

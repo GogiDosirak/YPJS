@@ -1,14 +1,23 @@
 package ypjs.project.controller;
 
+
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
+import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.categorydto.CategoryOneDto;
 import ypjs.project.dto.itemdto.*;
+import ypjs.project.dto.logindto.LoginDto;
+import ypjs.project.dto.noticedto.NoticeDto;
 import ypjs.project.repository.ItemReviewRepository;
 import ypjs.project.service.CategoryService;
 import ypjs.project.service.ItemReviewService;
@@ -16,7 +25,8 @@ import ypjs.project.service.ItemService;
 
 import java.util.List;
 
-@RestController
+
+@Controller
 @RequiredArgsConstructor
 public class ItemController {
 
@@ -26,13 +36,27 @@ public class ItemController {
     private final ItemReviewRepository itemReviewRepository;
 
 
+    //item등록 화면
+    @GetMapping("/ypjs/item/post")
+    public String insert() {return "item/itemPost";}
+
+
+
     //item등록
     @PostMapping("/ypjs/item/post")
-    public ItemResponseDto saveItem(@RequestBody @Valid ItemRequestDto requestDto) {
-       Item item= itemService.saveItem(requestDto);
+    public String saveItem(@RequestParam("file") MultipartFile file,
+                           @Valid @ModelAttribute  ItemRequestDto requestDto,
+                           @Valid @ModelAttribute  ItemFileDto itemFileDto, HttpSession session) throws Exception {
+        //멤버정보 찾기
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-        return new ItemResponseDto(item.getCategory().getCategoryId(), item.getItemId(), item.getItemName(), item.getItemContent(),
-                item.getItemPrice(), item.getItemStock());
+       Item item= itemService.saveItem(requestDto, itemFileDto, file);
+
+       ItemResponseDto responseDto = new ItemResponseDto(item.getCategory().getCategoryId(), item.getItemId(), item.getItemName(), item.getItemContent(),
+               item.getItemPrice(), item.getItemStock(), item.getItemCreateDate());
+
+        return "item/itemPost";
+
 
     }
 
@@ -40,9 +64,25 @@ public class ItemController {
 
     //item1개 조회
     @GetMapping("/ypjs/item/get/{itemId}")
-    public ItemOneDto getOneItem (@PathVariable("itemId") Long itemId) {
+    public String getOneItem (@PathVariable("itemId") Long itemId,
+                                  Model model) {
 
-        Item item = itemService.findOneItem(itemId);
+        Item findItem = itemService.findOneItem(itemId);
+
+        ItemOneDto item = new ItemOneDto(
+                findItem.getItemId(),
+                findItem.getItemName(),
+                findItem.getItemContent(),
+                findItem.getItemPrice(),
+                findItem.getItemRatings(),
+                findItem.getItemCreateDate(),
+                findItem.getItemCnt(),
+                findItem.getItemReviews()
+
+        );
+
+
+        model.addAttribute("item", item);
 
         //조회수
         itemService.increaseItemCnt(itemId);
@@ -52,7 +92,7 @@ public class ItemController {
 
 
 
-        return new ItemOneDto(item);
+        return "item/itemGet";
 
     }
 
@@ -88,46 +128,130 @@ public class ItemController {
 
     //카테고리당 아이템 조회(정렬,검색,페이징(페이징받아서 페이징))
     @GetMapping("/ypjs/categoryItem/get/{categoryId}")
-    public CategoryOneDto getAllItem(@PathVariable("categoryId") Long categoryId,
+    public String getAllCategoryItem(@PathVariable("categoryId") Long categoryId,
                                      @RequestParam(value = "page",defaultValue = "0") int page,
                                      @RequestParam(value = "size",defaultValue = "3") int size,
                                      @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
-                                     @RequestParam(value = "keyword", required = false) String keyword) {
+                                     @RequestParam(value = "keyword", required = false) String keyword,
+                             Model model) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Category category = categoryService.findOneCategory(categoryId);
+        Category findCategory = categoryService.findOneCategory(categoryId);
 
         List<ItemListDto> items = itemService.finaAllItemPagingSortBy(categoryId, keyword, pageable, sortBy);
 
-        return new CategoryOneDto(category, items);
+        CategoryOneDto category = new CategoryOneDto(findCategory, items);
+
+        model.addAttribute("category", category);
+
+
+        return "item/itemList3";
+
 
     }
 
 
 
-    //수정
-    @PutMapping("/ypjs/item/update/{itemId}")
-    public void updateItem(@PathVariable("itemId") Long itemId,
-                                      @RequestBody @Valid ItemUpdateDto itemUpdateDto) {
+    //아이템 전체 조회
+    @GetMapping("/ypjs/item/get")
+    public String getAllItem(
+                                     @RequestParam(value = "page",defaultValue = "0") int page,
+                                     @RequestParam(value = "size",defaultValue = "3") int size,
+                                     @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
+                                     @RequestParam(value = "keyword", required = false) String keyword,
+                                     Model model) {
 
-        itemService.updateItem(itemId,itemUpdateDto);
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<ItemListDto> items = itemService.findAllItem(keyword, pageable, sortBy);
+
+        model.addAttribute("items", items);
+
+
+        return "item/itemList";
+
+
+    }
+
+
+
+//    @GetMapping("/ypjs/item/get")
+//    public String getAllItem(
+//                                     @RequestParam(value = "page",defaultValue = "0") int page,
+//                                     @RequestParam(value = "size",defaultValue = "3") int size,
+//                                     @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
+//                                     @RequestParam(value = "keyword", required = false) String keyword,
+//                                     Model model) {
+//
+//        Pageable pageable = PageRequest.of(page, size);
+//
+//        List<ItemListDto> items = itemService.findAllItem(keyword, sortBy);
+//
+//        model.addAttribute("items", items);
+//
+//
+//        return "item/itemList";
+//
+//
+//    }
+
+
+
+
+
+
+    //수정보기
+    @GetMapping("/ypjs/item/update/{itemId}")
+    public String udateItem(@PathVariable("itemId") Long itemId, Model model) {
         Item findItem = itemService.findOneItem(itemId);
 
-        //화면구현할 때 void string같은 타입으로 바꾸고 return 화면구현할 주소로 지금은 return 없어서 포스트맨 안됨 걀가값 보고 싶으면 public 옆에 ItemUpdateDto로 타입 바꾸고
-        //return new ItemUpdateDto(밑에 값 써주기)
-        //ItemUpdateDto response = new ItemUpdateDto(findItem.getItemId(), findItem.getCategory().getCategoryId(), findItem.getItemName(), findItem.getItemContent(), findItem.getItemPrice(),findItem.getItemStock());
+        System.out.println(findItem);
+
+        ItemUpdateDto item =  new ItemUpdateDto(
+                findItem.getItemId(),
+                findItem.getCategory().getCategoryId(),
+                findItem.getItemName(),
+                findItem.getItemContent(),
+                findItem.getItemPrice(),
+                findItem.getItemStock());
+
+        model.addAttribute("item", item);
 
 
+
+        return "item/itemUpdate";
+    }
+
+
+
+
+
+    //수정등록
+    @PostMapping("/ypjs/item/update/{itemId}")
+    public String updateItem(@PathVariable("itemId") Long itemId,
+                                    @RequestParam("file") MultipartFile file,
+                                    @Valid @ModelAttribute  ItemUpdateDto itemUpdateDto,
+                                    @Valid @ModelAttribute  ItemFileDto itemFileDto, Model model) throws Exception {
+
+        itemService.updateItem(itemId, itemUpdateDto, itemFileDto, file);
+        Item findItem = itemService.findOneItem(itemId);
+
+
+        return "item/itemPost";
 
     }
 
 
     //삭제
     @DeleteMapping("/ypjs/item/delete/{itemId}")
-    public void deleteItem(@PathVariable("itemId") Long itemId){
+    public @ResponseBody ResponseDto<?> deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.deleteItem(itemId);
+        return new ResponseDto<>(HttpStatus.OK.value(), "아이템이 삭제되었습니다.");
     }
+
+
+
 
 
 

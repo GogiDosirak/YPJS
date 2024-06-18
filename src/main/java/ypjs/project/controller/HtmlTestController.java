@@ -15,4 +15,19 @@ public class HtmlTestController {
     public String test() {
         return "test";
     }
+
+    @GetMapping("/main")
+        public String itemGet() {
+            return "MainMain";
+        }
+
+
+
+
 }
+
+
+
+
+
+

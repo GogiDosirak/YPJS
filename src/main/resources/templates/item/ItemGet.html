@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<style>
+    .bg-light {
+        background-color: transparent !important; /* 배경색을 투명하게 설정 */
+    }
+
+    /* 요소의 우선순위를 높여서 Bootstrap의 font-weight-bold 클래스가 적용될 수 있도록 함 */
+    h1.font-weight-bold, span.font-weight-bold {
+        font-weight: bold !important;
+    }
+
+     .custom-mt {
+        margin-top: -20px; /* 원하는 간격 값으로 설정 */
+    }
+
+</style>
+
+<script src="/js/item/item.js"></script>
+
+
+
+
+<!-- Open Content -->
+
+
+<div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
+    <div class="row">
+        <div class="col-lg-7 offset-lg-1 text-right">
+            <h1 class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
+            <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
+            <span class="font-weight-bold">원</span>
+            <p class="h3 py-2"></p>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-lg-7 custom-mt  offset-lg-1"> <!-- custom-mt 클래스 추가하여 간격 조정 -->
+    <div class="card border-0 bg-transparent"> <!-- border-0와 bg-transparent 클래스 추가 -->
+        <p class="py-2">
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-warning"></i>
+            <i class="fa fa-star text-secondary"></i>
+            <span class="list-inline-item text-dark"> 4.8 |  Reviews</span>
+        </p>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
+        </div>
+        <div class="col-auto">
+            <input type="hidden" id="itemId" th:value="${item.itemId}">
+            <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container">
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <span class="font-weight-bold"> 조회수 : </span>
+            <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
+            <br>
+            <span class="font-weight-bold">작성일 : </span>
+            <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
+
+
+
+
+        </div>
+        <div class="col-auto">
+
+        </div>
+    </div>
+</div>
+<hr>
+
+
+
+
+<section class="bg-light">
+    <div class="container pb-5 text-center"> <!-- text-center 클래스 추가 -->
+        <div class="col-lg-5 mt-5 d-block mx-auto"> <!-- d-block mx-auto 클래스 추가 -->
+            <span id="itemContent" th:utext="${item.itemContent}"></span>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+
+<div class="row pb-3">
+    <div class="col-lg-6 offset-lg-5"> <!-- offset-lg-6 클래스 추가하여 오른쪽으로 옮김 -->
+        <ul class="list-inline pb-3 text-right"> <!-- text-right 클래스 추가하여 내용 오른쪽 정렬 -->
+            <li class="list-inline-item">
+                수량
+                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+            </li>
+            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row pb-3">
+    <div class="col d-grid">
+        <button type="submit" class="btn btn-success btn-md" name="submit" value="buy">Buy</button>
+    </div>
+    <div class="col d-grid">
+        <button type="submit" class="btn btn-success btn-md" name="submit" value="addtocard">Add To Cart</button>
+    </div>
+</div>
+
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Close Content -->
+
+
+
+
+
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>
