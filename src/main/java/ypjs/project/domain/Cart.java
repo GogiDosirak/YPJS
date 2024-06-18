@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class Cart {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
     private Long cartId;  //장바구니번호
 

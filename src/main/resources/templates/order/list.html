@@ -16,52 +16,10 @@
     <div class="row align-items-center justify-content-center">
         <div class="col-lg-10">
             <div class="row">
-                <h2 class="h2 pb-4 fw-bold">주문</h2>
+                <h2 class="h2 pb-4 fw-bold">주문 내역</h2>
             </div>
 
             <div class="card">
-
-                <!-- 배송 정보 표시 -->
-                <div class="card-body mt-2">
-                    <h4>배송지 정보</h4>
-                    <br>
-
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <h6>받으실 분 :</h6>
-                        </li>
-                        <li class="list-inline-item me-5">
-                            <p class="text" id="receiver" th:text="${delivery.receiver}"></p>
-                        </li>
-
-                        <li class="list-inline-item">
-                            <h6>연락처 :</h6>
-                        </li>
-                        <li class="list-inline-item">
-                            <p class="text" id="phoneNumber" th:text="${delivery.phoneNumber}"></p>
-                        </li>
-                    </ul>
-
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item">
-                            <h6>주소 :</h6>
-                        </li>
-                        <li class="list-inline-item">
-                            <p class="text" id="zipcode" th:text="${delivery.address.zipcode}"></p>
-                        </li>
-                        <li class="list-inline-item">
-                            <p class="text" id="address" th:text="${delivery.address.address}"></p>
-                        </li>
-                        <li class="list-inline-item me-5">
-                            <p class="text" id="addressDetail" th:text="${delivery.address.addressDetail}"></p>
-                        </li>
-                        <li class="list-inline-item">
-                            <button type="button" id="openDeliveryModal" class="btn btn-success btn-sm">배송지 입력</button>
-                        </li>
-                    </ul>
-                </div>
-
-                <hr style="margin: 0;">
 
                 <!-- 주문상품 표시 시작-->
                 <div class="accordion accordion-flush">

@@ -17,7 +17,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long orderId;  //주문번호
 
@@ -61,15 +61,21 @@ public class Order {
         order.member = member;
         order.delivery = delivery;
         order.setDeliveryOrder(delivery);
-        for(OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-            totalPrice += orderItem.getTotalPrice();
+        for(OrderItem oi : orderItems) {
+            order.addOrderItem(oi);
+            totalPrice += oi.getTotalPrice();
         }
         order.price = totalPrice;
         order.created = LocalDateTime.now();
-        order.status = OrderStatus.주문완료;  //!!결제완료 시 주문완료 되도록 수정 필요
+        order.status = OrderStatus.결제대기중;  //!!결제완료 시 주문완료 수정 필요
 
         return order;
+    }
+
+    //==상태 변경 메서드==//
+    public Long updateOrderStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
+        return this.orderId;
     }
 
 

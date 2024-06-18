@@ -12,29 +12,26 @@ $(document).ready(function() {
         $('.form-check-input').prop('checked', false);
     });
 
-    // 초기 로드 시 각 상품의 총 가격 계산
+    // 초기화 시 각 아이템의 총 가격 계산 및 표시
     $('.item-count').each(function() {
-        var count = $(this).val(); // 초기 수량
-        var price = $(this).data('price'); // 상품 단가
-        var index = $(this).data('index'); // 인덱스
-
-        console.log('Index:', index, 'Count:', count, 'Price:', price); // 디버그 로그
-
-        var totalPrice = count * price; // 초기 총 가격 계산
-        $('#itemTotalPrice_' + index).text(totalPrice.toLocaleString()); // 천 단위로 표시하여 업데이트
+        updateItemTotalPrice($(this));
     });
 
-    // 수량 입력 시 총 가격 계산
+    // 수량 변경 시 총 가격 계산
     $('.item-count').on('input', function() {
-        var count = $(this).val(); // 입력된 수량
-        var price = $(this).data('price'); // 상품 단가
-        var index = $(this).data('index'); // 인덱스
-
-        console.log('Index:', index, 'Count:', count, 'Price:', price); // 디버그 로그
-
-        var totalPrice = count * price; // 총 가격 계산
-        $('#itemTotalPrice_' + index).text(totalPrice.toLocaleString()); // 천 단위로 표시하여 업데이트
+        updateItemTotalPrice($(this));
     });
+
+    // 아이템의 총 가격을 업데이트하는 함수
+    function updateItemTotalPrice($input) {
+        var index = $input.attr('id').split('_')[1];
+        var count = parseInt($input.val());
+        var price = parseInt($('#itemPrice_' + index).val());
+        var totalPrice = count * price;
+
+        $('#itemTotalPrice_' + index).text(totalPrice.toLocaleString() + ' 원');
+    }
+
 
     // 삭제 버튼 클릭 시
     $('button.custom-link').click(function(event) {
@@ -82,31 +79,32 @@ $(document).ready(function() {
     }
 
     // 주문하기 버튼 클릭 시
-    $('#orderButton').click(function() {
-        var orderItemDtos = [];
+    $('#btn-order').click(function() {
+        var cartListDtos = [];
 
         $('.form-check-input:checked').each(function() {
             var index = $(this).attr('id').split('_')[1]; // 체크박스 ID에서 인덱스 추출
-            var itemId = $(this).val();
+            var cartId = $('#cartId_' + index).val();
+            var itemId = $('#itemId_' + index).val();
             var itemName = $('#itemName_' + index).text(); // itemName 추가
             var itemCount = $('#itemCount_' + index).val();
-            var itemPrice = $('#itemCount_' + index).data('price');
-            var itemTotalPrice = itemCount * itemPrice;
+            var itemPrice = $('#itemPrice_' + index).val();
 
-            orderItemDtos.push({
+            cartListDtos.push({
+                cartId: cartId,
                 itemId: itemId,
                 itemName: itemName,
                 itemCount: itemCount,
-                itemTotalPrice: itemTotalPrice
+                itemPrice: itemPrice
             });
         });
 
-        if (orderItemDtos.length > 0) {
+        if (cartListDtos.length > 0) {
             $.ajax({
                 type: 'POST',
                 url: '/ypjs/cart/order', // 주문하기 컨트롤러 URL
                 contentType: 'application/json;charset=UTF-8',
-                data: JSON.stringify(orderItemDtos),
+                data: JSON.stringify(cartListDtos),
                 success: function(response) {
                     console.log(response);
                     location = "/ypjs/order/create";

@@ -47,13 +47,13 @@ public class OrderServiceTest {
 
         //주문상품리스트
         List<OrderItemDto> orderItems = new ArrayList<>();
-        orderItems.add(new OrderItemDto(1L, 1));
+        orderItems.add(new OrderItemDto(1L, 1, 1000));
 
         //주문DTO생성
-        OrderCreateDto o = new OrderCreateDto(memberId, d, orderItems);
+        OrderCreateDto o = new OrderCreateDto(d, orderItems);
 
         /*When*/
-        Long orderId = orderService.create(o);
+        Long orderId = orderService.create(1L, o);
 
         /*Then*/
         Order findOrder = orderRepository.findOne(orderId);

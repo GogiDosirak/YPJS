@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ItemQna {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_qna_id")
     private Long itemQnaId;  //상품문의번호
 

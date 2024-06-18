@@ -7,7 +7,7 @@ import ypjs.project.domain.Cart;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartAddDto;
-import ypjs.project.dto.cartdto.CartResponseDto;
+import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
 import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.repository.CartRepository;
@@ -69,10 +69,10 @@ public class CartService {
 
 
     //==멤버별 장바구니 전체 조회==//
-    public List<CartResponseDto> findAllByMemberId(Long memberId) {
+    public List<CartListDto> findAllByMemberId(Long memberId) {
         List<Cart> carts = cartRepository.findAllByMemberId(memberId);
-        List<CartResponseDto> cartDtos  = carts.stream()
-                .map(c -> new CartResponseDto(c))
+        List<CartListDto> cartDtos  = carts.stream()
+                .map(c -> new CartListDto(c))
                 .collect(toList());
 
         return cartDtos;
@@ -88,14 +88,4 @@ public class CartService {
         cartRepository.delete(cart);
     }
 
-
-    //==장바구니 상품으로 주문상품 생성하기==//
-    public List<OrderItemDto> createOrderItems(List<CartResponseDto> cartDtos) {
-        List<OrderItemDto> orderItemDtos = new ArrayList<>();
-        for(CartResponseDto c : cartDtos) {
-            OrderItemDto oI = new OrderItemDto(c.getItemId(),c.getItemCount());
-            orderItemDtos.add(oI);
-        }
-        return orderItemDtos;
-    }
 }

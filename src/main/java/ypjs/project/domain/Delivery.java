@@ -10,7 +10,7 @@ import ypjs.project.domain.enums.DeliveryStatus;
 public class Delivery {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
     private Long deliveryId;  //배송번호
 
