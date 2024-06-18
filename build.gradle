@@ -38,6 +38,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'junit:junit:4.13'  //ctrl+shift+t -> junit4 test class 생성
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+//
+
 
 	// 아임포트 관련 //
 	// Iamport REST Client

@@ -1,12 +1,16 @@
 package ypjs.project.dto.itemdto;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Getter
+@Data
 public class ItemRequestDto {
 
+    @NotNull(message = "Category ID not be null")
     private Long categoryId;
     private String itemName;
     private String itemContent;

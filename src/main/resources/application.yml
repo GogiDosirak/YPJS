@@ -5,6 +5,11 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+
+
+
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,6 +18,18 @@ spring:
         show_sql: true
         format_sql: true
         default_batch_fetch_size: 500
+
+
+
+
+    devtools:
+      livereload:
+        enabled: true
+      restart:
+        enabled: true
+    thymeleaf:
+      cache: false
+
 
 
 
