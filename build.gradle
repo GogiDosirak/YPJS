@@ -38,12 +38,14 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'junit:junit:4.13'  //ctrl+shift+t -> junit4 test class 생성
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation group: 'org.webjars', name: 'jquery', version: '3.6.0'
+
 
 	// 아임포트 관련 //
 	// Iamport REST Client
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
 
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	compileOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation 'junit:junit:4.13'
 }
 

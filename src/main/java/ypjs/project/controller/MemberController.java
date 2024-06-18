@@ -1,21 +1,17 @@
 package ypjs.project.controller;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeApiController {
-    @GetMapping("/")
-    public String index() {
-        return "/index";
+public class MemberController {
+    // 멤버 가입
+    @GetMapping("/ypjs/member/join")
+    public String join() {
+        return "member/join";
     }
-
-    @GetMapping("/index")
-    public String home() {
-        return "/index";
-    }
-
 
 }

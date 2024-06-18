@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Animated Login Form</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body>
+<img class="wave" src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/wave.png">
+<div class="container">
+    <div class="img">
+        <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/bg.svg">
+    </div>
+    <div class="login-content">
+        <form>
+            <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg">
+            <h2 class="title">Welcome</h2>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="div">
+                    <h5>Username</h5>
+                    <input type="text" id="accountId" name="accountId" class="input">
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Password</h5>
+                    <input type="password" id="password" name="password" class="input">
+                </div>
+            </div>
+            <a href="#">Forgot Password?</a>
+            <button class="btn" id="btn-login">로그인</button>
+            <script src="/js/member.js"></script>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
