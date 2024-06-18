@@ -31,8 +31,8 @@ public class MemberApiController {
 
         Long memberId = memberService.join(member);
         return new MemberDto.CreateMemberResponse(memberId);
-
     }
+
 
     private Member getJoinMemberData(MemberDto.CreateMemberRequest request) {
         Member member = new Member();

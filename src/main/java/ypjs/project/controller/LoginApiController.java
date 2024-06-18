@@ -15,25 +15,17 @@ public class LoginApiController {
     private final MemberService memberService;
 
     // 로그인
-    @PostMapping("/ypjs/member/login")
+    @PostMapping("ypjs/member/login")
     public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
         Long memberId = memberService.login(loginForm.getAccountId(),loginForm.getPassword());
         Member member = memberService.attendancePoint(memberId);
         LoginDto.ResponseLogin responseLogin = new LoginDto.ResponseLogin(member.getMemberId(),member.getAccountId(),member.getNickname());
         HttpSession session = request.getSession();
         session.setAttribute("member", responseLogin);
+        System.out.println("로그인 성공");
         return "redirect:/";
     }
 
-    // 로그아웃
-    @GetMapping("/ypjs/member/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-        }
-        return "redirect:/";
-    }
 
 
 }
