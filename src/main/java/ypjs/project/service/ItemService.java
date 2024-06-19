@@ -1,5 +1,7 @@
+
 package ypjs.project.service;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,12 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.dto.itemdto.ItemFileDto;
-import ypjs.project.dto.itemdto.ItemListDto;
-import ypjs.project.dto.itemdto.ItemRequestDto;
-import ypjs.project.dto.itemdto.ItemUpdateDto;
+import ypjs.project.domain.Member;
+import ypjs.project.dto.itemdto.*;
 import ypjs.project.repository.CategoryRepository;
 import ypjs.project.repository.ItemRepository;
+import ypjs.project.repository.MemberRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,13 +29,16 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     private  final CategoryRepository categoryRepository;
+    private  final MemberRepository memberRepository;
 
 
 
     //상품등록
     @Transactional
-    public Item saveItem(ItemRequestDto itemRequestDto, ItemFileDto itemFileDto, MultipartFile file) throws Exception {
+    public Item saveItem(ItemRequestDto itemRequestDto, Long memberId, ItemFileDto itemFileDto, MultipartFile file) throws Exception {
         Category category = categoryRepository.findOneCategory(itemRequestDto.getCategoryId());
+
+        Member member = memberRepository.findOne(memberId);
 
         String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/files"; // 저장할 경로를 지정
         UUID uuid = UUID.randomUUID(); // 식별자(이름) 랜덤 생성
@@ -45,6 +49,7 @@ public class ItemService {
 
         Item item = new Item(
                 category,
+                member,
                 itemRequestDto.getItemName(),
                 itemRequestDto.getItemContent(),
                 itemRequestDto.getItemPrice(),
@@ -79,7 +84,8 @@ public class ItemService {
 
     //수정
     @Transactional
-    public void updateItem(Long itemId, ItemUpdateDto itemUpdateDto, ItemFileDto itemFileDto, MultipartFile file) throws IOException {
+    public void updateItem(Long itemId, ItemUpdateDto itemUpdateDto, ItemFileDto itemFileDto,
+                           MultipartFile file) throws IOException {
         Item findItem = itemRepository.findOne(itemId);
         Category category = categoryRepository.findOneCategory(itemUpdateDto.getCategoryId());
 
@@ -100,6 +106,8 @@ public class ItemService {
                     itemFileDto.getItemFileName(), itemFileDto.getItemFilePath()
             );
         }
+
+
 
         findItem.changeItem(category,
                 itemUpdateDto.getItemName(),
@@ -140,15 +148,15 @@ public class ItemService {
 
 
     //카테고리 당 아이템 조회
-//    public List<ItemListDto> findAllItem(Long categoryId) {
-//        List<Item> items = itemRepository.findAllItem(categoryId);
-//
-//        List<ItemListDto> result = items.stream()
-//                .map(ItemListDto::new)
-//                .collect(Collectors.toList());
-//
-//        return result;
-//    }
+    public List<ItemListDto> findAllCategoryItem(Long categoryId, Pageable pageable) {
+        List<Item> items = itemRepository.findAllItems(categoryId,pageable);
+
+        List<ItemListDto> result = items.stream()
+                .map(ItemListDto::new)
+                .collect(Collectors.toList());
+
+        return result;
+    }
 
 
 
@@ -191,6 +199,23 @@ public class ItemService {
 
     }
 
+
+
+
+    //리스트 보려고 만듦
+//    public List<ItemOneDto> findAll() {
+//        List<Item> items = itemRepository.findAllItems();
+//
+//        List<ItemOneDto> result = items.stream()
+//                .map(ItemOneDto::new)
+//                .collect(Collectors.toList());
+//
+//        return result;
+//    }
+
+
+
+
 //    public List<ItemListDto> findAllItem(String keyword,  String sortBy) {
 //        List<Item> items = itemRepository.findAllItem(keyword, sortBy);
 //
@@ -215,9 +240,3 @@ public class ItemService {
 
 
 }
-
-
-
-
-
-

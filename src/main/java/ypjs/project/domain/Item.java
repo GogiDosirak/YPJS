@@ -30,6 +30,10 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemReview> itemReviews = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
+
 
     @Column(name = "ITEM_NAME")
     private String itemName;
@@ -69,8 +73,9 @@ public class Item {
 
     public Item() {}
 
-    public Item(Category category, String itemName, String itemContent, int itemPrice, int itemStock) {
+    public Item(Category category, Member member, String itemName, String itemContent, int itemPrice, int itemStock) {
         this.category = category;
+        this.member = member;
         this.itemName = itemName;
         this.itemContent = itemContent;
         this.itemPrice = itemPrice;

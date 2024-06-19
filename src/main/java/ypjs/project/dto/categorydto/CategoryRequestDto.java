@@ -1,11 +1,14 @@
 package ypjs.project.dto.categorydto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 import lombok.Getter;
 import ypjs.project.domain.Category;
 
-@Getter
+@Data
 public class CategoryRequestDto {
+
+
 
     @NotNull
     private Long categoryParent;
@@ -15,7 +18,11 @@ public class CategoryRequestDto {
     public CategoryRequestDto() {}
     public CategoryRequestDto(Long categoryParent, String categoryName) {
 
+
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;
     }
+
+
+
 }

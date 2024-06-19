@@ -1,6 +1,7 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Category;
@@ -8,8 +9,11 @@ import ypjs.project.dto.categorydto.CategoryListDto;
 import ypjs.project.dto.categorydto.CategoryRequestDto;
 import ypjs.project.dto.categorydto.CategoryUpdateDto;
 import ypjs.project.repository.CategoryRepository;
+import ypjs.project.repository.ItemRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ItemRepository itemRepository;
 
     //category등록
 //    @Transactional
@@ -47,16 +52,24 @@ public class CategoryService {
     }
 
 
+
     //categoryParentId조회
     public List<Category> findCategoryParent(Category categoryParent) {
         return categoryRepository.findByParentId(categoryParent);
     }
 
 
+
+
+
+
+
     //category전체 조회
-    public List<CategoryListDto> findAllCategory(CategoryListDto categoryListDto) {
-      // List<Category> categories = categoryRepository.findAll();
-       List<Category> categories = categoryRepository.findAllWithItem();
+    public List<CategoryListDto> findAllCategory(Long categoryId, String keyword, Pageable pageable) {
+
+       //List<Category> categories = categoryRepository.findAllWithItem();
+        List<Category> categories = categoryRepository.findAll(categoryId, keyword, pageable);
+
 
         List<CategoryListDto> result = categories.stream()
                 .map(c -> new CategoryListDto(c))
@@ -64,6 +77,8 @@ public class CategoryService {
 
         return result;
     }
+
+
 
 
 
@@ -76,6 +91,7 @@ public class CategoryService {
         Category parentCategory = categoryRepository.findOneCategory(categoryUpdateDto.getCategoryParent());
 
         category.changeCategory(
+                categoryUpdateDto.getCategoryId(),
                 parentCategory,
                 categoryUpdateDto.getCategoryName()
         );

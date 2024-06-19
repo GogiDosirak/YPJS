@@ -22,6 +22,17 @@
      .custom-mt {
         margin-top: -20px; /* 원하는 간격 값으로 설정 */
     }
+<!--    가운데 정렬-->
+
+    .centered-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #itemContent {
+            text-align: center;
+        }
 
 </style>
 
@@ -53,7 +64,8 @@
             <i class="fa fa-star text-warning"></i>
             <i class="fa fa-star text-warning"></i>
             <i class="fa fa-star text-secondary"></i>
-            <span class="list-inline-item text-dark"> 4.8 |  Reviews</span>
+            <span class="list-inline-item text-dark"> <span id="itemRatings" class="font-weight-bold" th:text="${item.itemRatings}">
+            </span>   <a  th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">|  Reviews </a></span>
         </p>
     </div>
 </div>
@@ -103,7 +115,6 @@
         </div>
     </div>
 </section>
-
 
 
 

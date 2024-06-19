@@ -4,6 +4,7 @@ import lombok.Getter;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemReview;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,8 @@ public class ItemReviewListDto {
     private int itemScore;
     private String itemReviewName;
     private String itemReviewContent;
+    private LocalDateTime itemReviewCreateDate;
+
 
 
     public ItemReviewListDto() {}
@@ -26,6 +29,7 @@ public class ItemReviewListDto {
         itemScore = itemReview.getItemScore();
         itemReviewName = itemReview.getItemReviewName();
         itemReviewContent = itemReview.getItemReviewContent();
+        itemReviewCreateDate = itemReview.getItemReviewCreateDate();
 
 
     }

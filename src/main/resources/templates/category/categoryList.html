@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5">
+    카테고리 리스트
+</div>
+<!-- End Content -->
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+<!-- JS 파일 포함 -->
+<script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/summernote-lite.js"></script>
+<script src="/js/summernote-ko-KR.js"></script>
+<script src="/js/item/category.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+
+
+
+
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+        <form  class="col-md-9 m-auto" method="post"  >
+            <!-- 폼 요소들 -->
+            <div class="row">
+
+
+
+                <style>
+                    .category-box {
+                        border: 1px solid #ccc;
+                        padding: 10px;
+                        margin-bottom: 10px;
+                    }
+
+                    .category-label {
+                        font-weight: bold;
+                    }
+                </style>
+
+                <div th:each="category : ${categories}" class="category-box">
+                    <div>
+                        <span class="category-label">카테고리 번호 </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a th:href="@{/ypjs/category/get/{categoryId}(categoryId=${category.categoryId})}" th:text="${category.categoryId}"></a>
+                    </div>
+                    <div>
+                        <span class="category-label">카테고리 부모 번호 </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span th:text="${category.categoryParent}"></span>
+                    </div>
+                    <div>
+                        <span class="category-label">카테고리 이름 </span>
+                        &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span th:text="${category.categoryName}"></span>
+                    </div>
+                </div>
+
+
+
+
+                <!-- End Contact -->
+
+            </div>
+        </form>
+
+</div>
+</div>
+
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>
