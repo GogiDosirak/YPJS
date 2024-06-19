@@ -27,9 +27,9 @@ public class ItemReviewService {
 
     //리뷰등록
     @Transactional
-    public ItemReview saveItemReview(ItemReviewDto itemReviewDto) {
+    public ItemReview saveItemReview(ItemReviewDto itemReviewDto, Long memberId) {
         Item item = itemRepository.findOne(itemReviewDto.getItemId());
-        Member member = memberRepository.findOne(itemReviewDto.getMemberId());
+        Member member = memberRepository.findOne(memberId);
 
 
         ItemReview itemReview = new ItemReview(
@@ -54,6 +54,8 @@ public class ItemReviewService {
 
         return itemReview;
     }
+
+
 
 
     //리뷰조회
@@ -88,11 +90,9 @@ public class ItemReviewService {
         }
 
         Item item = itemRepository.findOne(itemReviewDto.getItemId());
-        Member member = memberRepository.findOne(itemReviewDto.getMemberId());
 
         itemReview.changeItemReview(
                 item,
-                member,
                 itemReviewDto.getItemScore(),
                 itemReviewDto.getItemReviewName(),
                 itemReviewDto.getItemReviewContent()

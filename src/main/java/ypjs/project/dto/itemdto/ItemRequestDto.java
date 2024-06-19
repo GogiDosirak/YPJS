@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import ypjs.project.domain.Member;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class ItemRequestDto {
     private int itemStock;
 
 
+
     public ItemRequestDto() {}
 
     public ItemRequestDto(Long categoryId, String itemName, String itemContent, int itemPrice, int itemStock) {
@@ -27,5 +29,11 @@ public class ItemRequestDto {
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
 
+
     }
+
+
+
+
+
 }

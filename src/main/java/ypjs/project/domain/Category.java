@@ -45,8 +45,14 @@ public class Category {
     }
 
 
+    //카테고리 부모 롱타입으로
+    public void LongCategory(Category categoryParent) {
+        this.categoryParent = categoryParent;
+    }
+
     //카테고리 변경 메서드
-    public Long changeCategory (Category categoryParent, String categoryName) {
+    public Long changeCategory (Long categoryId, Category categoryParent, String categoryName) {
+        this.categoryId = categoryId;
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;
 

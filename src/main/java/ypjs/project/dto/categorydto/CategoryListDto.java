@@ -3,6 +3,7 @@ package ypjs.project.dto.categorydto;
 import lombok.Getter;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
+import ypjs.project.dto.itemdto.ItemOneDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,6 +38,9 @@ public class CategoryListDto {
                 .map(item -> new ItemDto(item))
                 .collect(Collectors.toList());
 
+    }
+
+    public CategoryListDto(List<CategoryListDto> categoryList, List<ItemOneDto> items) {
     }
 
 

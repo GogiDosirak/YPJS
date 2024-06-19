@@ -2,6 +2,9 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,8 +28,13 @@ public class ItemReview {
     @Column(name = "ITEM_REVIEW_NAME")
     private String itemReviewName;
 
-    @Column(name = "ITEM_REVIEW_CONTENT")
+    @Lob
+    @Column(name = "ITEM_REVIEW_CONTENT", columnDefinition = "LONGTEXT")
     private String itemReviewContent;
+
+    @Column(name = "ITEM_CREATEDATE")
+    @CreatedDate
+    private LocalDateTime itemReviewCreateDate;
 
 
     //생성자
@@ -40,14 +48,14 @@ public class ItemReview {
         this.itemScore = itemScore;
         this.itemReviewName = itemReviewName;
         this.itemReviewContent = itemReviewContent;
+        this.itemReviewCreateDate = LocalDateTime.now();
     }
 
 
 
     //리뷰변경 메서드
-    public Long changeItemReview(Item item,Member member, int itemScore, String itemReviewName, String itemReviewContent) {
+    public Long changeItemReview(Item item, int itemScore, String itemReviewName, String itemReviewContent) {
         this.item = item;
-        this.member = member;
         this.itemScore = itemScore;
         this.itemReviewName = itemReviewName;
         this.itemReviewContent = itemReviewContent;

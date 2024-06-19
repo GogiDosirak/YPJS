@@ -22,23 +22,7 @@ public class ItemOneDto {
 
     private List<ItemReviewListDto> itemReviews;
 
-
-    public ItemOneDto(Long itemId, String itemName, String itemContent, int itemPrice, Double itemRatings,
-                      LocalDateTime itemCreateDate, int itemCnt, List<ItemReview> itemReviews) {
-        this.itemId = itemId;
-        this.itemName = itemName;
-        this.itemContent = itemContent;
-        this.itemPrice = itemPrice;
-        this.itemRatings = itemRatings;
-        this.itemCreateDate = itemCreateDate;
-        this.itemCnt = itemCnt;
-
-        this.itemReviews = itemReviews.stream()
-                .map(ItemReviewListDto::new)
-                .collect(Collectors.toList());
-    }
-
-
+    
     public ItemOneDto(Item item) {
         this.itemId = item.getItemId();
         this.itemName = item.getItemName();

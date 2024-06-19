@@ -1,6 +1,7 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,9 @@ public class ItemRepository {
         return em.find(Item.class, ItemId);
 
     }
+
+
+
 
 
 
@@ -65,11 +69,16 @@ public class ItemRepository {
 
 
     //(카테고리당 아이템 조회)
-//    public List<Item> findAllItem(Long categoryId) {
-//        return em.createQuery("select i from Item i where i.category.categoryId = :categoryId", Item.class)
-//                .setParameter("categoryId", categoryId)
-//                .getResultList();
-//    }
+    public List<Item> findAllItems(Long categoryId, Pageable pageable) {
+        String queryString = "select i from Item i where i.category.categoryId = :categoryId order by i.itemId desc";
+
+        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
+                .setParameter("categoryId", categoryId)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        return query.getResultList();
+    }
 
 
 
@@ -169,35 +178,6 @@ public class ItemRepository {
         return query.getResultList();
     }
 
-
-//    public List<Item> findAllItem(String keyword, String sortBy) {
-//        String queryString = "select i from Item i";
-//
-//        // 검색 조건 추가
-//        boolean hasKeyword = (keyword != null && !keyword.isEmpty());
-//        if (hasKeyword) {
-//            queryString += " where i.itemName like :keyword";
-//        }
-//
-//        // 기본 정렬 조건
-//        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
-//
-//        // 추가 정렬 조건
-//        if ("itemRatings".equals(sortBy)) {
-//            queryString += ", i.itemRatings desc";
-//        } else if ("likeCount".equals(sortBy)) {
-//            queryString += ", i.likeCount desc";
-//        }
-//
-//        TypedQuery<Item> query = em.createQuery(queryString, Item.class);
-//
-//        // 검색 키워드 파라미터 설정
-//        if (hasKeyword) {
-//            query.setParameter("keyword", "%" + keyword + "%");
-//        }
-//
-//        return query.getResultList();
-//    }
 
 
     //검색기능
