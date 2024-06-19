@@ -51,7 +51,6 @@ public class MemberDto {
         @NotBlank(message = "핸드폰번호를 입력해주세요.")
         private String phonenumber;
 
-        private LocalDateTime joinDate;
     }
 
     @Data
