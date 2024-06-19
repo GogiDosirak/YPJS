@@ -28,7 +28,9 @@ public class PaymentRepository {
     //==paymentId 로 오더 찾기
     public Payment findByOrderId(Long orderId) {
         try {
-            return em.createQuery("SELECT p FROM Payment p WHERE p.order.orderId = :orderId", Payment.class)
+            return em.createQuery("SELECT p FROM Payment p" +
+                            " JOIN FETCH p.order o" +
+                            " WHERE o.orderId = :orderId", Payment.class)
                     .setParameter("orderId", orderId)
                     .getSingleResult();
         } catch (NoResultException e) {
@@ -36,17 +38,26 @@ public class PaymentRepository {
         }
     }
 
-    //회원당 결제 내역 조회
+    // 회원당 결제 내역 조회
     public List<Payment> findByOrderMemberId(Long memberId, int offset, int limit) {
-        return em.createQuery("SELECT p FROM Payment p WHERE p.order.member.memberId = :memberId", Payment.class)
+        return em.createQuery(
+                        "SELECT p FROM Payment p " +
+                                "JOIN FETCH p.order o " +
+                                "JOIN FETCH o.member m " +
+                                "WHERE m.memberId = :memberId", Payment.class)
                 .setParameter("memberId", memberId)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
     }
-    //회원 총 결제 내역 수 조회
+
+    // 회원 총 결제 내역 수 조회
     public long countByOrderMemberId(Long memberId) {
-        return em.createQuery("SELECT COUNT(p) FROM Payment p WHERE p.order.member.memberId = :memberId", Long.class)
+        return em.createQuery(
+                        "SELECT COUNT(p) FROM Payment p " +
+                                "JOIN p.order o " +
+                                "JOIN o.member m " +
+                                "WHERE m.memberId = :memberId", Long.class)
                 .setParameter("memberId", memberId)
                 .getSingleResult();
     }
@@ -64,7 +75,7 @@ public class PaymentRepository {
                 .findFirst();
     }
 
-    public Optional<Order> findOrderAndPayment(Long orderId) {
+    public Optional<Order> findOrderAndPayment(String orderId) {
         return em.createQuery(
                         "select o from Order o" +
                                 " left join fetch o.payment p" +
@@ -72,5 +83,13 @@ public class PaymentRepository {
                 .setParameter("orderId", orderId)
                 .getResultStream()
                 .findFirst();
+    }
+
+    public Payment findPaymentByPaymentUid(String paymentUid){
+        return em.createQuery(
+                "select p from Payment p" +
+                        " where p.payPaymentUid = :paymentUid", Payment.class)
+                .setParameter("paymentUid", paymentUid)
+                .getSingleResult();
     }
 }

@@ -34,47 +34,51 @@ public class PaymentService {
         return orderRepository.findOne(orderId);
     }
 
-    //주문 생성
-    public RequestPayDto makeRequestPayDto(Long orderId){
-        Order order = paymentRepository.findOrderAndPaymentAndMember(orderId)
-                .orElseThrow(()->new IllegalArgumentException("주문이 없습니다."));
+    // 주문 정보를 DTO로 변환하는 메서드
+    public RequestPayDto makeRequestPayDto(Long orderId) {
+        Order order = findOrder(orderId);
+        return createRequestPayDto(order);
+    }
 
+    // 주문 정보를 기반으로 DTO를 생성하는 메서드
+    private RequestPayDto createRequestPayDto(Order order) {
         // DTO 를 생성하여 반환
         return new RequestPayDto(
-                order.getOrderId(), // 주문번호
-                order.getOrderItems().toString(), // 주문상품 번호
-                order.getMember().getName(), // 주문자 이름
-                order.getPrice(), // 주문 금액
-                order.getMember().getEmail(), // 주문자 이메일
+                order.getOrderId(),
+                order.getOrderItems().toString(),
+                order.getMember().getName(),
+                order.getPrice(),
+                order.getMember().getEmail(),
                 order.getDelivery().getDeliveryAddress().getAddress()+ " " + order.getDelivery().getDeliveryAddress().getAddressDetail(),// 구매자 주소
-                order.getMember().getPhonenumber(), //주문자 전화번호
-                order.getDelivery().getDeliveryAddress().getZipcode() //주문자 주소2
+                order.getMember().getPhonenumber(),
+                order.getDelivery().getDeliveryAddress().getZipcode()
         );
     }
 
-    //주문 저장메서드
-    public Long findAndCreatePayment(Long orderId){
-
-        //이미 주문정보가 있을 때
-        ypjs.project.domain.Payment findPayment = paymentRepository.findByOrderId(orderId);
-        if(findPayment!=null){
-            if(findPayment.getPayStatus().equals(PayStatus.OK)){
-                throw new IllegalStateException("이미 완료된 주문입니다");
-            }
-            return findPayment.getPayId();
+    //주문 저장 및 결제 생성 메서드
+    @Transactional
+    public Long findAndCreatePayment(Long orderId) {
+        // 이미 결제된 주문인지 확인
+        ypjs.project.domain.Payment existingPayment = paymentRepository.findByOrderId(orderId);
+        if (existingPayment != null && existingPayment.getPayStatus().equals(PayStatus.OK)) {
+            throw new IllegalStateException("이미 완료된 주문입니다");
         }
 
-        //주문정보 생성
+        // 주문 정보 조회
         Order order = orderRepository.findOne(orderId);
+        if (order == null) {
+            throw new IllegalArgumentException("주문이 존재하지 않습니다");
+        }
 
-        //주문자 정보 생성
+        // 주문 정보가 없으면 예외 처리
+
+        // 주문자 정보 조회
         Member member = order.getMember();
 
-        //주문 정보 생성
+        // 결제 정보 생성 및 저장
         ypjs.project.domain.Payment payment = ypjs.project.domain.Payment.createPayment(order, order.getPrice(), member.getName(), member.getPhonenumber(), member.getEmail());
-
-        //주문 정보 저장
         paymentRepository.save(payment);
+
         return payment.getPayId();
     }
 
@@ -95,10 +99,8 @@ public class PaymentService {
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
 
-            // 주문내역 조회
-            Order order = paymentRepository.findOrderAndPayment(request.getOrderId())
-                    .orElseThrow(() -> new IllegalArgumentException("주문 내역이 없습니다."));
-
+            Order order = paymentRepository.findOrderAndPayment(request.getOrderUid())
+                    .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
             // 결제 완료가 아니면
             if(!iamportResponse.getResponse().getStatus().equals("paid")) {
