@@ -87,7 +87,6 @@ public class PaymentController {
     }
 
     // 결제 내역 조회 페이지
-
     @GetMapping("/list/{memberId}")
     public String listPayments(@PathVariable(name = "memberId") Long memberId,
                                @RequestParam(name = "page", defaultValue = "0") int page,
