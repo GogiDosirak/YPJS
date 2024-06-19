@@ -1,4 +1,6 @@
-
+<!DOCTYPE html>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <style>
 
     body {
@@ -80,17 +82,23 @@
       color: #ffffff;
     }
 </style>
-<form>
+<head>
+    <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<form id="request">
     <label>
         <p class="label-txt">아이디</p>
-        <input type="text" class="input" id="accountId" name="acoountId">
+        <input type="text" class="input" id="accountId" name="accountId">
         <div class="line-box">
             <div class="line"></div>
         </div>
     </label>
     <label>
         <p class="label-txt">비밀번호</p>
-        <input type="text" class="input" id="password" name="password">
+        <input type="password" class="input" id="password" name="password">
         <div class="line-box">
             <div class="line"></div>
         </div>
@@ -98,6 +106,13 @@
     <label>
         <p class="label-txt">이름</p>
         <input type="text" class="input" id="name" name="name">
+        <div class="line-box">
+            <div class="line"></div>
+        </div>
+    </label>
+    <label>
+        <p class="label-txt">닉네임</p>
+        <input type="text" class="input" id="nickname" name="nickname">
         <div class="line-box">
             <div class="line"></div>
         </div>
@@ -125,7 +140,7 @@
     </label>
     <label>
         <p class="label-txt">주소 상세</p>
-        <input type="text" class="input" id="address_detail" name="address_detail">
+        <input type="text" class="input" id="addressDetail" name="addressDetail">
         <div class="line-box">
             <div class="line"></div>
         </div>
@@ -151,18 +166,9 @@
             <div class="line"></div>
         </div>
     </label>
-    <button type="submit">submit</button>
+    <button class="btn" id="btn-join">회원가입</button>
+    <script src="/js/member.js"></script>
 </form>
-<script>
-    $(document).ready(function(){
-        $('.input').focus(function(){
-        $(this).parent().find(".label-txt").addClass('label-active');
-        });
+</body>
+</html>
 
-        $(".input").focusout(function(){
-        if ($(this).val() == '') {
-            $(this).parent().find(".label-txt").removeClass('label-active');
-        };
-        });
-    });
-</script>

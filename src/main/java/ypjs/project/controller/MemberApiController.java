@@ -25,7 +25,7 @@ public class MemberApiController {
     private final MemberService memberService;
 
     // 멤버 가입
-    @PostMapping("/ypjs/member/join")
+    @PostMapping("ypjs/member/join")
     public MemberDto.CreateMemberResponse join(@RequestBody @Valid MemberDto.CreateMemberRequest request) {
         Member member = getJoinMemberData(request);
 
