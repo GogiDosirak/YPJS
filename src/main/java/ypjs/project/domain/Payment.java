@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.PayStatus;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -47,13 +46,22 @@ public class Payment {
         payment.payEmail = payEmail;
         payment.payDate = LocalDateTime.now();
         payment.payStatus = PayStatus.READY;
-        payment.payPaymentUid = UUID.randomUUID().toString();
         return payment;
     }
 
-    //==결제 상태처리 메서드==//
+    //==결제 완료 상태처리 메서드==//
     public void changePaymentBySuccess(PayStatus payStatus, String payPaymentUid){
         this.payStatus = payStatus;
         this.payPaymentUid = payPaymentUid;
+    }
+
+    //==결제 취소 상태처리 메서드==//
+    public void changePaymentStatusCanceled(){
+        if(payStatus.equals(PayStatus.READY)){
+            throw new IllegalStateException("결제 전의 주문은 취소가 불가능 합니다.");
+        }else if(payStatus.equals(PayStatus.CANCEL)){
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+        this.payStatus = PayStatus.CANCEL;
     }
 }

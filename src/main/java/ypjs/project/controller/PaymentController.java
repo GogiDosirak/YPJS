@@ -82,7 +82,7 @@ public class PaymentController {
     //결제 실패시 화면 연결
     @GetMapping("/fail-payment")
     public String failPaymentPage() {
-        //결제 실패한걸 오더 기록에 남기는 메서드
+        //todo : 결제 실패한걸 오더 기록에 남기는 메서드
         return "payment/fail-payment";
     }
 
@@ -100,11 +100,8 @@ public class PaymentController {
         model.addAttribute("payments", payments);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("memberId", memberId);  // 페이지네이션을 위해 memberId를 모델에 추가
 
         return "payment/list";
     }
-
-
-
-
 }

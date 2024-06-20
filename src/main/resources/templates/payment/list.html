@@ -61,8 +61,27 @@
         </div>
     </section>
     <!-- Close Content -->
-</div>
 
+</div>
+<!-- 페이지네이션 시작-->
+<ul class="pagination justify-content-center">
+    <li class="page-item" th:classappend="${currentPage == 0} ? disabled">
+        <a class="page-link" th:href="@{/ypjs/payment/list/{memberId}(memberId=${memberId}, page=0, size=${size})}">&laquo;</a>
+    </li>
+    <li class="page-item" th:classappend="${currentPage == 0} ? disabled">
+        <a class="page-link" th:href="@{/ypjs/payment/list/{memberId}(memberId=${memberId}, page=${currentPage - 1}, size=${size})}">&lsaquo;</a>
+    </li>
+    <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active'">
+        <a class="page-link" th:href="@{/ypjs/payment/list/{memberId}(memberId=${memberId}, page=${pageNum}, size=${size})}" th:text="${pageNum + 1}"></a>
+    </li>
+    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? disabled">
+        <a class="page-link" th:href="@{/ypjs/payment/list/{memberId}(memberId=${memberId}, page=${currentPage + 1}, size=${size})}">&rsaquo;</a>
+    </li>
+    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? disabled">
+        <a class="page-link" th:href="@{/ypjs/payment/list/{memberId}(memberId=${memberId}, page=${totalPages - 1}, size=${size})}">&raquo;</a>
+    </li>
+</ul>
+<!-- 페이지네이션 끝-->
 <footer th:replace="frame/footer :: footer"></footer>
 </body>
 </html>

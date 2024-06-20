@@ -3,7 +3,6 @@ package ypjs.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.annotations.BatchSize;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.domain.enums.OrderStatus;
 
@@ -91,4 +90,17 @@ public class Order {
     @JsonIgnore
     @OneToOne(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Payment payment;
+
+    //== 주문 아이템 이름 정보 메서드 ==//
+    public String getOrderItemsNameInfo() {
+        if (orderItems.isEmpty()) {
+            return "주문 상품이 없습니다.";
+        }
+
+        OrderItem firstOrderItem = orderItems.get(0);
+        String firstItemName = firstOrderItem.getItem().getItemName();
+        int remainingItemCount = orderItems.size() - 1;
+
+        return firstItemName + " 외 " + remainingItemCount + "개";
+    }
 }
