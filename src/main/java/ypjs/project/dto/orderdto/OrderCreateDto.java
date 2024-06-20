@@ -14,6 +14,6 @@ public class OrderCreateDto {
 
     private DeliveryDto deliveryDto;  //배송정보
 
-    private List<OrderItemDto> orderItemDtos;  //주문상품DTO리스트
+    private List<OrderItemRequestDto> orderItemRequestDtos;  //주문상품요청DTO리스트
 
 }

@@ -15,7 +15,7 @@ import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.OrderStatus;
 import ypjs.project.dto.deliverydto.DeliveryDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
+import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.OrderRepository;
 
@@ -46,8 +46,8 @@ public class OrderServiceTest {
         DeliveryDto d = new DeliveryDto("A", "01012345678", address);
 
         //주문상품리스트
-        List<OrderItemDto> orderItems = new ArrayList<>();
-        orderItems.add(new OrderItemDto(1L, 1, 1000));
+        List<OrderItemRequestDto> orderItems = new ArrayList<>();
+        orderItems.add(new OrderItemRequestDto(1L, 1, 1000));
 
         //주문DTO생성
         OrderCreateDto o = new OrderCreateDto(d, orderItems);

@@ -1,12 +1,16 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.DeliveryStatus;
 
 @Entity
 @Table(name = "delivery")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Delivery {
 
     @Id
@@ -27,7 +31,7 @@ public class Delivery {
     @Column(name = "delivery_address")
     private Address deliveryAddress;  //배송주소
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "delivery_status")
     private DeliveryStatus status;  //배송상태
 

@@ -41,8 +41,14 @@ public class CartController {
 
     //==장바구니 추가==//
     @PostMapping("/add")
-    public void add(@RequestBody @Valid CartAddDto cartAddDto) {
+    public ResponseEntity add(@RequestBody @Valid CartAddDto cartAddDto, HttpServletRequest request) {
+        System.out.println("**장바구니 추가 요청됨");
+
+        if(cartAddDto.getItemId() == cartService.findItemIdByMemberId(cartAddDto.getMemberId())) {
+            return ResponseEntity.badRequest().body("장바구니에 이미 추가된 상품입니다.");
+        }
         cartService.add(cartAddDto);
+        return ResponseEntity.ok().build();
     }
 
     //==장바구니 수량 변경==//

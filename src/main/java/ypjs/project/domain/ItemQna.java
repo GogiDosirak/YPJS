@@ -46,7 +46,7 @@ public class ItemQna {
     @Column(name = "item_qna_a_updated")
     private LocalDateTime aUpdated;  //상품문의답변수정일시
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_qna_status")
     private ItemQnaStatus status;  //상품문의상태
 

@@ -122,12 +122,13 @@
                                                 </ul>
                                         </div>
 
+                                        <input type="hidden" th:value="${cart.itemPrice}" th:id="${'itemPrice_' + iterStat.index}">
+
                                         <div class="col-md-2">
                                             <div class="d-flex justify-content-center">
                                                 <ul class="list-inline mb-0">
                                                     <li class="list-inline-item">
-                                                        <span th:text="${cart.itemCount * cart.itemPrice}" th:id="'itemTotalPriceView_' + ${iterStat.index}"></span>
-                                                        <input type="hidden" th:value="${cart.itemCount * cart.itemPrice}" th:id="${'itemTotalPrice_' + iterStat.index}">
+                                                        <span th:text="${cart.itemCount * cart.itemPrice}" th:id="'itemTotalPrice_' + ${iterStat.index}"></span>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -177,31 +178,31 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="modalReceiver">받으실 분:</label>
                         <input type="text" class="form-control" id="modalReceiver">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="modalPhoneNumber">연락처:</label>
                         <input type="text" class="form-control" id="modalPhoneNumber">
                     </div>
                     <fieldset>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="modalAddress">주소:</label>
                             <input type="text" class="form-control" id="modalAddress">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="modalAddressDetail">상세주소:</label>
                             <input type="text" class="form-control" id="modalAddressDetail">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-3">
                             <label for="modalZipcode">우편번호:</label>
                             <input type="text" class="form-control" id="modalZipcode">
                         </div>
                     </fieldset>
                 </form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-success" id="btn-saveDelivery">저장</button>
             </div>
         </div>
