@@ -78,18 +78,32 @@ public class PaymentService {
         return payment.getPayId();
     }
 
+    public String findOnePaymentPayPaymentUid(Long paymentId){
+        ypjs.project.domain.Payment payment = paymentRepository.findOne(paymentId);
+        if (payment == null) {
+            throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다. paymentId: " + paymentId);
+        }
+        return payment.getPayPaymentUid();
+    }
+
+
     //결제 취소 메서드
     public void cancelPayment(Long payId){
         ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
 
+        if(payment == null) {
+            throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다. payId: " + payId);
+        }
+
         try {
             // 결제건 조회 후 취소
             iamportClient.cancelPaymentByImpUid(new CancelData(payment.getPayPaymentUid(), true, new BigDecimal(payment.getPayPrice())));
-
+            payment.changePaymentStatusCanceled();
         } catch (IamportResponseException | IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     // 결제 내역 조회 메서드
     public List<ypjs.project.domain.Payment> findPaymentsByMemberId(Long memberId, int offset, int limit) {
