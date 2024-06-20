@@ -16,16 +16,15 @@ public class PaymentRepository {
 
     private final EntityManager em;
 
-    //저장//왜때문인지 이렇게 안하면 API 오류남
-    public void save(Payment payment) {
-        if (payment.getPayId() == null) {
-            em.persist(payment);
-        } else {
-            em.merge(payment);
-        }
+    //저장
+    public void save(Payment payment) {em.persist(payment);}
+
+    //결제 단건 조회
+    public Payment findOne(Long paymentId) {
+        return em.find(Payment.class, paymentId);
     }
 
-    //==paymentId 로 오더 찾기
+    //==orderId로 payment 찾기
     public Payment findByOrderId(Long orderId) {
         try {
             return em.createQuery("SELECT p FROM Payment p" +
@@ -38,7 +37,7 @@ public class PaymentRepository {
         }
     }
 
-    // 회원당 결제 내역 조회
+    // 회원의 결제 내역 조회
     public List<Payment> findByOrderMemberId(Long memberId, int offset, int limit) {
         return em.createQuery(
                         "SELECT p FROM Payment p " +
@@ -51,7 +50,7 @@ public class PaymentRepository {
                 .getResultList();
     }
 
-    // 회원 총 결제 내역 수 조회
+    // 회원의 총 결제 내역 수 조회
     public long countByOrderMemberId(Long memberId) {
         return em.createQuery(
                         "SELECT COUNT(p) FROM Payment p " +
@@ -63,7 +62,7 @@ public class PaymentRepository {
     }
 
 
-    //==Payment 관련 쿼리
+    //==Order 찾기(+ payment, member)
     public Optional<Order> findOrderAndPaymentAndMember(Long orderId) {
         return em.createQuery(
                         "select o from Order o" +
@@ -75,7 +74,8 @@ public class PaymentRepository {
                 .findFirst();
     }
 
-    public Optional<Order> findOrderAndPayment(String orderId) {
+    //==Order 찾기(+ payment)
+    public Optional<Order> findOrderAndPayment(Long orderId) {
         return em.createQuery(
                         "select o from Order o" +
                                 " left join fetch o.payment p" +
@@ -83,13 +83,5 @@ public class PaymentRepository {
                 .setParameter("orderId", orderId)
                 .getResultStream()
                 .findFirst();
-    }
-
-    public Payment findPaymentByPaymentUid(String paymentUid){
-        return em.createQuery(
-                "select p from Payment p" +
-                        " where p.payPaymentUid = :paymentUid", Payment.class)
-                .setParameter("paymentUid", paymentUid)
-                .getSingleResult();
     }
 }

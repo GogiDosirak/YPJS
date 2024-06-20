@@ -34,52 +34,61 @@ public class PaymentService {
         return orderRepository.findOne(orderId);
     }
 
-    // 주문 정보를 DTO로 변환하는 메서드
-    public RequestPayDto makeRequestPayDto(Long orderId) {
-        Order order = findOrder(orderId);
-        return createRequestPayDto(order);
-    }
+    //주문 생성
+    public RequestPayDto makeRequestPayDto(Long orderId){
+        Order order = paymentRepository.findOrderAndPaymentAndMember(orderId)
+                .orElseThrow(()->new IllegalArgumentException("주문이 없습니다."));
 
-    // 주문 정보를 기반으로 DTO를 생성하는 메서드
-    private RequestPayDto createRequestPayDto(Order order) {
         // DTO 를 생성하여 반환
         return new RequestPayDto(
-                order.getOrderId(),
-                order.getOrderItems().toString(),
-                order.getMember().getName(),
-                order.getPrice(),
-                order.getMember().getEmail(),
+                order.getOrderId(), // 주문번호
+                order.getOrderItemsNameInfo(), // 주문상품 이름
+                order.getMember().getName(), // 주문자 이름
+                order.getPrice(), // 주문 금액
+                order.getMember().getEmail(), // 주문자 이메일
                 order.getDelivery().getDeliveryAddress().getAddress()+ " " + order.getDelivery().getDeliveryAddress().getAddressDetail(),// 구매자 주소
-                order.getMember().getPhonenumber(),
-                order.getDelivery().getDeliveryAddress().getZipcode()
+                order.getMember().getPhonenumber(), //주문자 전화번호
+                order.getDelivery().getDeliveryAddress().getZipcode() //주문자 집코드
         );
     }
 
-    //주문 저장 및 결제 생성 메서드
-    @Transactional
-    public Long findAndCreatePayment(Long orderId) {
-        // 이미 결제된 주문인지 확인
-        ypjs.project.domain.Payment existingPayment = paymentRepository.findByOrderId(orderId);
-        if (existingPayment != null && existingPayment.getPayStatus().equals(PayStatus.OK)) {
-            throw new IllegalStateException("이미 완료된 주문입니다");
+    //주문 저장메서드
+    public Long findAndCreatePayment(Long orderId){
+
+        //이미 주문정보가 있을 때
+        ypjs.project.domain.Payment findPayment = paymentRepository.findByOrderId(orderId);
+        if(findPayment!=null){
+            if(findPayment.getPayStatus().equals(PayStatus.OK)){
+                throw new IllegalStateException("이미 완료된 주문입니다");
+            }
+            return findPayment.getPayId();
         }
 
-        // 주문 정보 조회
+        //주문정보 생성
         Order order = orderRepository.findOne(orderId);
-        if (order == null) {
-            throw new IllegalArgumentException("주문이 존재하지 않습니다");
-        }
 
-        // 주문 정보가 없으면 예외 처리
-
-        // 주문자 정보 조회
+        //주문자 정보 생성
         Member member = order.getMember();
 
-        // 결제 정보 생성 및 저장
+        //주문 정보 생성
         ypjs.project.domain.Payment payment = ypjs.project.domain.Payment.createPayment(order, order.getPrice(), member.getName(), member.getPhonenumber(), member.getEmail());
-        paymentRepository.save(payment);
 
+        //주문 정보 저장
+        paymentRepository.save(payment);
         return payment.getPayId();
+    }
+
+    //결제 취소 메서드
+    public void cancelPayment(Long payId){
+        ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
+
+        try {
+            // 결제건 조회 후 취소
+            iamportClient.cancelPaymentByImpUid(new CancelData(payment.getPayPaymentUid(), true, new BigDecimal(payment.getPayPrice())));
+
+        } catch (IamportResponseException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // 결제 내역 조회 메서드
@@ -93,13 +102,15 @@ public class PaymentService {
     }
 
     //아임포트랑 연동, 리턴타임의 Payment 는 아임포트에서 제공하는 클래스임
+    //결제 완료 후 반환 메서드
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request){
         try {
 
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
 
-            Order order = paymentRepository.findOrderAndPayment(request.getOrderUid())
+            //todo : Long 값을 그대로 쓸것인가 새로운 String 필드를 만들어야하는가
+            Order order = paymentRepository.findOrderAndPayment(Long.valueOf(request.getOrderId()))
                     .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
             // 결제 완료가 아니면
@@ -133,4 +144,6 @@ public class PaymentService {
             throw new RuntimeException(e);
         }
     }
+
+
 }

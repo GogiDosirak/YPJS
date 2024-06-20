@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         headers: {"Content-Type": "application/json"},
                         data: JSON.stringify({
                             "payment_uid": rsp.imp_uid,      // 결제 고유번호
-                            "order_uid": rsp.merchant_uid   // 주문번호
+                            "order_id": rsp.merchant_uid   // 주문번호
                         })
                     }).done(function (response) {
                         console.log(response);
