@@ -25,7 +25,7 @@ public class OrderItem {
     private int count;  //주문상품수량
 
     @Column(name = "order_item_price")
-    private int totalPrice;  //주문상품가격
+    private int price;  //주문상품가격
 
 
     //==연관관계 메서드==//
@@ -35,13 +35,18 @@ public class OrderItem {
 
 
     //==생성 메서드==//
-    public static OrderItem create(Item item, int itemCount, int itemTotalPrice) {
+    public static OrderItem create(Item item, int itemCount, int itemPrice) {
         OrderItem orderItem = new OrderItem();
         orderItem.item = item;
         orderItem.count = itemCount;
-        orderItem.totalPrice = itemTotalPrice;
+        orderItem.price = itemPrice;
         item.removeStock(itemCount);  //item 재고 제거 메서드 연결
         return orderItem;
+    }
+
+    //총 가격 계산 메서드==//
+    public int totalPrice() {
+        return this.count * this.price;
     }
 
 

@@ -9,12 +9,10 @@ import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartAddDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.repository.CartRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -76,6 +74,12 @@ public class CartService {
                 .collect(toList());
 
         return cartDtos;
+    }
+
+
+    //==멤버별 중복 상품 조회==//
+    public Long findItemIdByMemberId(Long memberId) {
+        return cartRepository.findItemIdByMemberId(memberId);
     }
 
 

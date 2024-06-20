@@ -40,7 +40,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private OrderStatus status;  //주문상태 [ORDER, CANCEL]
+    private OrderStatus status;  //주문상태
 
 
     //==연관관계 메서드==//
@@ -63,7 +63,7 @@ public class Order {
         order.setDeliveryOrder(delivery);
         for(OrderItem oi : orderItems) {
             order.addOrderItem(oi);
-            totalPrice += oi.getTotalPrice();
+            totalPrice += oi.totalPrice();
         }
         order.price = totalPrice;
         order.created = LocalDateTime.now();

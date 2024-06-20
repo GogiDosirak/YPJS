@@ -1,4 +1,5 @@
 $(document).ready(function() {
+//** create. html **//
     // 모달 열기
     $('#openDeliveryModal').click(function() {
         $('#deliveryModal').modal('show');
@@ -41,18 +42,24 @@ $(document).ready(function() {
     $("#accCount").text(itemCount);
 
 
-    // 페이지 로드 시 각 아이템의 총 가격을 천 단위로 포맷
-    $('[id^=itemTotalPriceView_]').each(function() {
+    // 아이템의 총 가격 천 단위로 포맷 (+list.html)
+    $('[id^=itemTotalPrice_]').each(function() {
         var price = parseInt($(this).text().replace(/,/g, ''));
         $(this).text(price.toLocaleString() + ' 원');
     });
 
-    // 총 주문 금액을 초기화하는 함수
+    //총 주문 금액 계산
     var totalOrderPrice = 0;
-    $('[id^=itemTotalPrice_]').each(function() {
-        totalOrderPrice += parseInt($(this).val());
+     $('.item-count').each(function(index) {
+        var itemCount = parseInt($(this).text()); // 상품 수량 가져오기
+        var itemPrice = parseFloat($('#itemPrice_' + index).val()); // 상품 가격 가져오기
+        var itemTotalPrice = itemCount * itemPrice; // 상품 총 가격 계산하기
+        totalOrderPrice += itemTotalPrice; // 총 주문 금액에 추가
     });
+    //총 주문 금액 표시
     $('#totalOrderPrice').text(totalOrderPrice.toLocaleString() + ' 원');
+
+
 
 
     //주문생성 처리
@@ -69,24 +76,24 @@ $(document).ready(function() {
         };
 
         // orderItem 리스트
-        var orderItemDtos = [];
+        var orderItemRequestDtos = [];
         $('.list-group-item').each(function() {
             var itemId = $(this).find('input[id^="itemId_"]').val();
             var itemCount = $(this).find('span[id^="itemCount_"]').text();
-            var itemTotalPrice = $(this).find('input[id^="itemTotalPrice_"]').val();
+            var itemPrice = $(this).find('input[id^="itemPrice_"]').val();
 
-            var orderItemDto = {
+            var orderItemRequestDto = {
                 itemId: itemId,
                 itemCount: itemCount,
-                itemTotalPrice: itemTotalPrice
+                itemPrice: itemPrice
             };
-            orderItemDtos.push(orderItemDto);
+            orderItemRequestDtos.push(orderItemRequestDto);
         });
 
         // 전체 데이터
         var orderCreateDto = {
             deliveryDto: deliveryDto,
-            orderItemDtos: orderItemDtos
+            orderItemRequestDtos: orderItemRequestDtos
         };
 
         // AJAX 요청
@@ -106,4 +113,31 @@ $(document).ready(function() {
             }
         });
     });
+
+//** list. html **//
+
+    //총 주문 금액 표시
+    $('[id^=price_]').each(function() {
+         var price = parseInt($(this).text().replace(/,/g, ''));
+         $(this).text(price.toLocaleString() + ' 원');
+    });
+
+     //종료 일자 오늘 표시
+     var today = new Date().toISOString().split('T')[0];
+     $('#endDate').value = today;
+
+    // 각 주문 목록을 순회
+         $('[id^=collapse_]').each(function() {
+            var orderIndex = $(this).attr('id').split('_')[1];
+
+            // 각 주문 내의 itemCount를 합산
+            var totalCount = 0;
+            $(this).find('[id^=itemCount_]').each(function() {
+                totalCount += parseInt($(this).text());
+            });
+
+            // 합산한 값 표시
+            $('#itemTotalCount_' + orderIndex).text(totalCount);
+        });
+
 });

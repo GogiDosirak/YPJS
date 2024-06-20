@@ -12,15 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.cartdto.CartItemDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
+import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +89,7 @@ public class OrderController {
         //Long memberId = (Long) request.getSession().getAttribute("loginMemberId");
 
         System.out.println(orderCreateDto.getDeliveryDto());
-        System.out.println(orderCreateDto.getOrderItemDtos());
+        System.out.println(orderCreateDto.getOrderItemRequestDtos());
 
         Long orderId = orderService.create(1L, orderCreateDto);
 
@@ -102,14 +103,17 @@ public class OrderController {
     @GetMapping("/list")
     public String list(
             HttpSession session, Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam String orderStatus) {
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "orderStatus", defaultValue = "") String orderStatus) {
         System.out.println("**멤버별 주문 전체 조회 요청됨");
-        Long memberId = (Long) session.getAttribute("loginMemberId");
+        //Long memberId = (Long) session.getAttribute("loginMemberId");
+        Long memberId = 1L;
         Pageable pageable = PageRequest.of(page, size);
-        model.addAttribute("orderList", orderService.findAllByMemberId(memberId, pageable, orderStatus));
-        return "#";
+        List<OrderResponseDto> orderResponseDtos = orderService.findAllByMemberId(memberId, pageable, orderStatus);
+        model.addAttribute("orderList", orderResponseDtos);
+        model.addAttribute("today", LocalDateTime.now());
+        return "order/list";
     }
 
     //==주문 상세 조회==//

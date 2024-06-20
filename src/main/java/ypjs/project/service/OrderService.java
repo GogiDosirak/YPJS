@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
+import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
@@ -44,12 +44,12 @@ public class OrderService {
         //주문상품리스트 생성
         List<OrderItem> orderItems = new ArrayList<>();
 
-        for(OrderItemDto oid : orderCreateDto.getOrderItemDtos()) {
+        for(OrderItemRequestDto oid : orderCreateDto.getOrderItemRequestDtos()) {
             orderItems.add(
                     OrderItem.create(
                             itemRepository.findOne(oid.getItemId()),
                             oid.getItemCount(),
-                            oid.getItemTotalPrice()
+                            oid.getItemPrice()
                     )
             );
         }
@@ -69,7 +69,7 @@ public class OrderService {
 
         //Page<Order> -> Page<OrderResponseDto> 변환
         return orders.stream()
-                .map(OrderResponseDto::new)
+                .map(order -> new OrderResponseDto(order))
                 .collect(toList());
     }
 
