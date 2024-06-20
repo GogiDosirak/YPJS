@@ -39,9 +39,9 @@ public class MemberService {
     }
 
     @Transactional
-    public void update(Long memberId, String accountId, String password, String nickname, String name) {
+    public void update(Long memberId, String password, String nickname) {
         Member member = memberRepository.findOne(memberId);
-        member.updateMember(accountId, password, nickname, name);
+        member.updateMember(password, nickname);
     }
 
     @Transactional

@@ -9,6 +9,10 @@ let memberObject = {
             event.preventDefault(); // 기본 폼 제출 방지
             _this.join();
         });
+        $("#btn-update").on("click", function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+            _this.update();
+        });
     },
 
     join: function() {
@@ -66,7 +70,33 @@ let memberObject = {
             console.error("Error occurred:", textStatus, errorThrown);
             alert("에러 발생: " + jqXHR.responseText); // 에러 처리 개선
         });
-    }
+    },
+
+     update: function() {
+         alert("정보 수정이 요청되었습니다.");
+
+         let request = {
+             memberId: $("#memberId").val(),
+             password: $("#password").val(),
+             nickname: $("#nickname").val()
+         };
+
+         console.log("Sending update request with:", request); // 디버깅을 위한 콘솔 로그
+
+         $.ajax({
+             type: "PUT",
+             url: "/ypjs/member/update/" + request.memberId,
+             dataType: "json",
+             data: JSON.stringify(request),
+             contentType: "application/json; charset=utf-8"
+         }).done(function(response) {
+             console.log("Update successful:", response);
+             location.href = "/";
+         }).fail(function(jqXHR, textStatus, errorThrown) {
+             console.error("Error occurred:", textStatus, errorThrown);
+             alert("에러 발생: " + jqXHR.responseText); // 에러 처리 개선
+         });
+     }
 };
 
 $(document).ready(function() {

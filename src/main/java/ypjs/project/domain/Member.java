@@ -85,11 +85,9 @@ public class Member {
     }
 
     // 멤버 수정 메소드
-    public void updateMember(String accountId, String password, String nickname, String name) {
-        this.accountId = accountId;
+    public void updateMember(String password, String nickname) {
         this.password = password;
         this.nickname = nickname;
-        this.name = name;
 
     }
 

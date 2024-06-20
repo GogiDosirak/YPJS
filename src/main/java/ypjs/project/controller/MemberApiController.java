@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
@@ -45,7 +46,7 @@ public class MemberApiController {
     @PutMapping("/ypjs/member/update/{memberId}")
     public MemberDto.UpdateMemberResponse updateMember (@PathVariable("memberId") Long memberId,
                                                         @RequestBody @Valid MemberDto.UpdateMemberRequest request)  {
-        memberService.update(memberId, request.getAccountId(), request.getPassword(), request.getNickname(), request.getName());
+        memberService.update(memberId, request.getPassword(), request.getNickname());
         Member member = memberService.findOne(memberId);
         return new MemberDto.UpdateMemberResponse(member.getMemberId(), member.getAccountId());
     }
@@ -61,13 +62,6 @@ public class MemberApiController {
         return new Result(result);
     }
 
-    // 마이페이지
-    @GetMapping("/ypjs/member/mypage/{memberId}")
-    public Result mypage(@PathVariable("memberId") Long memberId) {
-        MemberDto.MypageDto result = getMypageData(memberId);
-        return new Result(result);
-    }
-
     // 회원탈퇴
     @PutMapping("/ypjs/member/withdrawal/{memberId}")
     public MemberDto.WithdrawalMemberResponse withdraw(@PathVariable("memberId") Long memberId) {
@@ -75,13 +69,6 @@ public class MemberApiController {
         return new MemberDto.WithdrawalMemberResponse(memberId);
     }
 
-    // member를 Dto로 감싸주는 역할
-    private MemberDto.MypageDto getMypageData(Long memberId) {
-        Member member = memberService.findOne(memberId);
-        MemberDto.MypageDto result = new MemberDto.MypageDto(member.getAccountId(),member.getPassword(),member.getNickname(), member.getName(), member.getEmail(),member.getAddress(),
-                member.getPhonenumber(), member.getJoinDate(), member.getRole());
-        return result;
-    }
 
     @Data
     @AllArgsConstructor
