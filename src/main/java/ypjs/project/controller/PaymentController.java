@@ -72,6 +72,21 @@ public class PaymentController {
         return new ResponseEntity<>(iamportResponse, HttpStatus.OK);
     }
 
+    // todo : http://localhost:8080/ypjs/payment/findOnePayPaymentUid?paymentId=852 현: 이런식으로 값 요청하면 들어감
+    @GetMapping("/findOnePayPaymentUid")
+    @ResponseBody
+    public String findOnePaymentPayPaymentUid(@RequestParam(name = "paymentId") Long paymentId) {
+        return paymentService.findOnePaymentPayPaymentUid(paymentId);
+    }
+
+    //결제 취소
+    @DeleteMapping("/cancelPayment")
+    @ResponseStatus(HttpStatus.OK)
+    public void cancelPayment(@RequestParam(name = "payId" ) Long payId){
+        //todo : 취소하는 payId 하드코딩함
+        paymentService.cancelPayment(852L);
+    }
+
 
     //결제 성공시 화면 연결
     @GetMapping("/success-payment")

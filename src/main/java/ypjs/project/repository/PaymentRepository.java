@@ -20,8 +20,8 @@ public class PaymentRepository {
     public void save(Payment payment) {em.persist(payment);}
 
     //결제 단건 조회
-    public Payment findOne(Long paymentId) {
-        return em.find(Payment.class, paymentId);
+    public Payment findOne(Long payId) {
+        return em.find(Payment.class, payId);
     }
 
     //==orderId로 payment 찾기
