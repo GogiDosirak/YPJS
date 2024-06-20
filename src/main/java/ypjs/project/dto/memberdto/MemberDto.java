@@ -65,10 +65,8 @@ public class MemberDto {
     @Data
     public static class UpdateMemberRequest {
         private Long memberId;
-        private String accountId;
         private String password;
         private String nickname;
-        private String name;
     }
 
     @Data
@@ -90,10 +88,13 @@ public class MemberDto {
     @Data
     @AllArgsConstructor
     public static class MypageDto {
+        private Long memberId;
         private String accountId;
         private String password;
         private String nickname;
         private String name;
+        private Date birth;
+        private String gender;
         private String email;
         private Address address;
         private String phonenumber;

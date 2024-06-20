@@ -113,6 +113,7 @@ https://templatemo.com/tm-559-zay-shop
                         </div>
                         <!-- 세션에 member가 있을 경우 (로그인된 상태) -->
                         <div th:if="${session.member != null}">
+                            &nbsp;&nbsp;&nbsp;<a th:href="@{/ypjs/member/mypage/{memberId}(memberId=${session.member.memberId})}" th:text="${session.member.nickname}"></a>
                             &nbsp;&nbsp;&nbsp;<a href="/ypjs/member/logout">로그아웃</a>
                         </div>
                     </div>
