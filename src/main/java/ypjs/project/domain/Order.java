@@ -81,9 +81,9 @@ public class Order {
 
     //==취소 메서드==//
     public void cancel() {
-        if(delivery.getStatus() == DeliveryStatus.SHIPPING) {
+        if(delivery.getStatus() == DeliveryStatus.배송중) {
             throw new IllegalStateException("배송중인 상품은 취소가 불가능합니다.");
-        } else if(delivery.getStatus() == DeliveryStatus.DELIVERED) {
+        } else if(delivery.getStatus() == DeliveryStatus.배송완료) {
             throw new IllegalStateException("배송완료된 상품은 취소가 불가능합니다.");
         }
         this.status = OrderStatus.주문취소;

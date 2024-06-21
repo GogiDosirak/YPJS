@@ -33,7 +33,9 @@ public class OrderResponseDto {
     private OrderStatus status;  //주문상태
 
     @NotNull
-    private List<OrderItemResponseDto> orderItems;  //주문상품리스트
+    private List<OrderItemResponseDto> orderItems;  //주문상품 리스트
+
+    private int itemTotalCount;  //주문상품 총 개수
 
     public OrderResponseDto(Order order) {
         orderId = order.getOrderId();
@@ -44,6 +46,7 @@ public class OrderResponseDto {
         orderItems = new ArrayList<>();
         for(OrderItem oi : order.getOrderItems()) {
             addOrderItem(oi);
+            itemTotalCount += oi.getCount();
         }
     }
 

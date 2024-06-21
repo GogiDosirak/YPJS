@@ -125,7 +125,7 @@ $(document).ready(function() {
      //종료 일자 오늘 표시
      var today = new Date().toISOString().split('T')[0];
      $('#endDate').value = today;
-
+    /*
     // 각 주문 목록을 순회
          $('[id^=collapse_]').each(function() {
             var orderIndex = $(this).attr('id').split('_')[1];
@@ -139,5 +139,23 @@ $(document).ready(function() {
             // 합산한 값 표시
             $('#itemTotalCount_' + orderIndex).text(totalCount);
         });
+        */
+
+//** detail. html **//
+    // 각 주문 목록을 순회
+         $('[id^=item-list]').each(function() {
+            var orderIndex = $(this).attr('id').split('_')[1];
+
+            // 각 주문 내의 itemCount를 합산
+            var totalCount = 0;
+            $(this).find('[id^=itemCount_]').each(function() {
+                totalCount += parseInt($(this).text());
+            });
+
+            // 합산한 값 표시
+            $('#itemTotalCount_' + orderIndex).text(totalCount);
+        });
+
+
 
 });

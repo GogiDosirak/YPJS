@@ -19,6 +19,7 @@ import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
+import ypjs.project.service.PaymentService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final MemberService memberService;
+    private final PaymentService paymentService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -110,17 +112,23 @@ public class OrderController {
         //Long memberId = (Long) session.getAttribute("loginMemberId");
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(page, size);
-        List<OrderResponseDto> orderResponseDtos = orderService.findAllByMemberId(memberId, pageable, orderStatus);
-        model.addAttribute("orderList", orderResponseDtos);
+        List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderStatus);
+        model.addAttribute("orderList", o);
         model.addAttribute("today", LocalDateTime.now());
         return "order/list";
     }
 
     //==주문 상세 조회==//
     @GetMapping("/detail")
-    public String detail(@RequestParam("orderId") Long orderId) {
+    public String detail(@RequestParam("orderId") Long orderId, Model model) {
         System.out.println("**주문 상세 조회 요청됨");
-        return "hello";
+
+        OrderResponseDto o = orderService.findOne(orderId);
+        //결제 내역 찾아서 model에 추가해야 한다.
+
+        model.addAttribute("order", o);
+
+        return "order/detail";
     }
 
 

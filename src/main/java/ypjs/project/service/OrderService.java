@@ -38,7 +38,7 @@ public class OrderService {
                 orderCreateDto.getDeliveryDto().getReceiver(),
                 orderCreateDto.getDeliveryDto().getPhoneNumber(),
                 orderCreateDto.getDeliveryDto().getAddress(),
-                DeliveryStatus.READY
+                DeliveryStatus.배송준비중
         );
 
         //주문상품리스트 생성
@@ -71,6 +71,13 @@ public class OrderService {
         return orders.stream()
                 .map(order -> new OrderResponseDto(order))
                 .collect(toList());
+    }
+
+    //==주문 1건 조회==//
+    public OrderResponseDto findOne(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+
+        return new OrderResponseDto(order);
     }
 
 

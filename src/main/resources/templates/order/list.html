@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-md-4 pe-0">
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="search" id="search" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="search" id="search" placeholder="">
                             <button type="submit" class="btn btn-primary btn-sm" style="font-size: 0.75rem !important;">검색</button>
                         </div>
                     </div>
@@ -91,97 +91,88 @@
                             </h2>
                             <div id="collapse_" th:id="'collapse_' + ${orderIndex.index}" class="accordion-collapse collapse">
                                 <div class="accordion-body pb-0">
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a class="btn btn-outline-success btn-sm" style="font-size: 1rem !important;"
+                                           th:href="@{/ypjs/order/detail(orderId=${order.orderId})}">
+                                            상세보기
+                                        </a>
+                                    </div>
                                     <!-- 주문 내역 -->
                                     <ul class="list-group rounded-0">
-                                        <!-- Thymeleaf 반복문을 통해 주문 내역을 순회 -->
-                                        <!--<li th:each="item, itemIndex : ${order.orderItems}">
-                                            <div>
-                                                상품 이름: <span th:text="${item.itemName}"></span>
-                                            </div>
-                                            <div>
-                                                가격: <span th:text="${item.itemTotalPrice}" th:id="itemTotalPrice_"></span>
-                                            </div>
-                                        </li>-->
+                                        <li th:each="item, itemIndex : ${order.orderItems}" class="list-group-item d-flex flex-row justify-content align-items-center">
 
-                                            <li th:each="item, itemIndex : ${order.orderItems}" class="list-group-item d-flex flex-row justify-content align-items-center">
+                                            <input type="hidden" th:value="${item.itemId}" th:id="${'itemId_' + itemIndex.index}">
 
-                                                <input type="hidden" th:value="${item.itemId}" th:id="${'itemId_' + itemIndex.index}">
-
-                                                <div class="col-md-2 d-flex justify-content-center">
-                                                    <div class="card product-wap rounded-0" style="max-width: 60%;">
-                                                        <div class="card rounded-0">
-                                                            <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
-                                                            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                                                <ul class="list-unstyled">
-                                                                    <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
-                                                                </ul>
-                                                            </div>
+                                            <div class="col-md-2 d-flex justify-content-center">
+                                                <div class="card product-wap rounded-0" style="max-width: 50%;">
+                                                    <div class="card rounded-0">
+                                                        <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                            <ul class="list-unstyled">
+                                                                <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-5">
-                                                    <div class="row">
-                                                        <span th:text="${item.itemName}" th:id="'itemName_' + ${itemIndex.index}"></span>
-                                                    </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <span th:text="${item.itemName}" th:id="'itemName_' + ${itemIndex.index}"></span>
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-2">
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item">
+                                                        <span>수량 : </span>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <span class="item-count" th:text="${item.itemCount}" th:id="'itemCount_' + ${itemIndex.index}"></span>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <span>개</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="d-flex justify-content-center">
                                                     <ul class="list-inline mb-0">
                                                         <li class="list-inline-item">
-                                                            <span>수량 : </span>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <span class="item-count" th:text="${item.itemCount}" th:id="'itemCount_' + ${itemIndex.index}"></span>
-                                                        </li>
-                                                        <li class="list-inline-item">
-                                                            <span>개</span>
+                                                            <span th:text="${item.itemTotalPrice}" th:id="'itemTotalPrice_' + ${itemIndex.index}"></span>
                                                         </li>
                                                     </ul>
                                                 </div>
-
-                                                <div class="col-md-2">
-                                                    <div class="d-flex justify-content-center">
-                                                        <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item">
-                                                                <span th:text="${item.itemTotalPrice}" th:id="'itemTotalPrice_' + ${itemIndex.index}"></span>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </li>
+                                            </div>
+                                        </li>
                                     </ul>
 
                                     <!-- 결제금액 표시 -->
                                     <div class="card-body mt-2 mb-0">
-                                        <div class="row">
-                                            <div class="col-5"></div>
-                                            <div class="col-6 justify-content-end">
-                                                <div class="row">
-                                                    <div class="col-1 me-5 ms-1">
+                                        <div class="row justify-content-end text-end">
+                                                    <div class="col-1">
                                                         <h5>총</h5>
                                                     </div>
-                                                    <div class="col-1 ms-2 me-4">
+                                                    <div class="col-3 me-2">
                                                         <ul class="list-inline mb-0">
                                                             <li class="list-inline-item">
                                                             </li>
                                                             <li class="list-inline-item">
-                                                                <span class="h5" th:text="${itemTotalCount}" th:id="'itemTotalCount_' + ${orderIndex.index}"></span>
+                                                                <span class="h5" th:text="${order.itemTotalCount}" th:id="'itemTotalCount_' + ${orderIndex.index}"></span>
                                                             </li>
                                                             <li class="list-inline-item">
                                                                 <h5>개</h5>
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <div class="col-3">
+                                                    <div class="col-3 me-4">
                                                         <ul class="list-inline mb-0">
-                                                            <li class="list-inline-item ms-5">
+                                                            <li class="list-inline-item">
                                                                 <h5 th:text="${order.price}" th:id="'price_' + ${orderIndex.index}"></h5>
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                </div>
-                                            </div>
-
+                                                    <div class="col-1 ms-3 me-1"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -194,10 +185,6 @@
                 </div>
             </div>
             <!--주문내역 표시 끝-->
-
-            <div class="d-flex justify-content-center mt-5">
-                <button type="button" class="btn btn-success btn-lg" id="btn-create">결제하기</button>
-            </div>
 
         </div>
     </div>
