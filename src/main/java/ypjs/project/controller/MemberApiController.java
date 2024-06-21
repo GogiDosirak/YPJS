@@ -45,9 +45,11 @@ public class MemberApiController {
     // 멤버 수정
     @PutMapping("/ypjs/member/update/{memberId}")
     public MemberDto.UpdateMemberResponse updateMember (@PathVariable("memberId") Long memberId,
-                                                        @RequestBody @Valid MemberDto.UpdateMemberRequest request)  {
+                                                        @RequestBody @Valid MemberDto.UpdateMemberRequest request,
+                                                        HttpSession session)  {
         memberService.update(memberId, request.getPassword(), request.getNickname());
         Member member = memberService.findOne(memberId);
+        session.setAttribute("member",member); // 수정할 시 session에 정보 업데이트
         return new MemberDto.UpdateMemberResponse(member.getMemberId(), member.getAccountId());
     }
 
