@@ -74,9 +74,9 @@ let memberObject = {
 
      update: function() {
          alert("정보 수정이 요청되었습니다.");
+         let id = $("#memberId").val()
 
          let request = {
-             memberId: $("#memberId").val(),
              password: $("#password").val(),
              nickname: $("#nickname").val()
          };
@@ -85,7 +85,7 @@ let memberObject = {
 
          $.ajax({
              type: "PUT",
-             url: "/ypjs/member/update/" + request.memberId,
+             url: "/ypjs/member/update/" + id,
              dataType: "json",
              data: JSON.stringify(request),
              contentType: "application/json; charset=utf-8"
