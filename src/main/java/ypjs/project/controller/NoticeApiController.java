@@ -43,7 +43,7 @@ public class NoticeApiController {
         return result;
     }
 
-
+    // 글등록
     @PostMapping("/ypjs/board/notice/insert")
     public NoticeDto.CreateNoticeResponse insertNotice(@RequestBody @Valid NoticeDto.CreateNoticeRequest createNoticeRequest, HttpSession session) {
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
@@ -58,6 +58,7 @@ public class NoticeApiController {
         noticeService.updateNotice(noticeId,updateNoticeRequest.getNoticeTitle(),updateNoticeRequest.getNoticeContent());
         return new NoticeDto.UpdateNoticeResponse(updateNoticeRequest.getNoticeTitle());
     }
+
 
     @DeleteMapping("/ypjs/board/notice/delete/{noticeId}")
     public NoticeDto.DeleteNoticeResponse deleteNotice(@PathVariable Long noticeId) {
