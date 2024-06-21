@@ -29,7 +29,7 @@ public class Delivery {
 
     @Embedded
     @Column(name = "delivery_address")
-    private Address deliveryAddress;  //배송주소
+    private Address address;  //배송주소
 
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_status")
@@ -39,7 +39,7 @@ public class Delivery {
     public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
         this.receiver = receiver;
         this.phoneNumber = phoneNumber;
-        this.deliveryAddress = address;
+        this.address = address;
         this.status = deliveryStatus;
     }
 
