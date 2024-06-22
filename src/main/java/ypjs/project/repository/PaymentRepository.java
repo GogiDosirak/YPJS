@@ -74,13 +74,13 @@ public class PaymentRepository {
                 .findFirst();
     }
 
-    //==Order 찾기(+ payment)
-    public Optional<Order> findOrderAndPayment(Long orderId) {
+    //==orderUid 로 Order 찾기(+ payment)
+    public Optional<Order> findOrderAndPayment(String orderUid) {
         return em.createQuery(
                         "select o from Order o" +
                                 " left join fetch o.payment p" +
-                                " where o.orderId = :orderId", Order.class)
-                .setParameter("orderId", orderId)
+                                " where o.orderUid = :orderUid", Order.class)
+                .setParameter("orderUid", orderUid)
                 .getResultStream()
                 .findFirst();
     }

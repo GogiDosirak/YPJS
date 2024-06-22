@@ -41,14 +41,14 @@ public class PaymentService {
 
         // DTO 를 생성하여 반환
         return new RequestPayDto(
-                order.getOrderId(), // 주문번호
+                order.getOrderUid(), // 주문Uid
                 order.getOrderItemsNameInfo(), // 주문상품 이름
                 order.getMember().getName(), // 주문자 이름
                 order.getPrice(), // 주문 금액
                 order.getMember().getEmail(), // 주문자 이메일
-                order.getDelivery().getDeliveryAddress().getAddress()+ " " + order.getDelivery().getDeliveryAddress().getAddressDetail(),// 구매자 주소
+                order.getDelivery().getAddress().getAddress()+ " " + order.getDelivery().getAddress().getAddressDetail(),// 구매자 주소
                 order.getMember().getPhonenumber(), //주문자 전화번호
-                order.getDelivery().getDeliveryAddress().getZipcode() //주문자 집코드
+                order.getDelivery().getAddress().getZipcode()//주문자 집코드
         );
     }
 
@@ -78,12 +78,12 @@ public class PaymentService {
         return payment.getPayId();
     }
 
-    public String findOnePaymentPayPaymentUid(Long paymentId){
-        ypjs.project.domain.Payment payment = paymentRepository.findOne(paymentId);
+    public ypjs.project.domain.Payment findOnePayment(Long payId){
+        ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
         if (payment == null) {
-            throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다. paymentId: " + paymentId);
+            throw new IllegalArgumentException("결제 정보를 찾을 수 없습니다. payId: " + payId);
         }
-        return payment.getPayPaymentUid();
+        return payment;
     }
 
 
@@ -123,8 +123,9 @@ public class PaymentService {
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
 
-            //todo : Long 값을 그대로 쓸것인가 새로운 String 필드를 만들어야하는가
-            Order order = paymentRepository.findOrderAndPayment(Long.valueOf(request.getOrderId()))
+            System.out.println(request.getPaymentUid());
+            System.out.println(request.getOrderUid()+"@@@@@@@@@@@@@@2");
+            Order order = paymentRepository.findOrderAndPayment(request.getOrderUid())
                     .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
             // 결제 완료가 아니면

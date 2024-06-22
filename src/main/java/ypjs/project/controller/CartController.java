@@ -1,15 +1,17 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.cartdto.CartAddDto;
-import ypjs.project.dto.cartdto.CartResponseDto;
+import ypjs.project.dto.cartdto.CartItemDto;
+import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
 import ypjs.project.service.CartService;
 
 import java.util.List;
@@ -23,46 +25,56 @@ public class CartController {
 
     //==멤버별 장바구니 전체 조회==//
     @GetMapping("/list")
-    public String list(HttpSession session, Model model) {
+    public String list(HttpServletRequest request, Model model) {
+        //HttpSession session = request.getSession();
         //멤버정보
-        Long memberId = (Long) session.getAttribute("loginMemberId");
+        //Long memberId = (Long) session.getAttribute("loginMemberId");
+        Long memberId = 1L;  //임시
 
         if(memberId == null) {
-            return "redirect:/member/login";
+            return "redirect:/ypjs/member/login";
         }
 
         model.addAttribute("cartList", cartService.findAllByMemberId(memberId));
-        return "cartList";
+        return "cart/list";
     }
 
     //==장바구니 추가==//
     @PostMapping("/add")
-    public void add(@RequestBody @Valid CartAddDto cartAddDto) {
+    public ResponseEntity add(@RequestBody @Valid CartAddDto cartAddDto, HttpServletRequest request) {
+        System.out.println("**장바구니 추가 요청됨");
+
+        if(cartAddDto.getItemId() == cartService.findItemIdByMemberId(cartAddDto.getMemberId())) {
+            return ResponseEntity.badRequest().body("장바구니에 이미 추가된 상품입니다.");
+        }
         cartService.add(cartAddDto);
+        return ResponseEntity.ok().build();
     }
 
     //==장바구니 수량 변경==//
     @PostMapping("/update")
     public String update(@RequestBody @Valid CartUpdateDto cartUpdateDto) {
         cartService.update(cartUpdateDto);
-        return "redirect:/cart/list";
+        return "redirect:/ypjs/cart/list";
     }
 
     //==장바구니 삭제==//
-    @DeleteMapping("/delete/{cartId}")
-    public String delete(@PathVariable @Valid Long cartId) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> delete(@RequestParam("cartId") @Valid Long cartId) {
         cartService.delete(cartId);
-        return "redirect:/cart/list";
+        return ResponseEntity.noContent().build(); // Respond with 204 No Content
     }
 
     //==장바구니 상품 주문하기==//
     @PostMapping("/order")
-    public String order(@RequestBody @Valid List<CartResponseDto> cartDtos, Model model) {
+    public ResponseEntity<Void> order(@RequestBody @Valid List<CartListDto> cartListDtos, HttpServletRequest request) {
+        System.out.printf("**장바구니 상품 주문 요청됨");
+        System.out.println(cartListDtos);
 
-        List<OrderItemDto> orderItemDtos = cartService.createOrderItems(cartDtos);
+        request.getSession().setAttribute("cartList", cartListDtos);
 
-        model.addAttribute("orderItemDtos", orderItemDtos);
-
-        return "redirect:/order/create";
+        return ResponseEntity.ok().build();
     }
+
+
 }

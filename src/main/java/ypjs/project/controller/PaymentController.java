@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
-import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.service.PaymentService;
 
 import java.util.List;
@@ -23,42 +22,43 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
-    //오더1111
-    @GetMapping("/")
-    public String home(){
-        return "payment/home";
-    }
-
-    //오더222
-    @GetMapping("/order")
-    public String order( @RequestParam(name = "orderId", required = false) String orderId,
-                        Model model) {
-
-        model.addAttribute("orderId", orderId);
-
-        return "payment/order";
-    }
-
-    //오더333
-    //html 작동 확인을 위한 더미데이터 주입함
-    // payment.order.html 화면에서 폼 안에 입력해서 테스트, 주문이 만약 누군가가 1번으로 한게 있으면 오류남
-    @PostMapping("/order")
-    public String findOrder(@RequestParam(name="orderId") String orderId) {
-
-        //주문생성 여기서?
-
-        return "redirect:/ypjs/payment/payment/" + orderId;
-    }
-
-    //결제 창으로 연결하는 메서드
-    @GetMapping("/payment/{orderId}")
-    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
-                              Model model) {
-        paymentService.findAndCreatePayment(orderId);
-        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
-        model.addAttribute("requestPayDto", requestPayDto);
-        return "payment/payment";
-    }
+    //>>orderController, detail 로 이관
+//    //오더1111
+//    @GetMapping("/")
+//    public String home(){
+//        return "payment/home";
+//    }
+//
+//    //오더222
+//    @GetMapping("/order")
+//    public String order( @RequestParam(name = "orderId", required = false) Long orderId,
+//                        Model model) {
+//
+//        model.addAttribute("orderId", orderId);
+//
+//        return "payment/order";
+//    }
+//
+//    //오더333
+//    //html 작동 확인을 위한 더미데이터 주입함
+//    // payment.order.html 화면에서 폼 안에 입력해서 테스트, 주문이 만약 누군가가 1번으로 한게 있으면 오류남
+//    @PostMapping("/order")
+//    public String findOrder(@RequestParam(name="orderId") Long orderId) {
+//
+//        //주문생성 여기서?
+//
+//        return "redirect:/ypjs/payment/payment/" + orderId;
+//    }
+//
+//    //결제 창으로 연결하는 메서드
+//    @GetMapping("/payment/{orderId}")
+//    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
+//                              Model model) {
+//        paymentService.findAndCreatePayment(orderId);
+//        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
+//        model.addAttribute("requestPayDto", requestPayDto);
+//        return "payment/payment";
+//    }
 
     //결제응답
     //응답 엔티티
@@ -72,23 +72,22 @@ public class PaymentController {
         return new ResponseEntity<>(iamportResponse, HttpStatus.OK);
     }
 
-    // todo : http://localhost:8080/ypjs/payment/findOnePayPaymentUid?paymentId=852 현: 이런식으로 값 요청하면 들어감
-    @GetMapping("/findOnePayPaymentUid")
+    @GetMapping("/findOnePayment")
     @ResponseBody
-    public String findOnePaymentPayPaymentUid(@RequestParam(name = "paymentId") Long paymentId) {
-        return paymentService.findOnePaymentPayPaymentUid(paymentId);
+    public ypjs.project.domain.Payment findPayPaymentUid(@RequestParam(name = "payId") Long payId) {
+        return paymentService.findOnePayment(payId);
     }
 
     //결제 취소
     @DeleteMapping("/cancelPayment")
     @ResponseStatus(HttpStatus.OK)
-    public void cancelPayment(@RequestParam(name = "payId" ) Long payId){
+    public void cancelPayment(@RequestParam(name = "payId") Long payId){
         //todo : 취소하는 payId 하드코딩함
-        paymentService.cancelPayment(852L);
+        paymentService.cancelPayment(1L);
     }
 
 
-    //결제 성공시 화면 연결
+    // 결제 성공 페이지로 이동
     @GetMapping("/success-payment")
     public String successPaymentPage() {
         return "payment/success-payment";
