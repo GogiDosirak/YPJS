@@ -24,7 +24,7 @@ let noticeObject = {
             contentType: "application/json; charset=utf-8"
         }).done(function(response) {
             console.log("insert successful:", response);
-            location.href = "/";
+            location.href = "/ypjs/board/notice/notice";
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("Error occurred:", textStatus, errorThrown);
             alert("에러 발생: " + jqXHR.responseText);

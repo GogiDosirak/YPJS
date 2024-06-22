@@ -19,8 +19,13 @@ public class NoticeService {
         return noticeRepository.findOne(noticeId);
     }
 
-    public List<Notice> findAll(int offset, int limit) {
-        return noticeRepository.findAll(offset,limit);
+    // 페이징 +
+//    public List<Notice> findAll(int offset, int limit) {
+//        return noticeRepository.findAll(offset,limit);
+//    }
+
+    public List<Notice> findAll() {
+        return noticeRepository.findAll();
     }
 
     @Transactional
