@@ -23,16 +23,17 @@ public class NoticeApiController {
     private final NoticeService noticeService;
     private final MemberService memberService;
 
-    // 공지사항 전체 조회
-    @GetMapping("/ypjs/board/notice/notices")
-    public Result findAll(@RequestParam int offset, @RequestParam int limit) {
-        List<Notice> noticeList = noticeService.findAll(offset,limit);
-        List<NoticeDto.NoticeApiDto> result = noticeList.stream()
-                .map(n -> new NoticeDto.NoticeApiDto(n.getNoticeId(), n.getNoticeTitle(), n.getNoticeContent(),
-                        n.getNoticeCnt(), n.getNoticeDate(), n.getMember().getNickname()))
-                .collect(Collectors.toList());
-        return new Result(result);
-    }
+//    // 공지사항 전체 조회
+//    @GetMapping("/ypjs/board/notice/notices")
+//    public Result findAll(@RequestParam int offset, @RequestParam int limit) {
+//        List<Notice> noticeList = noticeService.findAll(offset,limit);
+//        List<NoticeDto.NoticeApiDto> result = noticeList.stream()
+//                .map(n -> new NoticeDto.NoticeApiDto(n.getNoticeId(), n.getNoticeTitle(), n.getNoticeContent(),
+//                        n.getNoticeCnt(), n.getNoticeDate(), n.getMember().getNickname()))
+//                .collect(Collectors.toList());
+//        return new Result(result);
+//    }
+
 
     // 공지사항 단건 조회
     @GetMapping("/ypjs/board/notice/{noticeId}")
