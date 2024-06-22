@@ -1,20 +1,30 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
+import ypjs.project.dto.ResponseDto;
+import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.ResponseDto;
+import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
+import ypjs.project.service.PaymentService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,6 +33,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final MemberService memberService;
+    private final PaymentService paymentService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -31,25 +42,62 @@ public class OrderController {
 
     //==주문 생성 페이지==//
     @GetMapping("/create")
-    public String create(Model model, HttpSession session) {
+    public String createPage(Model model, HttpServletRequest request) throws Exception{
+        System.out.println("**주문 생성 페이지 요청됨");
+        //System.out.println(model.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
+        //System.out.println(request.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
+        //System.out.println(request.getSession().getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 유지
+
+        HttpSession session = request.getSession();
+        List<CartListDto> cartListDtos = (List<CartListDto>) session.getAttribute("cartList");
+
+        /*주문 상품이 없는 경우*/
+        if(cartListDtos == null) {
+            request.setAttribute("msg", "잘못된 접근입니다.");
+            request.setAttribute("url", "/ypjs/cart/list");
+            return "alert";
+        }
+
+        //결제완료 시 장바구니 삭제할 cartId 리스트
+        List<Long> cartIds = new ArrayList<>();
+
+        for(CartListDto c : cartListDtos) {
+            cartIds.add(c.getCartId());
+        }
+
+        session.setAttribute("cardIds", cartIds);
+
         //멤버정보 -> 배송정보 생성
         //Long memberId = (Long) session.getAttribute("loginMemberId");
         //Member m = memberService.findById(memberId);
         Member m = memberService.findOne(1L);
 
-        model.addAttribute("memberId", 1);
+        model.addAttribute("delivery", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
+        model.addAttribute("cartList", cartListDtos);
 
-        model.addAttribute("orderCreateDto", new OrderCreateDto());
-        model.addAttribute("deliveryDto", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
-        model.addAttribute("orderItemDtos", model.getAttribute("orderItemDtos"));
+        //데이터 전달 후 제거
+        session.removeAttribute("cartList");
 
-        return "/order/orderFormTest";
+        System.out.println("**세션 주문상품 삭제 확인-> " + session.getAttribute("cartList"));
+        System.out.println("**세션 장바구니ID 목록 확인-> " + session.getAttribute("cardIds"));
+
+        return "order/create";
     }
 
     //==주문 생성==//
     @PostMapping("/create")
-    public void create(@RequestBody @Valid OrderCreateDto orderCreateDto) {
-        orderService.create(orderCreateDto);
+    public ResponseEntity<Long> create(@RequestBody @Valid OrderCreateDto orderCreateDto, HttpServletRequest request) {
+        System.out.println("**주문 생성 로직 요청됨");
+        //Long memberId = (Long) request.getSession().getAttribute("loginMemberId");
+
+        System.out.println(orderCreateDto.getDeliveryDto());
+        System.out.println(orderCreateDto.getOrderItemRequestDtos());
+
+        Long orderId = orderService.create(1L, orderCreateDto);
+
+        System.out.println("**세션 장바구니ID 목록 전달 확인_> " + request.getSession().getAttribute("cardIds"));
+
+        return ResponseEntity.ok().body(orderId);
     }
 
 
@@ -57,22 +105,45 @@ public class OrderController {
     @GetMapping("/list")
     public String list(
             HttpSession session, Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam String orderStatus) {
-        Long memberId = (Long) session.getAttribute("loginMemberId");
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "orderStatus", defaultValue = "") String orderStatus) {
+        System.out.println("**멤버별 주문 전체 조회 요청됨");
+        //Long memberId = (Long) session.getAttribute("loginMemberId");
+        Long memberId = 1L;
         Pageable pageable = PageRequest.of(page, size);
-        model.addAttribute("orderList", orderService.findAllByMemberId(memberId, pageable, orderStatus));
-        return "#";
+        List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderStatus);
+        model.addAttribute("orderList", o);
+        model.addAttribute("today", LocalDateTime.now());
+        return "order/list";
+    }
+
+    //==주문 상세 조회==//
+    @GetMapping("/detail")
+    public String detail(@RequestParam("orderId") Long orderId, Model model) {
+        System.out.println("**주문 상세 조회 요청됨");
+
+        OrderResponseDto o = orderService.findOne(orderId);
+        //payment 메서드 추가함//
+        paymentService.findAndCreatePayment(orderId);
+        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
+        model.addAttribute("requestPayDto", requestPayDto);
+        //payment 메서드 추가끝//
+
+        model.addAttribute("order", o);
+
+        return "order/detail";
     }
 
 
     //==취소==//
     @GetMapping("/cancel/{orderId}")
     public ResponseDto<?> cancel(Long orderId) {
+        System.out.println("**주문 취소 로직 요청됨");
         orderService.cancel(orderId);
         return new ResponseDto<>(HttpStatus.OK.value(), "취소 완료");
     }
+
 
 /*
     //==검색 조회==//

@@ -1,6 +1,7 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.DeliveryStatus;
@@ -9,10 +10,11 @@ import ypjs.project.domain.enums.DeliveryStatus;
 @Table(name = "delivery")
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Delivery {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id")
     private Long deliveryId;  //배송번호
 
@@ -27,9 +29,9 @@ public class Delivery {
 
     @Embedded
     @Column(name = "delivery_address")
-    private Address deliveryAddress;  //배송주소
+    private Address address;  //배송주소
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "delivery_status")
     private DeliveryStatus status;  //배송상태
 
@@ -37,7 +39,7 @@ public class Delivery {
     public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
         this.receiver = receiver;
         this.phoneNumber = phoneNumber;
-        this.deliveryAddress = address;
+        this.address = address;
         this.status = deliveryStatus;
     }
 

@@ -32,10 +32,10 @@ public class OrderRepository {
 
         //orderStatus 조건이 있는 경우 조건 추가
         if(StringUtils.hasText(orderStatus)) {
-                jpql += " and o.status = :status";
+            jpql += " and o.status = :status";
         }
 
-        jpql += " order by o.id desc";
+        jpql += " order by o.orderId desc";
 
         //쿼리 생성
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)

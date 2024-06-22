@@ -10,12 +10,12 @@
     <!-- 기타 필요한 스크립트 포함 -->
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <!-- JavaScript 파일 링크 -->
-    <script th:src="@{/js/payment/payment.js}"></script>
+    <script th:src="@{/js/payment.js}"></script>
 
     <!-- JavaScript로 전달할 데이터 속성 설정 -->
     <script th:inline="javascript">
         var requestPayDto = {
-            orderId: /*[[${requestPayDto.orderId}]]*/,
+            orderUid: /*[[${requestPayDto.orderUid}]]*/,
             itemName: /*[[${requestPayDto.itemName}]]*/,
             orderPrice: /*[[${requestPayDto.orderPrice}]]*/,
             payName: /*[[${requestPayDto.payName}]]*/,

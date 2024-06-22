@@ -1,18 +1,20 @@
 package ypjs.project.dto.orderdto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.Delivery;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.OrderItem;
 import ypjs.project.domain.enums.OrderStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Getter
 public class OrderResponseDto {
 
     @NotNull(message = "")
@@ -20,9 +22,6 @@ public class OrderResponseDto {
 
     @NotNull
     private Delivery delivery;  //배송정보
-
-    @NotNull
-    private List<OrderItem> orderItems;  //주문상품리스트
 
     @NotNull
     private int price;  //주문금액
@@ -33,13 +32,28 @@ public class OrderResponseDto {
     @NotNull
     private OrderStatus status;  //주문상태
 
+    @NotNull
+    private List<OrderItemResponseDto> orderItems;  //주문상품 리스트
+
+    private int itemTotalCount;  //주문상품 총 개수
+
     public OrderResponseDto(Order order) {
-        this.orderId = order.getOrderId();
-        this.delivery = order.getDelivery();
-        this.orderItems = order.getOrderItems();
-        this.price = order.getPrice();
-        this.created = order.getCreated();
-        this.status = order.getStatus();
+        orderId = order.getOrderId();
+        delivery = order.getDelivery();
+        price = order.getPrice();
+        created = order.getCreated();
+        status = order.getStatus();
+        orderItems = new ArrayList<>();
+        for(OrderItem oi : order.getOrderItems()) {
+            addOrderItem(oi);
+            itemTotalCount += oi.getCount();
+        }
+    }
+
+    private void addOrderItem(OrderItem orderItem) {
+        orderItems.add(
+                OrderItemResponseDto.create(orderItem)
+        );
     }
 
 }

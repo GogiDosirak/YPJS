@@ -1,5 +1,5 @@
 package ypjs.project.domain.enums;
 
 public enum DeliveryStatus {  //배송상태
-    READY, SHIPPING, DELIVERED
+    배송준비중, 배송중, 배송완료
 }
