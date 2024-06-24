@@ -4,7 +4,7 @@
 <head th:replace="frame/header :: head">
 </head>
 <body>
-<!-- 외부 CDN에서 제공되는 스크립트 -->
+<!-- 아이엠포트 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script src="/js/payment.js"></script>
 <script src="/js/order.js"></script>
@@ -116,17 +116,37 @@
 
                 <ul class="list-group rounded-0" style="border-bottom: 1px solid #dee2e6;">
                     <li class="list-group-item py-4 border-0" style="border-top: 1px solid #000000 !important;">
-                        <span class="h5">payment</span>
-                        <div>
-                            <p>주문 번호: <span th:text="${requestPayDto.orderUid}" id="orderUid"></span></p>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">주문 번호:</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="orderUid" th:text="${requestPayDto.orderUid}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">구매자 이름:</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="payName" th:text="${requestPayDto.payName}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">구매자 번호:</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="buyerTel" th:text="${requestPayDto.phoneNumber}"></span>
+                            </div>
+                        </div>
+
+                        <div hidden="hidden">
                             <p>상품 이름: <span th:text="${requestPayDto.itemName}" id="itemName"></span></p>
                             <p>결제 금액: <span th:text="${requestPayDto.orderPrice}" id="orderPrice"></span></p>
-                            <p>구매자 이름: <span th:text="${requestPayDto.payName}" id="payName"></span></p>
                             <p>구매자 이메일: <span th:text="${requestPayDto.payEmail}" id="payEmail"></span></p>
                             <p>배송 주소: <span th:text="${requestPayDto.deliveryAddress}" id="deliveryAddress"></span></p>
-                            <p>연락처: <span th:text="${requestPayDto.phoneNumber}" id="buyerTel"></span></p>
                             <p>우편번호: <span th:text="${requestPayDto.zipcode}" id="buyerPostcode"></span></p>
-
                         </div>
                     </li>
 

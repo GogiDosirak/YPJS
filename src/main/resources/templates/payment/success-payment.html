@@ -1,18 +1,60 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="frame/header :: head">
-    <title>양박정성</title>
+    <title>결제 완료</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .btn-home {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-home:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+    </style>
+</head>
 <body>
-<!--header-->
 <header th:replace="frame/header :: header"></header>
-<h1>주문/결제</h1>
-주문이 정상적으로 완료되었습니다.
-주문 번호:
-배송지 정보:
-결제 정보:(뭘로 샀는지, 승인 일시)
-결제 내역 보기:(링크주기)
-결제 금액:
-<a href="/ypjs/payment/">홈으로 이동</a>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title text-center my-4">결제 완료</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>결제 완료</h5>
+                    <p>결제가 성공적으로 완료되었습니다. 이용해 주셔서 감사합니다!</p>
+                    <ul class="list-group">
+                        <li class="list-group-item">주문 번호: <span th:text="${payment.order.orderId}"></span></li>
+                        <li class="list-group-item">결제 금액: <span th:text="${payment.payPrice}"></span></li>
+                        <li class="list-group-item">결제 일자: <span th:text="${#temporals.format(payment.payDate, 'yyyy-MM-dd HH:mm:ss')}"></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <a href="/" class="btn btn-lg btn-home">홈으로 돌아가기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer th:replace="frame/footer :: footer"></footer>
 </body>
 </html>

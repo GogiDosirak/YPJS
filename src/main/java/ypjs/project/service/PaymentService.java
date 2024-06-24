@@ -19,6 +19,7 @@ import ypjs.project.repository.PaymentRepository;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,9 +31,9 @@ public class PaymentService {
     private final OrderRepository orderRepository;
 
     //회원찾기
-    public Order findOrder (Long orderId) {
-        return orderRepository.findOne(orderId);
-    }
+
+    public Optional<Order> findOrderByUid (String orderUid){
+        return paymentRepository.findOrderAndPayment(orderUid);}
 
     //주문 생성
     public RequestPayDto makeRequestPayDto(Long orderId){
