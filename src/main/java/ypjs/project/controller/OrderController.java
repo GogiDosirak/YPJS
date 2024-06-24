@@ -35,6 +35,7 @@ public class OrderController {
     private final MemberService memberService;
     private final PaymentService paymentService;
 
+    //임시 로케이션
     @GetMapping("/hello")
     public String hello() {
         return "hello";
