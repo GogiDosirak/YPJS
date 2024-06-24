@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<!-- 아엠포트 -->
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script th:src="@{/js/payment.js}"></script>
 <header th:replace="frame/header :: header"></header>
 <style>
     .card {
@@ -38,12 +41,23 @@
 
                             <h6>주문 가격 : <span th:text="${payment.payPrice}"></span></h6>
 
-                            <h6>주문 번호 : <span th:text="${payment.order.orderId}"></span></h6>
+                            <h6>주문 번호 : <span th:text="${payment.payId}"></span></h6>
 
                             <h6>주문 상태 : <span th:text="${payment.payStatus}"></span></h6>
 
                             <h6>주문 날짜 : <span th:text="${#temporals.format(payment.payDate, 'yyyy-MM-dd')}"></span></h6>
 
+                            <!-- 주문 취소 버튼 -->
+                            <div class="row mt-3">
+                                <div class="col d-grid">
+                                    <!-- 주문 상태가 'CANCEL'이 아닌 경우에만 버튼 표시 -->
+                                    <input type="hidden" th:value="${payment.payId}" th:data-pay-id="${payment.payId}">
+                                    <button class="btn btn-danger cancel-button" th:if="${payment.payStatus.name() == 'OK'}">주문 취소</button>
+                                </div>
+                            </div>
+                            <!--주문취소버튼 끝-->
+
+                            <!--리뷰쓰기버튼-->
                             <form action="" method="GET">
                                 <div class="row pb-3">
                                     <div class="col d-grid">

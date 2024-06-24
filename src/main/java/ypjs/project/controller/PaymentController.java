@@ -79,11 +79,15 @@ public class PaymentController {
     }
 
     //결제 취소
-    @DeleteMapping("/cancelPayment")
+    @DeleteMapping("/cancel/{payId}")
     @ResponseStatus(HttpStatus.OK)
-    public void cancelPayment(@RequestParam(name = "payId") Long payId){
-        //todo : 취소하는 payId 하드코딩함
-        paymentService.cancelPayment(1L);
+    public ResponseEntity<String> cancelPayment(@PathVariable(name = "payId") Long payId){
+        try {
+            paymentService.cancelPayment(payId);
+            return ResponseEntity.ok("주문 취소가 성공적으로 처리되었습니다.");
+        }catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
 
