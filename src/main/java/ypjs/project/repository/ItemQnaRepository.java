@@ -42,13 +42,21 @@ public class ItemQnaRepository {
     }
 
     public List<ItemQna> findAllByMemberId(Long memberId, Pageable pageable) {
-        return em.createQuery("select i from ItemQna i join fetch i.member where i.member.memberId = :id order by i.itemQnaId desc"
+        return em.createQuery("select i from ItemQna i join fetch i.qMember where i.qMember.memberId = :id order by i.itemQnaId desc"
                         , ItemQna.class)
                 .setParameter("id", memberId)
                 .setFirstResult((int)pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
 
+    }
+
+    public List<ItemQna> findAll(Pageable pageable) {
+        return em.createQuery("select i from ItemQna i order by i.status desc, i.itemQnaId desc"
+                , ItemQna.class)
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
     }
 
     //==삭제==//

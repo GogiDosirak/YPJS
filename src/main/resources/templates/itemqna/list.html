@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/itemQna.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+
+            <!-- 상품문의 표시 시작-->
+            <div class="row mb-4">
+                <h2 class="h2 fw-bold">Q&A</h2>
+                <div class="d-flex justify-content-end">
+                    <a class="btn btn-success" th:href="@{'/ypjs/itemqna/create?itemId=' + ${itemId}}">상품문의 작성하기</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <!-- itemQnaList가 비어 있는 경우 -->
+                <div th:if="${#lists.isEmpty(itemQnaList)}">
+                    <div class="card-body text-center">
+                        <span>작성된 문의가 없습니다.</span>
+                    </div>
+                </div>
+
+                <!-- itemQnaList가 있는 경우 -->
+                <div th:unless="${#lists.isEmpty(itemQnaList)}">
+                    <div class="accordion accordion-flush" id="accordionExample">
+                        <!-- Thymeleaf 반복문을 통해 주문 목록을 순회 -->
+                        <div class="accordion-item" th:each="itemQna, itemQnaIndex : ${itemQnaList}">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapse_' + ${itemQnaIndex.index}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <div class="row">
+                                        <div class="col-1 mb-2">
+                                            <span class="btn btn-dark btn-sm" style="font-size: 0.75rem !important;" th:text="${itemQna.status}"></span>
+                                        </div>
+                                        <div class="d-flex justify-content-start">
+                                            <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <span th:text="${itemQna.memberName}"></span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <span> | </span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <span th:text="${#temporals.format(itemQna.qCreated, 'yyyy-MM-dd')}"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse_" th:id="'collapse_' + ${itemQnaIndex.index}" class="accordion-collapse collapse">
+                                <div class="accordion-body pb-0">
+
+                                    <!-- 주문 내역 -->
+                                    <ul class="list-group rounded-0 mb-3">
+                                        <li class="list-group-item list-group-item-light">
+                                            <h5>문의</h5>
+                                            <h6 th:text="${itemQna.question}" th:id="'question_' + ${itemQnaIndex.index}"></h6>
+                                        </li>
+                                        <li class="list-group-item list-group-item-light" th:unless="${itemQna.answer == null || itemQna.answer.isEmpty()}">
+                                            <h5>답변</h5>
+                                            <h6 class="mb-3" th:text="${itemQna.answer}" th:id="'answer_' + ${itemQnaIndex.index}"></h6>
+                                            <h6 class="fw-light" th:text="${#temporals.format(itemQna.aCreated, 'yyyy-MM-dd')}" th:id="'aCreated_' + ${itemQnaIndex.index}"></h6>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--주문내역 표시 끝-->
+
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

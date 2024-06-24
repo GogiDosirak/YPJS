@@ -8,10 +8,7 @@ import org.springframework.util.StringUtils;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemQna;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.itemqnadto.ItemQnaAnswerDto;
-import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
-import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
-import ypjs.project.dto.itemqnadto.ItemQnaUpdateDto;
+import ypjs.project.dto.itemqnadto.*;
 import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
@@ -48,30 +45,39 @@ public class ItemQnaService {
 
         itemQnaRepository.save(itemQna);
 
-        return itemQna.getItemQnaId();
+        return itemQna.getItem().getItemId();
 
     }
 
     //==조회==//
-    public ItemQnaResponseDto findOne(Long id) {
+    public ItemQnaDetailDto findOne(Long id) {
         ItemQna itemQna = itemQnaRepository.findOne(id);
-        return new ItemQnaResponseDto(itemQna);
+        return new ItemQnaDetailDto(itemQna);
     }
 
-    public List<ItemQnaResponseDto> findAllByItemId(Long itemId, Pageable pageable) {
+    public List<ItemQnaSimpleDto> findAllByItemId(Long itemId, Pageable pageable) {
         List<ItemQna> itemQnas = itemQnaRepository.findAllByItemId(itemId, pageable);
 
         return itemQnas.stream()
-                .map(iQ -> new ItemQnaResponseDto(iQ))
+                .map(iQ -> new ItemQnaSimpleDto(iQ))
                 .collect(toList());
     }
 
-    public List<ItemQnaResponseDto> findAllByMemberId(Long memberId, Pageable pageable) {
+    public List<ItemQnaSimpleDto> findAllByMemberId(Long memberId, Pageable pageable) {
         List<ItemQna> itemQnas = itemQnaRepository.findAllByMemberId(memberId, pageable);
 
         return itemQnas
                 .stream()
-                .map(ItemQnaResponseDto::new)
+                .map(ItemQnaSimpleDto::new)
+                .collect(toList());
+    }
+
+    public List<ItemQnaDetailDto> findAll(Pageable pageable) {
+        List<ItemQna> itemQnas = itemQnaRepository.findAll(pageable);
+
+        return itemQnas
+                .stream()
+                .map(ItemQnaDetailDto::new)
                 .collect(toList());
     }
 

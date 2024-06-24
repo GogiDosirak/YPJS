@@ -1,7 +1,9 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.ItemQnaStatus;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "item_qna")
 @Getter
+@NoArgsConstructor
 public class ItemQna {
 
     @Id
@@ -52,10 +55,10 @@ public class ItemQna {
 
 
     //==생성자==//
-    public ItemQna(Item item, Member qMember, String q) {
+    public ItemQna(Item item, Member qMember, String question) {
         this.item = item;
         this.qMember = qMember;
-        this.q = q;
+        this.q = question;
         this.qCreated = LocalDateTime.now();
         this.status = ItemQnaStatus.PENDING;
     }
