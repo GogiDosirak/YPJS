@@ -37,7 +37,9 @@
         </thead>
         <tr th:each="notice : ${noticeList}">
                 <td th:text="${notice.noticeId}">
-                <td th:text="${notice.noticeTitle}">
+            <td>
+                <a th:href="@{/ypjs/board/notice/{noticeId}(noticeId=${notice.noticeId})}" th:text="${notice.noticeTitle}"></a>
+            </td>
                 <td>운영자</td>
                 <td th:text="${notice.noticeDate }">
                 <td th:text="${notice.noticeCnt}">

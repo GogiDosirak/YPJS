@@ -21,12 +21,14 @@ public class NoticeDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class CreateNoticeResponse {
         private String noticeTitle;
     }
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UpdateNoticeRequest {
         @NotBlank(message = "제목을 입력해주세요.")
         private String noticeTitle;
@@ -36,12 +38,14 @@ public class NoticeDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class UpdateNoticeResponse {
         private String noticeTitle;
     }
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class DeleteNoticeResponse {
         private Long noticeId;
     }
@@ -50,6 +54,7 @@ public class NoticeDto {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class NoticeApiDto {
         private Long noticeId;
         private String noticeTitle;

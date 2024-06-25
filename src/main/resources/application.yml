@@ -26,3 +26,6 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+jwt:
+  secret: e4f2b9e1d5c3a78f1b2c4d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8

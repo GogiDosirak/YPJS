@@ -24,7 +24,7 @@ public class NoticeApiController {
     private final MemberService memberService;
 
 //    // 공지사항 전체 조회
-//    @GetMapping("/ypjs/board/notice/notices")
+//    @GetMapping("/api/ypjs/board/notice/notices")
 //    public Result findAll(@RequestParam int offset, @RequestParam int limit) {
 //        List<Notice> noticeList = noticeService.findAll(offset,limit);
 //        List<NoticeDto.NoticeApiDto> result = noticeList.stream()
@@ -35,14 +35,14 @@ public class NoticeApiController {
 //    }
 
 
-    // 공지사항 단건 조회
-    @GetMapping("/ypjs/board/notice/{noticeId}")
+   // 공지사항 단건 조회
+   @GetMapping("/api/ypjs/board/notice/{noticeId}")
     public NoticeDto.NoticeApiDto findOne(@PathVariable Long noticeId) {
-        Notice notice = noticeService.findOne(noticeId);
+       Notice notice = noticeService.findOne(noticeId);
         NoticeDto.NoticeApiDto result = new NoticeDto.NoticeApiDto(notice.getNoticeId(),notice.getNoticeTitle(),notice.getNoticeContent(),
-                notice.getNoticeCnt(),notice.getNoticeDate(),notice.getMember().getName());
-        return result;
-    }
+               notice.getNoticeCnt(),notice.getNoticeDate(),notice.getMember().getName());
+       return result;
+   }
 
     // 글등록
     @PostMapping("/ypjs/board/notice/insert")
