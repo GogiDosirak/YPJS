@@ -64,11 +64,15 @@ public class ItemQna {
     }
 
     //==메서드==//
-    //답변 작성
+    //답변 작성 및 수정
     public void answer(Member aMember, String a) {
         this.aMember = aMember;
         this.a = a;
-        this.aCreated = LocalDateTime.now();
+        if(aCreated == null) {
+            this.aCreated = LocalDateTime.now();
+        } else {
+            this.aUpdated = LocalDateTime.now();
+        }
         this.status = ItemQnaStatus.ANSWERED;
     }
 
@@ -78,10 +82,5 @@ public class ItemQna {
         this.qUpdated = LocalDateTime.now();
         this.status = ItemQnaStatus.PENDING;
     }
-    //답변 수정
-    public void updateA(String a) {
-        this.a = a;
-        this.aUpdated = LocalDateTime.now();
-        this.status = ItemQnaStatus.ANSWERED;
-    }
+
 }
