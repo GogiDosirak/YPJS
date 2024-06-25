@@ -8,14 +8,15 @@ let itemBoardObject = {
             _this.insert();
         });
 
-        $("#btn-itemDelete").on("click", () => {
+        $("#btn-itemDelete").on("click", function() {
+             alert("삭제가 요청되었습니다.");
             _this.delete();
         });
 
         $(document).on("click", ".btn-delete-item", function() {
             // 클릭된 버튼의 데이터 속성에서 itemId를 가져옴
             let itemId = $(this).data("itemid");
-
+             alert("삭제가 요청되었습니다.");
             // 아이템 삭제 함수 호출
             _this.deleteItem(itemId);
         });
@@ -39,7 +40,7 @@ let itemBoardObject = {
             contentType: "application/json; charset=utf-8",
             enctype: 'multipart/form-data', // 추가
             success: function(response) {
-                window.location.href = "/test";
+                window.location.href = "/ypjs/item/get";
             },
             error: function(error) {
                 alert("에러 발생: " + JSON.stringify(error));
@@ -55,8 +56,8 @@ let itemBoardObject = {
             type: "DELETE",
             url: "/ypjs/item/delete/" + itemId,
             success: function(response) {
-                alert(response.data); // 성공 메시지 처리
-                window.location.href = "/test"; // 삭제 후 페이지 이동
+
+                window.location.href = "/ypjs/item/get"; // 삭제 후 페이지 이동
             },
             error: function(xhr, status, error) {
                 alert("에러 발생: " + error);
@@ -69,8 +70,8 @@ let itemBoardObject = {
             type: "DELETE",
             url: "/ypjs/item/delete/" + itemId,
             success: function(response) {
-                alert(response.data); // 성공 메시지 처리
-                window.location.href = "/test"; // 삭제 후 페이지 이동
+
+                window.location.href = "/ypjs/item/get"; // 삭제 후 페이지 이동
             },
             error: function(xhr, status, error) {
                 alert("에러 발생: " + error);

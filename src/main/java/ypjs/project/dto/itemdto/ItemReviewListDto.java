@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 public class ItemReviewListDto {
 
+    Long itemReviewId;
     Long itemId;
     // String nickname;
     private int itemScore;
@@ -24,6 +25,7 @@ public class ItemReviewListDto {
 
     public ItemReviewListDto(ItemReview itemReview) {
 
+        itemReviewId = itemReview.getItemReviewId();
         itemId = itemReview.getItem().getItemId();
         // nickname = itemReview.getMember().getNickname();
         itemScore = itemReview.getItemScore();
@@ -33,8 +35,6 @@ public class ItemReviewListDto {
 
 
     }
-
-
 
 
 

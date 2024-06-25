@@ -54,8 +54,7 @@ public class ItemReview {
 
 
     //리뷰변경 메서드
-    public Long changeItemReview(Item item, int itemScore, String itemReviewName, String itemReviewContent) {
-        this.item = item;
+    public Long changeItemReview(int itemScore, String itemReviewName, String itemReviewContent) {
         this.itemScore = itemScore;
         this.itemReviewName = itemReviewName;
         this.itemReviewContent = itemReviewContent;

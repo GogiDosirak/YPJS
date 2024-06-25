@@ -6,7 +6,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -127,13 +129,14 @@ public class ItemController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        categoryService.findOneCategory(categoryId);
+        Category category = categoryService.findOneCategory(categoryId);
 
         List<ItemListDto> items = itemService.finaAllItemPagingSortBy(categoryId, keyword, pageable, sortBy);
 
-//        CategoryOneDto category = new CategoryOneDto(findCategory, items);
-
         model.addAttribute("items",items);
+        model.addAttribute("category", category);
+        model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
+        model.addAttribute("keyword", keyword); //검색조건 유지
 
 
 
@@ -158,12 +161,15 @@ public class ItemController {
         List<ItemListDto> items = itemService.findAllItem(keyword, pageable, sortBy);
 
         model.addAttribute("items", items);
+        model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
+        model.addAttribute("keyword", keyword); //검색조건 유지
 
 
         return "item/itemList";
 
 
     }
+
 
 
 
@@ -215,19 +221,16 @@ public class ItemController {
         itemService.updateItem(itemId, itemUpdateDto, itemFileDto, file);
 
 
-
-
-
-        return "item/itemPost";
+        return "redirect:/ypjs/item/get";
 
     }
 
 
     //삭제
     @DeleteMapping("/ypjs/item/delete/{itemId}")
-    public @ResponseBody ResponseDto<?> deleteItem(@PathVariable("itemId") Long itemId) {
+    public ResponseEntity deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.deleteItem(itemId);
-        return new ResponseDto<>(HttpStatus.OK.value(), "아이템이 삭제되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
 

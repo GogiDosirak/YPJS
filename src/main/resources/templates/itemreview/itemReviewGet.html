@@ -26,8 +26,7 @@
 <script src="/js/jquery-1.11.0.min.js"></script>
 <script src="/js/summernote-lite.js"></script>
 <script src="/js/summernote-ko-KR.js"></script>
-<script src="/js/item/category.js"></script>
-<script src="/js/item/item.js"></script>
+<script src="/js/item/itemReview.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 
 
@@ -77,6 +76,7 @@
 
 
 
+
                 <div th:if="${not #lists.isEmpty(itemReviews)}">
                     <br><br><br>
                     <h3>리뷰 목록</h3>
@@ -94,37 +94,34 @@
                                 <span th:text="${itemReview.itemScore}"></span>
                             </div>
                             <div>
-                                <span class="category-label">아이템 내용:</span>
+                                <span class="category-label">리뷰 내용:</span>
                                 &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span th:utext="${itemReview.itemReviewContent}"></span>
                             </div>
 
-
+                            <input type="hidden" id="itemId" th:value="${itemReview.itemId}">
                             <!-- 수정 및 삭제 버튼 -->
-<!--                            <div class="container">-->
-<!--                                <div class="row justify-content-end">-->
-<!--                                    <div class="col-auto">-->
-
-<!--                                        <a th:href="@{/ypjs/itemReview/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>-->
-
-<!--                                    </div>-->
-<!--                                    <div class="col-auto">-->
-<!--                                        <button type="button"-->
-<!--                                                class="btn btn-danger btn-sm btn-delete-item"-->
-<!--                                                th:attr="data-itemReviewId=${itemReview.itemReview}"-->
-<!--                                                style="padding: 2px 10px; font-size: 16px; width: 90px; height: 40px;">-->
-<!--                                            삭제하기-->
-<!--                                        </button>-->
+                            <div class="container">
+                                <div class="row justify-content-end">
+                                    <div class="col-auto">
+                                        <a th:href="@{/ypjs/itemReview/update/{itemReviewId}(itemReviewId=${itemReview.itemReviewId})}" class="btn btn-warning">수정하기</a>
                                     </div>
+                                    <div class="col-auto">
+
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm btn-delete-itemReview"
+                                                th:data-itemReviewId="${itemReview.itemReviewId}"
+
+                                                style="padding: 2px 10px; font-size: 16px; width: 90px; height: 40px;">
+                                            삭제하기
+                                        </button>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
-    </div>
-</div>
 
 
                 <!-- End Contact -->

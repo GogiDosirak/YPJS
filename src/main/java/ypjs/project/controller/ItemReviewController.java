@@ -3,6 +3,7 @@ package ypjs.project.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,13 +42,12 @@ public class ItemReviewController {
    //리뷰등록
     @ResponseBody
     @PostMapping("/ypjs/itemReview/post/{itemId}")
-    public ItemReviewDto saveItemReview(@PathVariable("itemId") Long itemId, HttpSession session, Model model,
+    public ResponseEntity saveItemReview(@PathVariable("itemId") Long itemId, HttpSession session, Model model,
                                         @RequestBody @Valid ItemReviewDto requestDto) {
 
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@"+itemId);
         Item findItem = itemService.findOneItem(itemId);
         //ItemReview itemReview = itemReviewService.saveItemReview(requestDto, responseLogin.getMemberId());
         ItemReview itemReview = itemReviewService.saveItemReview(requestDto, 1L);
@@ -56,11 +56,8 @@ public class ItemReviewController {
         model.addAttribute("item", findItem);
 
 
-
-        return new ItemReviewDto(itemReview.getItem().getItemId(),  itemReview.getItemScore(), itemReview.getItemReviewName(), itemReview.getItemReviewContent());
+        return ResponseEntity.ok().build();
     }
-
-
 
 
 
@@ -71,7 +68,7 @@ public class ItemReviewController {
 
     //아이템 당 리뷰조회
     @GetMapping("/ypjs/itemReview/get/{itemId}")
-    public String getAllItemReview(@PathVariable("itemId") Long itemId, Model model) {
+    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model) {
 
         itemService.findOneItem(itemId);
 
@@ -86,26 +83,69 @@ public class ItemReviewController {
 
 
 
-    //수정
+
+    // 수정보기
+    @GetMapping("/ypjs/itemReview/update/{itemReviewId}")
+    public String updateItemReview(@PathVariable("itemReviewId") Long itemReviewId, Model model) {
+        ItemReview findItemReview = itemReviewService.findOneItemReview(itemReviewId);
+
+        ItemReviewDto itemReview = new ItemReviewDto(
+                findItemReview.getItem().getItemId(),
+                findItemReview.getItemReviewId(),
+                findItemReview.getItemScore(),
+                findItemReview.getItemReviewName(),
+                findItemReview.getItemReviewContent()
+
+        );
+
+
+
+        model.addAttribute("itemReview", itemReview);
+
+        // 반환할 뷰 이름 (템플릿 파일 경로, 예: templates/itemReview/update.html)
+        return "itemReview/itemReviewUpdate";
+    }
+
+
+
+    //수정등록
+    @ResponseBody
     @PutMapping("/ypjs/itemReview/update/{itemReviewId}")
-    public ItemReviewDto updateItemReview(@PathVariable("itemReviewId") Long itemReviewId,
-                                          @RequestBody @Valid ItemReviewDto itemReviewDto,
-                                          HttpSession session) {
+    public ResponseEntity updateItemReview(@PathVariable(name ="itemReviewId") Long itemReviewId,
+                                           @RequestBody @Valid ItemReviewDto itemReviewDto,
+                                           HttpSession session) {
 
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
+
         itemReviewService.updateItemReview(itemReviewId, itemReviewDto);
         ItemReview findItemReview = itemReviewService.findOneItemReview(itemReviewId);
 
-        return new ItemReviewDto(findItemReview.getItem().getItemId(),  findItemReview.getItemScore(), findItemReview.getItemReviewName(), findItemReview.getItemReviewContent());
+        return ResponseEntity.ok().body(findItemReview.getItem().getItemId());
+
     }
+
+
 
 
     //삭제
     @DeleteMapping("/ypjs/itemReview/delete/{itemReviewId}")
-    public void deleteItemReview(@PathVariable("itemReviewId") Long itemReviewId){
+    public ResponseEntity deleteItemReview(@PathVariable("itemReviewId") Long itemReviewId){
         itemReviewService.deleteItemReview(itemReviewId);
+
+        return ResponseEntity.ok().build();
     }
+
+
+
+
+
+
+
+
+
+
+
 
 }

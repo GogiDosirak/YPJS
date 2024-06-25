@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class ItemReviewDto {
 
     private Long itemId;
+    private Long itemReviewId;
     private int itemScore;
     private String itemReviewName;
     private String itemReviewContent;
@@ -17,8 +18,9 @@ public class ItemReviewDto {
     public ItemReviewDto() {}
 
 
-    public ItemReviewDto(Long itemId, int itemScore, String itemReviewName, String itemReviewContent) {
+    public ItemReviewDto(Long itemId, Long itemReviewId, int itemScore, String itemReviewName, String itemReviewContent) {
         this.itemId = itemId;
+        this.itemReviewId = itemReviewId;
         this.itemScore = itemScore;
         this.itemReviewName = itemReviewName;
         this.itemReviewContent = itemReviewContent;
