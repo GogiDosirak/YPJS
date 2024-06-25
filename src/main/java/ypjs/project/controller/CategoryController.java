@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,15 +41,16 @@ public class CategoryController {
 
     //category등록
     @PostMapping("/ypjs/category/post")
-    public CategoryRespnseDto saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDtorequest,
-                                           HttpSession session){
+    public ResponseEntity saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDtorequest,
+                                       HttpSession session){
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
 
         Category category = categoryService.saveCategory(categoryRequestDtorequest);
 
-        return new CategoryRespnseDto(category.getCategoryId(), category.getCategoryParent(), category.getCategoryName());
+        return ResponseEntity.ok().build();
+
     }
 
 
@@ -125,22 +127,22 @@ public class CategoryController {
     //category수정
     @ResponseBody
     @PutMapping("ypjs/category/update/{categoryId}")
-    public CategoryUpdateDto updateCategory(@PathVariable("categoryId") Long categoryId,
+    public ResponseEntity updateCategory(@PathVariable("categoryId") Long categoryId,
                                             @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
         categoryService.updateCategory(categoryId, categoryUpdateDto);
         Category findCategory = categoryService.findOneCategory(categoryId);
 
+        return ResponseEntity.ok().build();
 
-       return new CategoryUpdateDto(findCategory.getCategoryId(), findCategory.getCategoryParent().getCategoryId(), findCategory.getCategoryName());
    }
 
 
    //category삭제
     @DeleteMapping("ypjs/category/delete/{categoryId}")
-    public @ResponseBody ResponseDto<?> deleteCategory(@PathVariable("categoryId") Long categoryId) {
+    public ResponseEntity deleteCategory(@PathVariable("categoryId") Long categoryId) {
         categoryService.deleteCategory(categoryId);
-        return new ResponseDto<>(HttpStatus.OK.value(), "카테고리가 삭제되었습니다.");
+        return ResponseEntity.ok().build();
     }
 
 

@@ -11,7 +11,7 @@
 
 <!-- Start Content -->
 <div class="container py-5">
-    리뷰등록
+    리뷰수정
 </div>
 <!-- End Content -->
 
@@ -35,23 +35,24 @@
 <!-- Start Contact -->
 <div class="container py-5">
     <div class="row py-5">
-
+        <form class="col-md-9 m-auto" method="put">
             <!-- 폼 요소들 -->
             <div class="row">
-                <input type="hidden" id="itemId" th:value="${item.itemId}" > <!-- Thymeleaf의 value 속성 사용 -->
-                <input type="hidden" id="memberId" value="1"> <!-- memberId 값 받아와야 됨 -->
+
+                <input type="hidden" id="itemReviewId" th:value="${itemReview.itemReviewId}">
+
 
                 <div class="form-group mb-3">
                     <label for="itemReviewName">제목</label>
-                    <input type="text" class="form-control mt-1" id="itemReviewName" name="itemReviewName" placeholder="제목">
+                    <input type="text" class="form-control mt-1" id="itemReviewName" name="itemReviewName" th:value="${itemReview.itemReviewName}" placeholder="제목">
                 </div>
                 <div class="form-group mb-3">
                     <label for="itemScore">점수</label>
-                    <input type="text" class="form-control mt-1" id="itemScore" name="itemScore" placeholder="점수">
+                    <input type="text" class="form-control mt-1" id="itemScore" name="itemScore" th:value="${itemReview.itemScore}" placeholder="점수">
                 </div>
                 <div class="mb-3">
                     <label for="itemReviewContent">내용</label>
-                    <textarea class="form-control" id="itemReviewContent" name="itemReviewContent" rows="10"></textarea>
+                    <textarea class="form-control" id="itemReviewContent" name="itemReviewContent" th:text="${itemReview.itemReviewContent}" rows="10"></textarea>
                 </div>
 
                 <!-- Summernote 초기화 스크립트 -->
@@ -72,11 +73,11 @@
                 <!-- 글 등록 버튼 -->
                 <div class="row">
                     <div class="col text-end mt-2">
-                        <button type="button" id="btn-itemReviewPost" class="btn btn-success btn-lg px-3">리뷰등록</button>
+                        <button type="button" id="btn-itemReviewUpdate" class="btn btn-success btn-lg px-3">리뷰수정</button>
                     </div>
                 </div>
             </div>
-
+        </form>
     </div>
 </div>
 <!-- End Contact -->

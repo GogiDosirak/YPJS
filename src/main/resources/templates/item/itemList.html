@@ -93,21 +93,76 @@
 
 
 
+<!--                <div class="col-md-6">-->
+<!--                <form action="#" th:action="@{/ypjs/item/get}" method="get">-->
+<!--                <div class="col-md-6 pb-4">-->
+<!--                    <div class="d-flex">-->
+<!--                        <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">-->
+<!--                            <option value="itemId" th:selected="${sortBy == 'itemId'}">최신순</option>-->
+<!--                            <option value="itemRatings" th:selected="${sortBy == 'itemRatings'}">별점 높은 순</option>-->
+<!--                            <option value="likeCount" th:selected="${sortBy == 'likeCount'}">찜많은순</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="col-md-6 pb-4">
-                    <div class="d-flex">
-                        <select class="form-control">
-                            <option>최신순</option>
-                            <option>별점높은순</option>
-                            <option>찜많은순</option>
-                        </select>
-                    </div>
+<!--            </form>-->
+<!--                </div>-->
+
+
+
+<!--                <div class="container">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-lg-9">-->
+<!--                            &lt;!&ndash; 검색 폼 &ndash;&gt;-->
+<!--                            <form th:action="@{/ypjs/item/get}" method="get">-->
+<!--                                <div class="form-row align-items-center mb-3">-->
+<!--                                    <div class="col-auto">-->
+<!--                                        <label for="keyword" class="sr-only">Keyword</label>-->
+<!--                                        <input type="text" id="keyword" name="keyword" class="form-control"-->
+<!--                                               placeholder="Search by item name" th:value="${keyword}">-->
+<!--                                    </div>-->
+<!--                                    <div class="col-auto">-->
+<!--                                        <button type="submit" class="btn btn-primary">Search</button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+
+
+
+
+                <div class="col-lg-6">
+                    <!-- 검색 폼 및 정렬 폼 통합 -->
+                    <form th:action="@{/ypjs/item/get}" method="get" class="input-group">
+                        <input type="text" id="keyword" name="keyword" class="form-control"
+                               placeholder="제목으로 검색하기" th:value="${keyword}">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-link text-dark">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="col-auto">
+                            <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">
+                                <option value="itemId" th:selected="${sortBy == 'itemId'}">최신순</option>
+                                <option value="itemRatings" th:selected="${sortBy == 'itemRatings'}">별점 높은 순</option>
+                                <option value="likeCount" th:selected="${sortBy == 'likeCount'}">찜많은순</option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
-            </div>
 
 
 
-            <div class="container-fluid mt-3">
+
+
+
+
+
+                <div class="container-fluid mt-3">
                 <div class="row">
                     <!-- items 리스트의 각 항목을 반복 -->
                     <div th:each="item : ${items}" class="col-md-4">
@@ -138,8 +193,10 @@
                                         <i class="text-warning fa fa-star"></i>
                                         <i class="text-muted fa fa-star"></i>
                                         <i class="text-muted fa fa-star"></i>
-                                    </li>
+                                    </li>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span id="itemRatings" class="font-weight-bold" th:text="${item.itemRatings}"></span>
                                 </ul>
+
                                 <!-- 가격 표시 -->
                                 <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
                                 <span class="font-weight-bold">원</span>

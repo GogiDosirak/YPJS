@@ -110,7 +110,6 @@ public class ItemRepository {
 
 
 
-    //카테고리 당 아이템 조회(검색, 정렬, 페이징)
     public List<Item> findAllItemPagingSortByAndKeyword(Long categoryId, String keyword, Pageable pageable, String sortBy) {
         String queryString = "select distinct i from Item i" +
                 " join fetch i.category c" +
@@ -122,14 +121,19 @@ public class ItemRepository {
             queryString += " and i.itemName like :keyword";
         }
 
-        // 기본 정렬 조건
-        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
 
-        // 추가 정렬 조건
-        if ("itemRatings".equals(sortBy)) {
-            queryString += ", i.itemRatings desc";
-        } else if ("likeCount".equals(sortBy)) {
-            queryString += ", i.likeCount desc";
+        queryString += " order by "; // 기본 order by 절을 먼저 추가
+        switch (sortBy) {
+            case "itemRatings":
+                queryString += "i.itemRatings desc, i.itemId desc"; // itemRatings로 정렬, 동일한 rating이면 itemId로 정렬
+                break;
+            case "likeCount":
+                queryString += "i.likeCount desc, i.itemId desc"; // likeCount로 정렬, 동일한 likeCount이면 itemId로 정렬
+                break;
+            case "itemId":
+            default:
+                queryString += "i.itemId desc"; // 기본적으로 itemId로 정렬
+                break;
         }
 
         TypedQuery<Item> query = em.createQuery(queryString, Item.class)
@@ -146,8 +150,8 @@ public class ItemRepository {
     }
 
 
-    //아이템 전체 조회
     public List<Item> findAllItem(String keyword, Pageable pageable, String sortBy) {
+        // 기본 쿼리
         String queryString = "select i from Item i";
 
         // 검색 조건 추가
@@ -156,14 +160,19 @@ public class ItemRepository {
             queryString += " where i.itemName like :keyword";
         }
 
-        // 기본 정렬 조건
-        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
-
-        // 추가 정렬 조건
-        if ("itemRatings".equals(sortBy)) {
-            queryString += ", i.itemRatings desc";
-        } else if ("likeCount".equals(sortBy)) {
-            queryString += ", i.likeCount desc";
+        // 정렬 조건
+        queryString += " order by ";
+        switch (sortBy) {
+            case "itemRatings":
+                queryString += "i.itemRatings desc, i.itemId desc";
+                break;
+            case "likeCount":
+                queryString += "i.likeCount desc, i.itemId desc";
+                break;
+            case "itemId":
+            default:
+                queryString += "i.itemId desc";
+                break;
         }
 
         TypedQuery<Item> query = em.createQuery(queryString, Item.class)
@@ -177,6 +186,7 @@ public class ItemRepository {
 
         return query.getResultList();
     }
+
 
 
 

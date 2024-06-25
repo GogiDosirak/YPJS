@@ -45,7 +45,7 @@ public class ItemReviewRepository {
     public List<ItemReview> findAllItemReview(Long itemId) {
         return em.createQuery(
                         "select ir from ItemReview ir" +
-                               " join fetch ir.item i WHERE i.itemId = :itemId", ItemReview.class)
+                               " join fetch ir.item i WHERE i.itemId = :itemId order by itemReviewId desc", ItemReview.class)
                 .setParameter("itemId", itemId)
                 .getResultList();
     }
