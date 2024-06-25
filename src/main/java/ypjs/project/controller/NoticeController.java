@@ -2,13 +2,11 @@ package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Notice;
 import ypjs.project.dto.logindto.LoginDto;
@@ -39,5 +37,15 @@ public class NoticeController {
                 .collect(Collectors.toList());
         model.addAttribute("noticeList", result);
         return "/board/notice/notice";
+    }
+
+    // 공지사항 단건 조회
+    @GetMapping("/ypjs/board/notice/{noticeId}")
+    public String findOne(@PathVariable("noticeId") Long noticeId, Model model) {
+        Notice notice = noticeService.findOne(noticeId);
+        NoticeDto.NoticeApiDto result = new NoticeDto.NoticeApiDto(notice.getNoticeId(),notice.getNoticeTitle(),notice.getNoticeContent(),
+                notice.getNoticeCnt(),notice.getNoticeDate(),notice.getMember().getName());
+        model.addAttribute("notice",result);
+        return "/board/notice/detail";
     }
 }
