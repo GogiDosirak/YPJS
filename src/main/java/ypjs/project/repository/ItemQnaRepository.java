@@ -59,6 +59,27 @@ public class ItemQnaRepository {
                 .getResultList();
     }
 
+    //==총 개수 조회==//
+    public int countAll() {
+        return em.createQuery("select count(i) from ItemQna i", Long.class)
+                .getSingleResult()
+                .intValue();
+    }
+
+    public int countByItemId(Long itemId) {
+        return em.createQuery("select count(i) from ItemQna i where i.item.itemId = :id", Long.class)
+                .setParameter("id", itemId)
+                .getSingleResult()
+                .intValue();
+    }
+
+    public int countByMemberId(Long memberId) {
+        return em.createQuery("select count(i) from ItemQna i where i.qMember.memberId = :id", Long.class)
+                .setParameter("id", memberId)
+                .getSingleResult()
+                .intValue();
+    }
+
     //==삭제==//
     public void delete(ItemQna itemQna) {
         em.remove(itemQna);

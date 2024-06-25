@@ -18,7 +18,7 @@
 
             <!-- 주문내역 표시 시작-->
             <div class="row mb-4">
-                <h2 class="h2 fw-bold text-primary">상품 문의 내역(관리자)</h2>
+                <h2 class="h2 fw-bold text-primary">상품문의 내역(관리자)</h2>
             </div>
 
                 <!-- itemQnaList가 비어 있는 경우 -->
@@ -64,6 +64,22 @@
                 </div>
             </div>
             <!--주문내역 표시 끝-->
+
+            <!-- 페이지네이션 시작-->
+            <nav th:unless="${#lists.isEmpty(itemQnaList)}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${page - 1} + '&size=' + ${size}}">이전</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == i} ? 'active'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${i} + '&size=' + ${size}}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${page + 1} + '&size=' + ${size}}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--페이지네이션 끝-->
 
     </div>
 </div>

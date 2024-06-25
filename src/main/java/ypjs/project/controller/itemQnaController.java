@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Item;
+import ypjs.project.domain.Member;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.itemqnadto.*;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.service.ItemQnaService;
@@ -61,7 +63,14 @@ public class itemQnaController {
         Pageable pageable = PageRequest.of(page, size);
         Long itemId = 1L;  //임시
         List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByItemId(itemId, pageable);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemQnaService.countByItemId(itemId), size);
+
         model.addAttribute("itemQnaList", itemQnaList);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", totalPages);
         return "itemqna/list";
     }
 
@@ -74,9 +83,36 @@ public class itemQnaController {
         Pageable pageable = PageRequest.of(page, size);
         Long memberId = 1L;  //임시
         List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByMemberId(memberId, pageable);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemQnaService.countByMemberId(memberId), size);
+
         model.addAttribute("itemQnaList", itemQnaList);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", totalPages);
         return "itemqna/listMy";
     }
+
+    @GetMapping("/list/admin")
+    public String list(
+            Model model,
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size) {
+        System.out.println("**마이 상품문의 내역 페이지 요청됨");
+        Pageable pageable = PageRequest.of(page, size);
+        List<ItemQnaDetailDto> itemQnaList = itemQnaService.findAll(pageable);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemQnaService.countAll(), size);
+
+        model.addAttribute("itemQnaList", itemQnaList);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", totalPages);
+        return "itemqna/listAdmin";
+    }
+
 
     @GetMapping("/detail")
     public String detailMy(@RequestParam(name = "itemQnaId") Long itemQnaId, Model model) {
@@ -86,17 +122,6 @@ public class itemQnaController {
         return "itemqna/detail";
     }
 
-    @GetMapping("/list/admin")
-    public String list(
-        Model model,
-        @RequestParam(name="page", defaultValue = "0") int page,
-        @RequestParam(name="size", defaultValue = "10") int size) {
-        System.out.println("**마이 상품문의 내역 페이지 요청됨");
-        Pageable pageable = PageRequest.of(page, size);
-        List<ItemQnaDetailDto> itemQnaList = itemQnaService.findAll(pageable);
-        model.addAttribute("itemQnaList", itemQnaList);
-        return "itemqna/listAdmin";
-    }
 
     @GetMapping("/detail/admin")
     public String detailAdmin(@RequestParam(name = "itemQnaId") Long itemQnaId, Model model) {
@@ -108,31 +133,28 @@ public class itemQnaController {
 
 
     @GetMapping("/answer")
-    public String answer() {
-        return "itemQnaAnswer";
+    public String answer(@RequestParam(name = "itemQnaId") Long itemQnaId, Model model, HttpServletRequest request) {
+        System.out.println("**상품문의 답변 작성 페이지 요청됨");
+        ItemQnaDetailDto itemQna = itemQnaService.findOne(itemQnaId);
+        model.addAttribute("itemQna", itemQna);
+        Member m = memberService.findOne(1L);  //임시
+        model.addAttribute("aMemberAccountId",m.getAccountId());
+        model.addAttribute("aMemberId", m.getMemberId());
+        return "itemqna/answer";
     }
 
     @PostMapping("/answer")
-    public String answer(@RequestBody @Valid ItemQnaAnswerDto itemQnaAnswerDto) {
+    public ResponseEntity answer(@RequestBody @Valid ItemQnaAnswerDto itemQnaAnswerDto) {
+        System.out.println("**상품문의 답변 등록 요청됨");
+
+        System.out.println("itemQnaId= " + itemQnaAnswerDto.getItemQnaId());
+        System.out.println("aMemberId= " + itemQnaAnswerDto.getMemberId());
+        System.out.println("answer= " + itemQnaAnswerDto.getAnswer());
+
         itemQnaService.answer(itemQnaAnswerDto);
-        return "redirect:#";
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/updateQ")
-    public String updateQ() {
-        return "itemQnaUpdateQ";
-    }
-
-    @GetMapping("/updateA")
-    public String updateA() {
-        return "itemQnaUpdateA";
-    }
-
-    @PostMapping("/update")
-    public String update(@RequestBody @Valid ItemQnaUpdateDto itemQnaUpdateDto) {
-        itemQnaService.update(itemQnaUpdateDto);
-        return "redirect:#";
-    }
 
     @DeleteMapping("/delete/{itemQnaId}")
     public ResponseDto<?> delete(@PathVariable @Valid Long itemQnaId) {

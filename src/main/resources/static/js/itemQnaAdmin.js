@@ -1,37 +1,52 @@
 $(document).ready(function() {
 
-//상품문의 생성 처리
-    $('#btn-create').click(function() {
-        var itemId = $('#itemId').val();
-        var question = $('#question').val();
+/** listAdmin.html **/
 
-        console.log(itemId);
-        console.log(question);
+//목록에서 행 클릭하면 상세페이지로 이동
+    $('tbody').on('click', 'tr', function() {
+        var itemQnaId = $(this).attr('id');
+        location = '/ypjs/itemqna/detail/admin?itemQnaId=' + itemQnaId;
+    });
 
-        var itemQnaCreateDto = {
-            itemId: itemId,
-            question: question
+/** detailAdmin.html **/
+    $('#btn-answer').click(function() {
+        var itemQnaId = $('#itemQnaId').val();
+        location = '/ypjs/itemqna/answer?itemQnaId=' + itemQnaId;
+    });
+
+/** answer.html **/
+    $('#btn-submit').click(function() {
+        var itemQnaId = $('#itemQnaId').val();
+        var memberId = $('#aMemberId').val();
+        var answer = $('#answer').val();
+
+        console.log(itemQnaId);
+        console.log(memberId);
+        console.log(answer);
+
+        var ItemQnaAnswerDto = {
+            itemQnaId: itemQnaId,
+            memberId: memberId,
+            answer: answer
         }
 
         // AJAX 요청
         $.ajax({
             type: 'POST',
-            url: '/ypjs/itemqna/create',
+            url: '/ypjs/itemqna/answer',
             contentType: 'application/json',
-            data: JSON.stringify(itemQnaCreateDto),
+            data: JSON.stringify(ItemQnaAnswerDto),
             success: function(response) {
-                console.log('상품문의 등록 완료');
+                console.log('상품문의 답변 완료');
                 Swal.fire({
-                    text: "상품문의가 등록되었습니다.",
+                    text: "답변이 등록되었습니다.",
                     confirmButtonColor: '#007bff',
                     iconColor: '#007bff',
                     icon: "success"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         //상품 상세로 이동
-                        //location = "/ypjs/item/detail?itemId=" + response;
-                        //임시 로케이션
-                        location = "/ypjs/order/hello";
+                        location = '/ypjs/itemqna/detail/admin?itemQnaId=' + itemQnaId;
                     }
                 });
             },
@@ -41,14 +56,5 @@ $(document).ready(function() {
             }
         });
     });
-
-/** adminList.html **/
-
-//목록에서 행 클릭하면 상세페이지로 이동
-    $('tbody').on('click', 'tr', function() {
-        var itemQnaId = $(this).attr('id');
-        location = '/ypjs/itemqna/detail/admin?itemQnaId=' + itemQnaId;
-    });
-
 
 });

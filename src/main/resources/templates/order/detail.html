@@ -137,6 +137,11 @@
                             <div class="col-8">
                                 <span class="h5" id="delivery-status" th:text="${order.delivery.status}"></span>
                             </div>
+                            <div class="col-2 mb-3 d-flex justify-content-end">
+                                <a class="btn btn-outline-success" href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank">배송조회</a>
+                                <a href="https://apis.tracker.delivery/carriers/kr.epost/tracks/1111111111111">배송조회2</a>
+                                <!--<button class="btn btn-outline-success" id="delivery-find-modal">배송조회</button>-->
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-2 mb-3">

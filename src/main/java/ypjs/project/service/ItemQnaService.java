@@ -81,6 +81,19 @@ public class ItemQnaService {
                 .collect(toList());
     }
 
+    //==개수 조회==//
+    public int countAll() {
+        return itemQnaRepository.countAll();
+    }
+
+    public int countByItemId(Long itemId) {
+        return itemQnaRepository.countByItemId(itemId);
+    }
+
+    public int countByMemberId(Long memberId) {
+        return itemQnaRepository.countByMemberId(memberId);
+    }
+
     //==답변 작성==//
     @Transactional
     public void answer(ItemQnaAnswerDto itemQnaAnswerDto) {
@@ -91,23 +104,6 @@ public class ItemQnaService {
         Member member = memberRepository.findOne(itemQnaAnswerDto.getMemberId());
 
         itemQna.answer(member, itemQnaAnswerDto.getAnswer());
-
-    }
-
-
-    //==문의 내용 수정==//
-    @Transactional
-    public void update(ItemQnaUpdateDto itemQnaUpdateDto) {
-        //상품문의정보 조회
-        ItemQna itemQna = itemQnaRepository.findOne(itemQnaUpdateDto.getItemQnaId());
-
-        if(StringUtils.hasText(itemQnaUpdateDto.getQuestion()) && !StringUtils.hasText(itemQnaUpdateDto.getAnswer())) {
-            //질문 수정
-            itemQna.updateQ(itemQnaUpdateDto.getQuestion());
-        } else if(!StringUtils.hasText(itemQnaUpdateDto.getQuestion()) && StringUtils.hasText(itemQnaUpdateDto.getAnswer())) {
-            //답변 수정
-            itemQna.updateA(itemQnaUpdateDto.getAnswer());
-        }
 
     }
 

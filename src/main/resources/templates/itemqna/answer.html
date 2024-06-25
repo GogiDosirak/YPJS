@@ -20,6 +20,8 @@
                 <div class="d-flex align-items-center">
                     <i class="fas fa-chevron-right me-1" style="font-size: 0.65rem !important; color: #bfbfbf;"></i>
                     <a href="/ypjs/itemqna/list/admin" class="custom-link fw-bold" style="font-size: 0.75rem !important; color: #bfbfbf !important;"> 상품문의 내역(관리자)</a>
+                    <i class="fas fa-chevron-right me-1" style="font-size: 0.65rem !important; color: #bfbfbf;"></i>
+                    <a th:href="@{/ypjs/itemqna/detail/admin(itemQnaId=${itemQna.itemQnaId})}" class="custom-link fw-bold" style="font-size: 0.75rem !important; color: #bfbfbf !important;"> 상품문의 상세(관리자)</a>
                 </div>
             </div>
             <br>
@@ -76,7 +78,8 @@
                 <div class="mb-3 row">
                     <label for="aMemberAccountId" class="col-sm-2 col-form-label">답변작성자</label>
                     <div class="col-sm-10 pt-2">
-                        <input type="text" class="form-control" id="aMemberAccountId" th:value="${itemQna.aMemberAccountId}" readonly>
+                        <input type="text" class="form-control" id="aMemberAccountId" th:value="${aMemberAccountId}" readonly>
+                        <input type="hidden" id="aMemberId" th:value="${aMemberId}">
                     </div>
                 </div>
 
@@ -99,13 +102,13 @@
                 <div class="mb-3 row">
                     <label for="answer" class="col-sm-2 col-form-label">문의 답변</label>
                     <div class="col-sm-10">
-                        <textarea rows="3" class="form-control" id="answer" th:text="${itemQna.answer}" readonly></textarea>
+                        <textarea rows="3" class="form-control" id="answer" th:text="${itemQna.answer}"></textarea>
                     </div>
                 </div>
             </div>
 
             <div class="row justify-content-center mt-4">
-                <button class="btn btn-success" style="width: 25%;" id="btn-answer">답변 작성 및 수정</button>
+                <button class="btn btn-success" style="width: 25%;" id="btn-submit">답변 저장</button>
             </div>
 
         </div>
