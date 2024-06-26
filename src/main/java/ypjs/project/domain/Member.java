@@ -114,6 +114,12 @@ public class Member {
         }
     }
 
+    //포인트 세팅 메소드
+    public void updatePoint(int newPoints){
+        this.point = newPoints;
+    }
+
+
 
 
 }

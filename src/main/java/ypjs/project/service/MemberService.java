@@ -1,22 +1,12 @@
 package ypjs.project.service;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
 import ypjs.project.repository.MemberRepository;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -77,6 +67,26 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    //payment 포인트 업데이트 관련 로직
+    @Transactional
+    public boolean updateMemberPoints(Long memberId, int usedPoints) {
+        try {
+            Member member = memberRepository.findOne(memberId);
+            int currentPoints = member.getPoint();
+            int newPoints = currentPoints - usedPoints;
+
+            if (newPoints >= 0) {
+                member.updatePoint(newPoints);
+                memberRepository.save(member);
+                return true;
+            } else {
+                throw new IllegalArgumentException("사용할 포인트가 현재 포인트보다 많습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
     }

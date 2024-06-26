@@ -14,7 +14,13 @@ spring:
         format_sql: true
         default_batch_fetch_size: 500
 
-
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
 
 logging:
   level:

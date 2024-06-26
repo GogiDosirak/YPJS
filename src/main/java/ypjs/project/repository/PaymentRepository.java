@@ -84,4 +84,13 @@ public class PaymentRepository {
                 .getResultStream()
                 .findFirst();
     }
+
+    //==paymentUid 로 Payment 찾기
+    public Payment findPaymentByPaymentUid(String paymentUid){
+        return em.createQuery(
+                "select p from Payment p" +
+                        " where p.payPaymentUid = :paymentUid", Payment.class)
+                .setParameter("paymentUid",paymentUid)
+                .getSingleResult();
+    }
 }
