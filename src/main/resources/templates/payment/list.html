@@ -10,14 +10,11 @@
 <script th:src="@{/js/payment.js}"></script>
 <header th:replace="frame/header :: header"></header>
 <style>
-    .card {
-        height: 100%;
-    }
-    .card-img {
-        height: 100%;
-        width: auto;
-        object-fit: cover;
-    }
+    .card-img-fixed {
+    height: 318px; /* 원하는 높이로 설정 */
+    width: 100%; /* 너비를 100%로 설정하여 부트스트랩 카드에 맞춤 */
+    object-fit: cover; /* 이미지가 요소에 맞춰 잘리지 않고 조정됨 */
+}
 </style>
 
 <div th:each="payment : ${payments}" class="payment-item">
@@ -27,7 +24,10 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAxOTExMTZfMTc3%2FMDAxNTczOTEwODgyNjU4.Wl1nN5Df_0-z0NlUdDpKzJV7gPFTzTZ2lk7EzubAVZEg.MUr5wpdqt50r4qM2O8CUs27O1aVIglH6yiGW0IcJ9RMg.JPEG%2FII-B0VbhmEgIF80dSru92g785_Ao.jpg&type=sc960_832" alt="Card image cap" id="product-detail">
+                        <img class="card-img-fixed"
+                             src="https://search.pstatic.net/common/?src=http%3A%2F%2Fpost.phinf.naver.net%2FMjAxOTExMTZfMTc3%2FMDAxNTczOTEwODgyNjU4.Wl1nN5Df_0-z0NlUdDpKzJV7gPFTzTZ2lk7EzubAVZEg.MUr5wpdqt50r4qM2O8CUs27O1aVIglH6yiGW0IcJ9RMg.JPEG%2FII-B0VbhmEgIF80dSru92g785_Ao.jpg&type=sc960_832"
+                             alt="Card image cap"
+                             id="product-detail">
                     </div>
                     <div class="row">
 
@@ -39,35 +39,114 @@
                         <div class="card-body">
                             <h1 class="h2">결제내역</h1>
 
-                            <h6>주문 가격 : <span th:text="${payment.payPrice}"></span></h6>
+                            <br>
+
+                            <h6>주문 날짜 : <span th:text="${#temporals.format(payment.payDate, 'yyyy-MM-dd')}"></span></h6>
+
+                            <h6>총 주문 가격 : <span th:text="${payment.payPrice}"></span></h6>
 
                             <h6>주문 번호 : <span th:text="${payment.payId}"></span></h6>
 
                             <h6>주문 상태 : <span th:text="${payment.payStatus}"></span></h6>
 
-                            <h6>주문 날짜 : <span th:text="${#temporals.format(payment.payDate, 'yyyy-MM-dd')}"></span></h6>
 
                             <!-- 주문 취소 버튼 -->
                             <div class="row mt-3">
-                                <div class="col d-grid">
-                                    <!-- 주문 상태가 'CANCEL'이 아닌 경우에만 버튼 표시 -->
+                                <div class="col">
+                                    <!-- 주문 상태가 'OK' 일때만 버튼 표시 -->
                                     <input type="hidden" th:value="${payment.payId}" th:data-pay-id="${payment.payId}">
                                     <button class="btn btn-danger cancel-button" th:if="${payment.payStatus.name() == 'OK'}">주문 취소</button>
                                 </div>
                             </div>
                             <!--주문취소버튼 끝-->
 
-                            <!--리뷰쓰기버튼-->
-                            <form action="" method="GET">
-                                <div class="row pb-3">
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="review">리뷰 쓰기</button>
-                                    </div>
-                                    <div class="col d-grid">
-                                        <button type="submit" class="btn btn-success btn-lg" name="submit" value="gotoitem">재구매</button>
+                            <br>
+
+                            <!-- 주문상품 표시 시작-->
+                            <div class="accordion accordion-flush">
+                                <div class="accordion-item" >
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                            <h4 class="mb-0">주문상품</h4>
+                                            <div class="col-md-5"></div>
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <ul class="list-group rounded-0">
+                                                <li th:each="orderItem, iterStat : ${payment.order.orderItems}" class="list-group-item d-flex flex-row justify-content align-items-center">
+
+                                                    <input type="hidden" th:value="${orderItem.item.itemId}" th:id="${'itemId_' + iterStat.index}">
+
+                                                    <div class="col-md-2 d-flex justify-content-center">
+                                                        <div class="card product-wap rounded-0" style="max-width: 80%;">
+                                                            <div class="card rounded-0">
+                                                                <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                                    <ul class="list-unstyled">
+                                                                        <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="row">
+                                                            <span th:text="${orderItem.item.itemName}" th:id="'itemName_' + ${iterStat.index}"></span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <ul class="list-inline mb-0">
+                                                            <li class="list-inline-item">
+                                                                <span>주문 수량</span>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <span class="item-count" th:text="${orderItem.count}" th:id="'orderItemCount_' + ${iterStat.index}"></span>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <span> 개</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <input type="hidden" th:value="${orderItem.item.itemPrice}" th:id="${'itemPrice_' + iterStat.index}">
+
+                                                    <div class="col-md-2">
+                                                        <div class="d-flex justify-content-center">
+                                                            <ul class="list-inline mb-0">
+                                                                <li class="list-inline-item">
+                                                                    <span th:text="${payment.payPrice}" th:id="'itemTotalPrice_' + ${iterStat.index}"></span>
+                                                                </li>
+                                                                <li class="list-inline-item">
+                                                                    <span> 원</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--리뷰쓰기 재구매 버튼-->
+                                                    <form action="" method="GET">
+                                                        <div class="row pb-3">
+                                                            <div class="col text-center mb-2">
+                                                                <button type="submit" class="btn btn-success btn-md" name="submit" value="review">리뷰 쓰기</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col text-center">
+                                                                <button type="submit" class="btn btn-success btn-md" name="submit" value="gotoitem">제품 보기</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <!--리뷰쓰기 재구매 버튼 끝-->
+
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <!-- 주문상품 표시 끝-->
                         </div>
                     </div>
                 </div>

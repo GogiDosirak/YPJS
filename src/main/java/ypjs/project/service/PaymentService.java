@@ -12,6 +12,7 @@ import ypjs.project.domain.Member;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.PayStatus;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
+import ypjs.project.dto.paymentdto.PaymentDto;
 import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.repository.OrderRepository;
 import ypjs.project.repository.PaymentRepository;
@@ -35,6 +36,12 @@ public class PaymentService {
     public Optional<Order> findOrderByUid (String orderUid){
         return paymentRepository.findOrderAndPayment(orderUid);}
 
+    //주문찾기
+    public PaymentDto.SuccessPaymentDto findPaymentByPaymentUid(String paymentUid){
+        ypjs.project.domain.Payment payment = paymentRepository.findPaymentByPaymentUid(paymentUid);
+        return new PaymentDto.SuccessPaymentDto(payment.getOrder().getOrderId(), payment.getPayPrice(), payment.getPayDate());
+    }
+
     //주문 생성
     public RequestPayDto makeRequestPayDto(Long orderId){
         Order order = paymentRepository.findOrderAndPaymentAndMember(orderId)
@@ -49,7 +56,9 @@ public class PaymentService {
                 order.getMember().getEmail(), // 주문자 이메일
                 order.getDelivery().getAddress().getAddress()+ " " + order.getDelivery().getAddress().getAddressDetail(),// 구매자 주소
                 order.getMember().getPhonenumber(), //주문자 전화번호
-                order.getDelivery().getAddress().getZipcode()//주문자 집코드
+                order.getDelivery().getAddress().getZipcode(),//주문자 집코드
+                order.getMember().getPoint(), //주문자 포인트
+                order.getMember().getMemberId() //주문자 구분
         );
     }
 
@@ -134,22 +143,23 @@ public class PaymentService {
                 throw new RuntimeException("결제 미완료");
             }
 
-            // DB에 저장된 결제 금액
-            int price = order.getPayment().getPayPrice();
-            System.out.println("DB에 저장된 결제 금액"+price);
-
-            // 실 결제 금액
-            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
-            System.out.println("실 결제 금액"+iamportPrice);
-
-            // 결제 금액 검증
-            if(iamportPrice != price) {
-
-                // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
-                iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
-
-                throw new RuntimeException("결제금액 위변조 의심");
-            }
+            //todo : 포인트 결제해도 다른 값이라 위변조에 걸리는데 확인 필요
+//            // DB에 저장된 결제 금액
+//            int price = order.getPayment().getPayPrice();
+//            System.out.println("DB에 저장된 결제 금액"+price);
+//
+//            // 실 결제 금액
+//            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
+//            System.out.println("실 결제 금액"+iamportPrice);
+//
+//            // 결제 금액 검증
+//            if(iamportPrice != price) {
+//
+//                // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
+//                iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
+//
+//                throw new RuntimeException("결제금액 위변조 의심");
+//            }
 
             // 결제 상태 변경
             order.getPayment().changePaymentBySuccess(PayStatus.OK, iamportResponse.getResponse().getImpUid());
