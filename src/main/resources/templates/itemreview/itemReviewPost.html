@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="frame/header :: head">
@@ -26,18 +24,31 @@
 <script src="/js/summernote-lite.js"></script>
 <script src="/js/summernote-ko-KR.js"></script>
 <script src="/js/item/itemReview.js"></script>
+<script src="/js/item/itemRatings.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    .rating-stars {
+        font-size: 24px; /* 별 아이콘 크기 */
+        color: #ccc; /* 비어 있는 별 색상 */
+        cursor: pointer; /* 포인터 커서 추가 */
+    }
+    .filled-star {
+        color: gold; /* 채워진 별 색상 */
+    }
 
 
-
+</style>
 
 <!-- Start Contact -->
 <div class="container py-5">
-    <div class="row py-5">
+    <div class="row justify-content-center py-5">
 
-            <!-- 폼 요소들 -->
+        <!-- 폼 요소들 -->
+        <div class="col-lg-8">
             <div class="row">
+
                 <input type="hidden" id="itemId" th:value="${item.itemId}" > <!-- Thymeleaf의 value 속성 사용 -->
                 <input type="hidden" id="memberId" value="1"> <!-- memberId 값 받아와야 됨 -->
 
@@ -45,11 +56,19 @@
                     <label for="itemReviewName">제목</label>
                     <input type="text" class="form-control mt-1" id="itemReviewName" name="itemReviewName" placeholder="제목">
                 </div>
-                <div class="form-group mb-3">
-                    <label for="itemScore">점수</label>
-                    <input type="text" class="form-control mt-1" id="itemScore" name="itemScore" placeholder="점수">
+                <br><br><br><br>
+
+                <div class="container">
+                    <label for="itemScore">별점을 입력하세요</label>
+                    <div id="starRating" class="mt-3">
+                        <!-- 별 아이콘이 동적으로 추가될 위치 -->
+                    </div>
+                    <input type="hidden" id="itemScore" name="itemScore" value="0">
                 </div>
-                <div class="mb-3">
+
+
+                <BR><br><br><br>
+                <div class="form-group mb-3">
                     <label for="itemReviewContent">내용</label>
                     <textarea class="form-control" id="itemReviewContent" name="itemReviewContent" rows="10"></textarea>
                 </div>
@@ -58,7 +77,7 @@
                 <script th:inline="javascript">
                     $(document).ready(function() {
                         $("#itemReviewContent").summernote({
-                            height: 600, // 높이 설정
+                            height: 300, // 높이 설정
                             placeholder: '내용을 입력하세요...', // 플레이스홀더 설정
                             callbacks: {
                                 onChange: function(contents, $editable) {
@@ -76,7 +95,7 @@
                     </div>
                 </div>
             </div>
-
+        </div>
     </div>
 </div>
 <!-- End Contact -->
@@ -84,5 +103,3 @@
 <footer th:replace="frame/footer :: footer"></footer>
 </body>
 </html>
-
-

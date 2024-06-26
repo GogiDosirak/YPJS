@@ -159,61 +159,185 @@
 
 
 
+<!--                반별 추가-->
+
+<!--                <div class="container-fluid mt-3">-->
+<!--                    <div class="row">-->
+<!--                        &lt;!&ndash; items 리스트의 각 항목을 반복 &ndash;&gt;-->
+<!--                        <div th:each="item : ${items}" class="col-md-4">-->
+<!--                            <div class="card mb-4 product-wap rounded-0">-->
+<!--                                &lt;!&ndash; 제품 이미지 &ndash;&gt;-->
+<!--                                <div class="card rounded-0">-->
+<!--                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">-->
+<!--                                        <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">-->
+<!--                                        &lt;!&ndash; 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 &ndash;&gt;-->
+<!--                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">-->
+<!--                                            &lt;!&ndash; 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 &ndash;&gt;-->
+<!--                                            <ul class="list-unstyled">-->
+<!--                                                &lt;!&ndash; 리스트의 다른 요소들 &ndash;&gt;-->
+<!--                                            </ul>-->
+<!--                                        </div>-->
+<!--                                    </a>-->
+<!--                                </div>-->
+<!--                                &lt;!&ndash; 제품 정보 &ndash;&gt;-->
+<!--                                <div class="card-body">-->
+<!--                                    &lt;!&ndash; 제품 링크 &ndash;&gt;-->
+<!--                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>-->
+
+<!--                                    &lt;!&ndash; 별점 및 평점 표시 &ndash;&gt;-->
+<!--                                    <div class="d-flex justify-content-center mb-1 align-items-center">-->
+<!--                                        <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">-->
+<!--                                            &lt;!&ndash; 별 아이콘은 JavaScript로 생성됩니다 &ndash;&gt;-->
+<!--                                        </ul>&nbsp;&nbsp;&nbsp;&nbsp;-->
+<!--                                        <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>-->
+<!--                                    </div>-->
+
+<!--                                    &lt;!&ndash; 가격 표시 &ndash;&gt;-->
+<!--                                    <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>-->
+<!--                                    <span class="font-weight-bold">원</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <script>-->
+<!--                    document.addEventListener("DOMContentLoaded", function() {-->
+<!--                        var starRatingContainers = document.querySelectorAll("#starRating");-->
+
+<!--                        starRatingContainers.forEach(function(starRatingContainer) {-->
+<!--                            var rating = parseFloat(starRatingContainer.getAttribute("data-rating"));-->
+<!--                            starRatingContainer.innerHTML = generateStarRating(rating);-->
+<!--                        });-->
+<!--                    });-->
+
+<!--                    function generateStarRating(rating) {-->
+<!--                        var starsHTML = '';-->
+<!--                        var fullStars = Math.floor(rating);  // 정수 부분의 별 개수-->
+<!--                        var halfStar = (rating % 1 >= 0.1 && rating % 1 <= 0.9) ? 1 : 0; // 반 별 조건-->
+
+<!--                        // 정수 부분의 별 추가-->
+<!--                        for (var i = 0; i < fullStars; i++) {-->
+<!--                            starsHTML += '<i class="text-warning fa fa-star"></i>';-->
+<!--                        }-->
+
+<!--                        // 반 별 추가-->
+<!--                        if (halfStar) {-->
+<!--                            starsHTML += '<i class="text-warning fa fa-star-half-alt"></i>';-->
+<!--                        }-->
+
+<!--                        // 남은 빈 별 추가-->
+<!--                        var emptyStars = 5 - fullStars - halfStar;-->
+<!--                        for (var i = 0; i < emptyStars; i++) {-->
+<!--                            starsHTML += '<i class="text-muted fa fa-star"></i>';-->
+<!--                        }-->
+
+<!--                        return starsHTML;-->
+<!--                    }-->
+<!--                </script>-->
 
 
 
+
+
+<!--                꽉찬 별만-->
                 <div class="container-fluid mt-3">
-                <div class="row">
-                    <!-- items 리스트의 각 항목을 반복 -->
-                    <div th:each="item : ${items}" class="col-md-4">
-                        <div class="card mb-4 product-wap rounded-0">
-                            <!-- 제품 이미지 -->
-                            <div class="card rounded-0">
-                                <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
-                                    <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
-                                    <!-- 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 -->
-                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                        <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
-                                        <ul class="list-unstyled">
-                                            <!-- 리스트의 다른 요소들 -->
-                                        </ul>
+                    <div class="row">
+                        <!-- items 리스트의 각 항목을 반복 -->
+                        <div th:each="item : ${items}" class="col-md-4">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <!-- 제품 이미지 -->
+                                <div class="card rounded-0">
+                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
+                                        <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
+                                        <!-- 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 -->
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                            <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
+                                            <ul class="list-unstyled">
+                                                <!-- 리스트의 다른 요소들 -->
+                                            </ul>
+                                        </div>
+                                    </a>
+                                </div>
+                                <!-- 제품 정보 -->
+                                <div class="card-body">
+                                    <!-- 제품 링크 -->
+                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
+
+                                    <!-- 별점 및 평점 표시 -->
+                                    <div class="d-flex justify-content-center mb-1 align-items-center">
+                                        <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                                            <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                                        </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
                                     </div>
-                                </a>
-                            </div>
-                            <!-- 제품 정보 -->
-                            <div class="card-body">
-                                <!-- 제품 링크 -->
-                                <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
 
-                                <!-- 별점 표시 -->
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                    <li>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
-                                    </li>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span id="itemRatings" class="font-weight-bold" th:text="${item.itemRatings}"></span>
-                                </ul>
-
-                                <!-- 가격 표시 -->
-                                <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
-                                <span class="font-weight-bold">원</span>
+                                    <!-- 가격 표시 -->
+                                    <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
+                                    <span class="font-weight-bold">원</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var starRatingContainers = document.querySelectorAll("#starRating");
+
+                        starRatingContainers.forEach(function(starRatingContainer) {
+                            var rating = parseFloat(starRatingContainer.getAttribute("data-rating"));
+                            starRatingContainer.innerHTML = generateStarRating(rating);
+                        });
+                    });
+
+                    function generateStarRating(rating) {
+                        var starsHTML = '';
+                        var numStars;
+
+                        if (rating >= 0 && rating < 1) {
+                            numStars = 0;
+                        } else if (rating >= 1 && rating < 2) {
+                            numStars = 1;
+                        } else if (rating >= 2 && rating < 3) {
+                            numStars = 2;
+                        } else if (rating >= 3 && rating < 4) {
+                            numStars = 3;
+                        } else if (rating >= 4 && rating < 5) {
+                            numStars = 4;
+                        } else if (rating == 5) {
+                            numStars = 5;
+                        }
+
+                        for (var i = 0; i < numStars; i++) {
+                            starsHTML += '<i class="text-warning fa fa-star"></i>';
+                        }
+
+                        for (var i = numStars; i < 5; i++) {
+                            starsHTML += '<i class="text-muted fa fa-star"></i>';
+                        }
+
+                        return starsHTML;
+                    }
+                </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
-
-
-
-
-
-
-
-
-        </div>
         </div>
 
     </div>

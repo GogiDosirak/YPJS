@@ -57,7 +57,7 @@ public class ItemController {
         //멤버 임시로 넣어 놈
         itemService.saveItem(requestDto, 1L, itemFileDto, file);
 
-        return "item/itemPost";
+        return "redirect:/ypjs/item/get";
 
 
     }

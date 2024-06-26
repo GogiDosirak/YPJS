@@ -110,6 +110,7 @@ public class ItemRepository {
 
 
 
+    //카테고리당 아이템리스트
     public List<Item> findAllItemPagingSortByAndKeyword(Long categoryId, String keyword, Pageable pageable, String sortBy) {
         String queryString = "select distinct i from Item i" +
                 " join fetch i.category c" +
@@ -150,6 +151,7 @@ public class ItemRepository {
     }
 
 
+    //아이템 전체리스트
     public List<Item> findAllItem(String keyword, Pageable pageable, String sortBy) {
         // 기본 쿼리
         String queryString = "select i from Item i";
