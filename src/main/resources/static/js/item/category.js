@@ -4,23 +4,23 @@ let categoryBoardObject = {
         let _this = this;
 
         $("#btn-categoryPost").on("click", function() {
-            alert("카테고리 저장 버튼 클릭됨");
+
             _this.insert();
         }),
 
         $("#btn-categoryUpdate").on("click", function() {
-            alert("수정이 요청되었습니다.");
+
             _this.update();
         }),
 
         $("#btn-categoryDelete").on("click", function() {
-            alert("삭제가 요청되었습니다.");
+
             _this.delete(); // 수정된 부분: delete 함수 호출
         });
     },
 
     insert: function() {
-        alert("카테고리 등록이 요청되었습니다.");
+
 
         let data = {
             categoryParent: $("#categoryParent").val(),
@@ -33,10 +33,11 @@ let categoryBoardObject = {
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
-                window.location.href = "/ypjs/item/get";
+             alert("카테고리 저장되었습니다.");
+                window.location.href = "/ypjs/category/get";
             },
             error: function(error) {
-                window.location.href = "/ypjs/item/get";
+                window.location.href = "/ypjs/category/get";
             }
         });
     },
@@ -56,7 +57,8 @@ let categoryBoardObject = {
             data: JSON.stringify(updateData),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
-                window.location.href = "/ypjs/item/get";
+            alert("카테고리가 수정되었습니다.");
+                window.location.href = "/ypjs/category/get";
             },
             error: function(error) {
                 alert("에러 발생: " + JSON.stringify(error));
@@ -71,7 +73,7 @@ let categoryBoardObject = {
             type: "DELETE",
             url: "/ypjs/category/delete/" + categoryId,
             success: function(response) {
-
+                  alert("카테고리가 삭제되었습니다.");
                 window.location.href = "/ypjs/category/get"; // 삭제 후 페이지 이동
             },
             error: function(xhr, status, error) {

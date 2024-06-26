@@ -62,35 +62,6 @@
                 </div>
 
 
-<!--                <div class="col-md-6 pb-4">-->
-<!--                    <div class="d-flex">-->
-<!--                        <select class="form-control">-->
-<!--                            <option>최신순</option>-->
-<!--                            <option>별점높은순</option>-->
-<!--                            <option>찜많은순</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-
-
-<!--                <div class="col-md-6">-->
-<!--                    <form action="#" th:action="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${category.categoryId})}" method="get">-->
-<!--                        <div class="col-md-6 pb-4">-->
-<!--                            <div class="d-flex">-->
-<!--                                <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">-->
-<!--                                    <option value="itemId" th:selected="${sortBy == 'itemId'}">최신순</option>-->
-<!--                                    <option value="itemRatings" th:selected="${sortBy == 'itemRatings'}">별점 높은 순</option>-->
-<!--                                    <option value="likeCount" th:selected="${sortBy == 'likeCount'}">찜많은순</option>-->
-<!--                                </select>-->
-<!--                            </div>-->
-<!--                        </div>-->
-
-<!--                    </form>-->
-<!--                </div>-->
-
-
 
 
                 <div class="col-lg-6">
@@ -142,17 +113,14 @@
                                 <!-- 제품 링크 -->
                                 <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
 
-                                <!-- 별점 표시 -->
-                                <ul class="list-unstyled d-flex justify-content-center mb-1">
-                                    <li>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-warning fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
-                                        <i class="text-muted fa fa-star"></i>
-                                    </li> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span id="itemRatings" class="font-weight-bold" th:text="${item.itemRatings}"></span>
-                                </ul>
+                                <!-- 별점 및 평점 표시 -->
+                                <div class="d-flex justify-content-center mb-1 align-items-center">
+                                    <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                                        <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                                    </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
+                                </div>
+
                                 <!-- 가격 표시 -->
                                 <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
                                 <span class="font-weight-bold">원</span>
@@ -162,6 +130,45 @@
                 </div>
             </div>
 
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var starRatingContainers = document.querySelectorAll("#starRating");
+
+                        starRatingContainers.forEach(function(starRatingContainer) {
+                            var rating = parseFloat(starRatingContainer.getAttribute("data-rating"));
+                            starRatingContainer.innerHTML = generateStarRating(rating);
+                        });
+                    });
+
+                    function generateStarRating(rating) {
+                        var starsHTML = '';
+                        var numStars;
+
+                        if (rating >= 0 && rating < 1) {
+                            numStars = 0;
+                        } else if (rating >= 1 && rating < 2) {
+                            numStars = 1;
+                        } else if (rating >= 2 && rating < 3) {
+                            numStars = 2;
+                        } else if (rating >= 3 && rating < 4) {
+                            numStars = 3;
+                        } else if (rating >= 4 && rating < 5) {
+                            numStars = 4;
+                        } else if (rating == 5) {
+                            numStars = 5;
+                        }
+
+                        for (var i = 0; i < numStars; i++) {
+                            starsHTML += '<i class="text-warning fa fa-star"></i>';
+                        }
+
+                        for (var i = numStars; i < 5; i++) {
+                            starsHTML += '<i class="text-muted fa fa-star"></i>';
+                        }
+
+                        return starsHTML;
+                    }
+                </script>
 
 
 
@@ -169,7 +176,10 @@
 
 
 
-        </div>
+
+
+
+            </div>
     </div>
 
 </div>

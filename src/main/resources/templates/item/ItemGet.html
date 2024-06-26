@@ -5,6 +5,8 @@
     <title>Zay Shop - Product Listing Page</title>
 </head>
 
+<script src="/js/item/itemRatings.js"></script>
+
 <body>
 <!--header-->
 <header th:replace="frame/header :: header"></header>
@@ -34,6 +36,28 @@
             text-align: center;
         }
 
+
+     /* #itemContent를 flexbox로 설정하여 가운데 정렬 */
+    #itemContent {
+        display: flex;
+        flex-direction: column; /* 내부 요소들을 세로로 정렬하기 위해 */
+        justify-content: center; /* 수직 가운데 정렬 */
+        align-items: center; /* 수평 가운데 정렬 */
+    }
+
+    /* 썸머노트에서 삽입된 이미지의 스타일 */
+    #itemContent img {
+        max-width: 100%; /* 최대 너비 설정 */
+        height: auto; /* 높이 자동으로 조정 */
+        margin-bottom: 10px; /* 이미지 아래 여백 추가 */
+    }
+
+    /* 썸머노트에서 삽입된 텍스트의 스타일 */
+    #itemContent p {
+        text-align: center; /* 텍스트 가운데 정렬 */
+        margin-bottom: 10px; /* 문단 아래 여백 추가 */
+    }
+
 </style>
 
 <script src="/js/item/item.js"></script>
@@ -44,35 +68,75 @@
 <!-- Open Content -->
 
 
+
+
+
 <div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
     <div class="row">
-        <div class="col-lg-7 offset-lg-1 text-right">
+        <div class="col-lg-7 offset-lg-1">
             <h1 class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
             <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
             <span class="font-weight-bold">원</span>
             <p class="h3 py-2"></p>
         </div>
     </div>
-</div>
 
-
-<div class="col-lg-7 custom-mt  offset-lg-1"> <!-- custom-mt 클래스 추가하여 간격 조정 -->
-    <div class="card border-0 bg-transparent"> <!-- border-0와 bg-transparent 클래스 추가 -->
-        <p class="py-2">
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-warning"></i>
-            <i class="fa fa-star text-secondary"></i>
-            <span class="list-inline-item text-dark"> <span id="itemRatings" class="font-weight-bold" th:text="${item.itemRatings}">
-            </span>   <a  th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">|  Reviews </a></span>
-        </p>
+    <!-- 별점 및 평점 표시 -->
+    <div class="row mt-3">
+        <div class="col-lg-7 offset-lg-1">
+            <div class="d-flex justify-content-start align-items-center">
+                <ul class="list-unstyled d-flex mb-0 mr-3 text-left" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                    <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="itemRatings" class="font-weight-bold mr-3 text-left" th:text="${item.itemRatings}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span><a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}" class="font-weight-bold">| Reviews</a></span>
+            </div>
+        </div>
     </div>
-</div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var starRatingContainers = document.querySelectorAll("#starRating");
+
+            starRatingContainers.forEach(function(starRatingContainer) {
+                var rating = parseFloat(starRatingContainer.getAttribute("data-rating"));
+                starRatingContainer.innerHTML = generateStarRating(rating);
+            });
+        });
+
+        function generateStarRating(rating) {
+            var starsHTML = '';
+            var numStars;
+
+            if (rating >= 0 && rating < 1) {
+                numStars = 0;
+            } else if (rating >= 1 && rating < 2) {
+                numStars = 1;
+            } else if (rating >= 2 && rating < 3) {
+                numStars = 2;
+            } else if (rating >= 3 && rating < 4) {
+                numStars = 3;
+            } else if (rating >= 4 && rating < 5) {
+                numStars = 4;
+            } else if (rating == 5) {
+                numStars = 5;
+            }
+
+            for (var i = 0; i < numStars; i++) {
+                starsHTML += '<i class="text-warning fa fa-star"></i>';
+            }
+
+            for (var i = numStars; i < 5; i++) {
+                starsHTML += '<i class="text-muted fa fa-star"></i>';
+            }
+
+            return starsHTML;
+        }
+    </script>
 
 
-<div class="container">
-    <div class="row justify-content-end">
+    <!-- 수정하기 및 삭제하기 버튼 -->
+    <div class="row justify-content-end mt-3">
         <div class="col-auto">
             <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
         </div>
@@ -81,42 +145,40 @@
             <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
         </div>
     </div>
-</div>
 
-<br>
+            <div class="row justify-content-end mt-3">
+                <div class="col-auto">
+                    <span class="font-weight-bold"> 조회수 : </span>
+                    <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
+                    <br>
+                    <span class="font-weight-bold">작성일 : </span>
+                    <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
+                </div>
+                <div class="col-auto">
 
-<div class="container">
-    <div class="row justify-content-end">
-        <div class="col-auto">
-            <span class="font-weight-bold"> 조회수 : </span>
-            <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
-            <br>
-            <span class="font-weight-bold">작성일 : </span>
-            <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
-
-
-
-
-        </div>
-        <div class="col-auto">
-
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <hr>
 
 
 
 
+
 <section class="bg-light">
-    <div class="container pb-5 text-center"> <!-- text-center 클래스 추가 -->
-        <div class="col-lg-5 mt-5 d-block mx-auto"> <!-- d-block mx-auto 클래스 추가 -->
-            <span id="itemContent" th:utext="${item.itemContent}"></span>
+    <div class="container pb-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-5 mt-5 text-center">
+                <div id="itemContent" th:utext="${item.itemContent}">
+                    <!-- 썸머노트에서 입력된 내용 (글과 이미지) -->
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
-
 
 
 
