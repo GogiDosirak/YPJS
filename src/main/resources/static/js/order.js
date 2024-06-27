@@ -104,7 +104,8 @@ $(document).ready(function() {
             data: JSON.stringify(orderCreateDto),
             success: function(response) {
                 console.log('주문이 성공적으로 전송되었습니다.');
-                location = "/ypjs/order/detail?orderId=" + response;
+                //결제페이지로 연결
+                location = "/ypjs/payment/payment/" + response;
             },
             error: function(xhr, status, error) {
                 // 오류 발생 시 처리
