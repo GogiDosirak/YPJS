@@ -148,8 +148,8 @@ public class ItemService {
 
 
     //카테고리 당 아이템 조회
-    public List<ItemListDto> findAllCategoryItem(Long categoryId, Pageable pageable) {
-        List<Item> items = itemRepository.findAllItems(categoryId,pageable);
+    public List<ItemListDto> findAllCategoryItem(Long categoryId, Pageable pageable, String keyword) {
+        List<Item> items = itemRepository.findAllItems(categoryId,pageable, keyword);
 
         List<ItemListDto> result = items.stream()
                 .map(ItemListDto::new)
@@ -160,16 +160,6 @@ public class ItemService {
 
 
 
-    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬(영한아저씨)
-//    public List<ItemListDto> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
-//        List<Item> items = itemRepository.findAllItemSortBy(categoryId, offset, limit, sortBy);
-//
-//        List<ItemListDto> result = items.stream()
-//                .map(ItemListDto::new)
-//                .collect(Collectors.toList());
-//
-//        return result;
-//    }
 
 
     //카테고리당 아이템 조회(정렬,검색,페이징)
@@ -201,6 +191,16 @@ public class ItemService {
 
 
 
+    //아이템 전체 페이징 개수 조회
+    public int countAll(String keyword) {
+        return itemRepository.countAll(keyword);
+    }
+
+
+    //카테고리 별 아이템 페이징 개수 조회
+    public int countAllCategoryItem(String keyword, Long categoryId) {
+        return itemRepository.countAllCategoryItem(keyword,categoryId);
+    }
 
     //리스트 보려고 만듦
 //    public List<ItemOneDto> findAll() {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.categorydto.CategoryOneDto;
 import ypjs.project.dto.itemdto.*;
@@ -104,25 +105,13 @@ public class ItemController {
 
 
 
-    //카테고리당 아이템 조회 (페이징, 정렬)
-//    @GetMapping("/ypjs/categoryItem/get/{categoryId}")
-//    public CategoryOneDto getAllItem(@PathVariable("categoryId") Long categoryId,
-//                                         @RequestParam(value = "offset", defaultValue = "0") int offset,
-//                                         @RequestParam(value = "limit", defaultValue = "2") int limit,
-//                                         @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy) {
-//
-//        Category category = categoryService.findOneCategory(categoryId);
-//
-//        List<ItemListDto> items = itemService.findAllItemSortBy(categoryId, offset, limit, sortBy);
-//
-//        return new CategoryOneDto(category, items);
-//    }
+
 
     //카테고리당 아이템 조회(정렬,검색,페이징(페이징받아서 페이징))
     @GetMapping("/ypjs/categoryItem/get/{categoryId}")
     public String getAllCategoryItem(@PathVariable("categoryId") Long categoryId,
                                      @RequestParam(value = "page",defaultValue = "0") int page,
-                                     @RequestParam(value = "size",defaultValue = "6") int size,
+                                     @RequestParam(value = "size",defaultValue = "3") int size,
                                      @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
                                      @RequestParam(value = "keyword", required = false) String keyword,
                              Model model) {
@@ -133,10 +122,19 @@ public class ItemController {
 
         List<ItemListDto> items = itemService.finaAllItemPagingSortBy(categoryId, keyword, pageable, sortBy);
 
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemService.countAllCategoryItem(keyword, categoryId), size);
+
         model.addAttribute("items",items);
         model.addAttribute("category", category);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("keyword", keyword); //검색조건 유지
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
+
+
 
 
 
@@ -151,7 +149,7 @@ public class ItemController {
     @GetMapping("/ypjs/item/get")
     public String getAllItem(
                                      @RequestParam(value = "page",defaultValue = "0") int page,
-                                     @RequestParam(value = "size",defaultValue = "6") int size,
+                                     @RequestParam(value = "size",defaultValue = "3") int size,
                                      @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
                                      @RequestParam(value = "keyword", required = false) String keyword,
                                      Model model) {
@@ -160,9 +158,15 @@ public class ItemController {
 
         List<ItemListDto> items = itemService.findAllItem(keyword, pageable, sortBy);
 
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemService.countAll(keyword), size);
+
         model.addAttribute("items", items);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("keyword", keyword); //검색조건 유지
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
 
 
         return "item/itemList";
@@ -221,7 +225,7 @@ public class ItemController {
         itemService.updateItem(itemId, itemUpdateDto, itemFileDto, file);
 
 
-        return "redirect:/ypjs/item/get";
+        return "redirect:/ypjs/item/get/{itemId}";
 
     }
 

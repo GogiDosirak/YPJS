@@ -6,18 +6,25 @@ let itemBoardObject = {
         $("#btn-itemReviewPost").on("click", function() {
             _this.insert();
         }),
-         $("#btn-itemReviewUpdate").on("click", function() {
+        $("#btn-itemReviewUpdate").on("click", function() {
 
-                    _this.update();
+              _this.update();
                 }),
 
-         $(document).on("click", ".btn-delete-itemReview", function() {
-                   // 클릭된 버튼의 데이터 속성에서 itemReviewId를 가져옴
-                   let itemReviewId = $(this).data("itemreviewid");
+        $(document).on("click", ".btn-delete-itemReview", function() {
+          // 클릭된 버튼의 데이터 속성에서 itemReviewId를 가져옴
+          let itemReviewId = $(this).data("itemreviewid");
+          // 아이템 리뷰 삭제 함수 호출
+           _this.deleteItemReview(itemReviewId);
+             });
 
-                    // 아이템 리뷰 삭제 함수 호출
-                   _this.deleteItemReview(itemReviewId);
-                    });
+
+        // Summernote 초기화
+          $("#itemReviewContent").summernote({
+            height: 300,
+            placeholder: '내용을 입력하세요...'
+            });
+
 
 
     },
@@ -28,6 +35,7 @@ let itemBoardObject = {
         let itemId = $("#itemId").val();  // URL에 사용할 itemId를 가져옴
         let itemScore = $("#itemScore").val(); // 별점 가져오기
         let itemReviewName = $("#itemReviewName").val(); // 제목 가져오기
+        let itemReviewContent = $("#itemReviewContent").summernote('code'); //썸머노트 내용 가져오기
 
 
                 // 별점을 선택하지 않은 경우 처리
@@ -41,6 +49,14 @@ let itemBoardObject = {
                       alert("제목을 입력하세요.");
                       return; // 리뷰 등록 중단
                   }
+
+                // 썸머노트에서 가져온 HTML 태그 제거 및 내용 검사
+                 let plainTextContent = stripTags(itemReviewContent).trim();
+
+                    if (!plainTextContent || plainTextContent.length === 0) {
+                        alert("내용을 입력하세요.");
+                        return;
+                    }
 
 
 
@@ -75,13 +91,30 @@ let itemBoardObject = {
      update: function() {
 
         let itemReviewId = $("#itemReviewId").val();
-         let itemScore = $("#itemScore").val(); // 별점 가져오기
+        let itemScore = $("#itemScore").val(); // 별점 가져오기
+        let itemReviewName = $("#itemReviewName").val(); // 제목 가져오기
+        let itemReviewContent = $("#itemReviewContent").summernote('code'); //썸머노트 내용 가져오기
 
-                        // 별점을 선택하지 않은 경우 처리
-                        if (itemScore === "0") {
-                            alert("별점을 선택하세요.");
-                            return; // 리뷰 등록 중단
-                        }
+
+          // 별점을 선택하지 않은 경우 처리
+           if (itemScore === "0") {
+               alert("별점을 선택하세요.");
+               return; // 리뷰 등록 중단
+           }
+
+         // 제목이 비어 있는지 확인
+          if (!itemReviewName || itemReviewName.trim().length === 0) {
+               alert("제목을 입력하세요.");
+               return; // 리뷰 등록 중단
+          }
+
+          // 썸머노트에서 가져온 HTML 태그 제거 및 내용 검사
+         let plainTextContent = stripTags(itemReviewContent).trim();
+          if (!plainTextContent || plainTextContent.length === 0) {
+              alert("내용을 입력하세요.");
+               return;
+                            }
+
 
 
             let updateData = {
@@ -141,4 +174,10 @@ $(document).ready(function() {
 
 
 
+// HTML 태그 제거 함수
+function stripTags(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
 

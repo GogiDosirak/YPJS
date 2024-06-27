@@ -30,6 +30,7 @@
 <script src="/js/summernote-lite.js"></script>
 <script src="/js/summernote-ko-KR.js"></script>
 <script src="/js/item/item.js"></script>
+<script src="/js/item/itemValidation.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 
 
@@ -39,7 +40,7 @@
 <!-- Start Contact -->
 <div class="container py-5">
     <div class="row py-5">
-        <form th:action="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="col-md-9 m-auto" method="post" th:object="${item}" enctype="multipart/form-data">
+        <form id="itemForm" th:action="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="col-md-9 m-auto" method="post" th:object="${item}" enctype="multipart/form-data">
 
             <!-- 폼 요소들 -->
             <div class="row">
@@ -77,39 +78,7 @@
                 </div>
             </div>
 
-            <!-- Summernote 초기화 스크립트 -->
-            <script th:inline="javascript">
-                $(document).ready(function() {
-                    $("#itemContent").summernote({
-                        height: 600, // 높이 설정
-                        placeholder: '상품 내용을 입력하세요...', // 플레이스홀더 설정
-                        callbacks: {
-                            onChange: function(contents, $editable) {
-                                // 내용이 변경될 때 처리할 로직 추가 가능
-                            }
-                        }
-                    });
-                });
 
-                // 파일명을 표시하는 함수
-                function displayFileName(input) {
-                    if (input.files.length > 0) {
-                        var fileName = input.files[0].name;
-                        document.getElementById('file-name-display').innerText = '선택된 파일: ' + fileName;
-                    } else {
-                        document.getElementById('file-name-display').innerText = '';
-                    }
-                }
-
-                // 폼 제출 전 유효성 검사
-                   $('form').submit(function(event) {
-                     var fileInput = document.getElementById('file');
-                         if (fileInput.files.length === 0) {
-                             alert('썸네일 파일을 선택하세요.');
-                             event.preventDefault(); // 폼 제출 방지
-                          }
-                      });
-            </script>
 
             <!-- 글 등록 버튼 -->
             <div class="row">

@@ -46,6 +46,8 @@ public class CategoryService {
         return category;
     }
 
+
+
     //categoryId단건조회
     public Category findOneCategory(Long categoryId) {
         return categoryRepository.findOneCategory(categoryId);
@@ -65,10 +67,24 @@ public class CategoryService {
 
 
     //category전체 조회
-    public List<CategoryListDto> findAllCategory(Long categoryId, String keyword, Pageable pageable) {
+//    public List<CategoryListDto> findAllCategory(Long categoryId, String keyword, Pageable pageable) {
+//
+//       //List<Category> categories = categoryRepository.findAllWithItem();
+//        List<Category> categories = categoryRepository.findAll(categoryId, keyword, pageable);
+//
+//
+//        List<CategoryListDto> result = categories.stream()
+//                .map(c -> new CategoryListDto(c))
+//                .collect(Collectors.toList());
+//
+//        return result;
+//    }
 
-       //List<Category> categories = categoryRepository.findAllWithItem();
-        List<Category> categories = categoryRepository.findAll(categoryId, keyword, pageable);
+
+    public List<CategoryListDto> findAllCategory() {
+
+        //List<Category> categories = categoryRepository.findAllWithItem();
+        List<Category> categories = categoryRepository.findAll();
 
 
         List<CategoryListDto> result = categories.stream()
@@ -77,6 +93,7 @@ public class CategoryService {
 
         return result;
     }
+
 
 
 

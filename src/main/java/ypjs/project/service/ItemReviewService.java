@@ -1,6 +1,7 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Item;
@@ -65,9 +66,9 @@ public class ItemReviewService {
 
 
     //아이템 당 리뷰조회
-    public List<ItemReviewListDto> findAllItemReview(Long itemId) {
+    public List<ItemReviewListDto> findAllItemReview(Long itemId, Pageable pageable) {
         //List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
-        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
+        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId, pageable);
 
         List<ItemReviewListDto> result = reviews.stream()
                 .map(ItemReviewListDto::new)
@@ -119,6 +120,11 @@ public class ItemReviewService {
 
     }
 
+
+    //아이템리뷰 페이징 개수 조회
+    public int countAllItemReview(Long itemId){
+        return itemReviewRepository.countAllItemReview(itemId);
+    }
 
 
 

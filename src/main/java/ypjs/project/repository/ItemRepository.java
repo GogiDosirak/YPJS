@@ -68,44 +68,33 @@ public class ItemRepository {
 
 
 
-    //(카테고리당 아이템 조회)
-    public List<Item> findAllItems(Long categoryId, Pageable pageable) {
-        String queryString = "select i from Item i where i.category.categoryId = :categoryId order by i.itemId desc";
+
+    //카테고리 당 아이템 조회
+    public List<Item> findAllItems(Long categoryId, Pageable pageable, String keyword) {
+        String queryString = "select i from Item i join fetch i.category c where i.category.categoryId = :categoryId";
+
+        // itemName 검색 조건 추가
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " and i.itemName like :itemName";
+        }
+
+        queryString += " order by i.itemId desc";
 
         TypedQuery<Item> query = em.createQuery(queryString, Item.class)
                 .setParameter("categoryId", categoryId)
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize());
 
+        // itemName 파라미터 설정
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("itemName", "%" + keyword + "%");
+        }
+
         return query.getResultList();
     }
 
 
 
-
-    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬 (영한아저씨 따라한 것)
-//    public List<Item> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
-//        String queryString = "select distinct i from Item i" +
-//                " join fetch i.category c" +
-//                " where i.category.categoryId = :categoryId" +
-//                " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
-//
-//        // 추가적으로 정렬을 적용하는 경우
-//        if ("itemRatings".equals(sortBy)) {
-//            queryString += ", i.itemRatings desc";
-//        } else if ("likeCount".equals(sortBy)) {
-//            queryString += ", i.itemLike desc";
-//        } else if ("itemId".equals(sortBy)) {
-//            // 이미 최신순으로 정렬되어 있으므로 추가적인 정렬 필요 없음
-//        }
-//
-//        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
-//                .setParameter("categoryId", categoryId)
-//                .setFirstResult(offset)
-//                .setMaxResults(limit);
-//
-//        return query.getResultList();
-//    }
 
 
 
@@ -187,6 +176,45 @@ public class ItemRepository {
         }
 
         return query.getResultList();
+    }
+
+
+
+    // 아이템 전체 총 개수 조회 (페이징 하기 위해)
+    public int countAll(String keyword) {
+        String queryString = "select count(i) from Item i";
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " where i.itemName like :keyword";
+        }
+        TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+        return query.getSingleResult().intValue();
+    }
+
+
+    //카테고리 별 아이템 총 개수 조회(페이징)
+    public int countAllCategoryItem(String keyword, Long categoryId) {
+        // 기본 쿼리 설정
+        String queryString = "select count(distinct i) from Item i join i.category c where i.category.categoryId = :categoryId";
+
+        // 검색 조건 추가
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " and i.itemName like :keyword";
+        }
+
+        // 쿼리 생성
+        TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+        query.setParameter("categoryId", categoryId);
+
+        // 검색 키워드 파라미터 설정
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+
+        // 결과 반환
+        return query.getSingleResult().intValue();
     }
 
 
