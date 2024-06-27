@@ -59,15 +59,15 @@ public class MemberService {
         member.withdrawMember();
     }
 
-    // 로그인
-    public Long login(String accountId, String password) {
-        Member member = memberRepository.loginAccountId(accountId)
-                .orElseThrow(() -> new IllegalStateException("가입되지 않은 아이디입니다."));
-        if(!member.checkPassword(password)) {
-            throw  new IllegalStateException("비밀번호가 틀립니다.");
-        }
-        return member.getMemberId();
-    }
+//    // 로그인
+//    public Long login(String accountId, String password) {
+//        Member member = memberRepository.loginAccountId(accountId)
+//                .orElseThrow(() -> new IllegalStateException("가입되지 않은 아이디입니다."));
+//        if(!member.checkPassword(password)) {
+//            throw  new IllegalStateException("비밀번호가 틀립니다.");
+//        }
+//        return member.getMemberId();
+//    }
 
     // 출석포인트
     @Transactional
@@ -87,7 +87,7 @@ public class MemberService {
     }
 
     @Transactional
-    public JwtToken signIn(String accountId, String password) {
+    public JwtToken login(String accountId, String password) {
         // 1. accountId + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(accountId, password);

@@ -29,7 +29,6 @@ public class MemberApiController {
     @PostMapping("ypjs/member/join")
     public MemberDto.CreateMemberResponse join(@RequestBody @Valid MemberDto.CreateMemberRequest request) {
         Member member = getJoinMemberData(request);
-
         Long memberId = memberService.join(member);
         return new MemberDto.CreateMemberResponse(memberId);
     }

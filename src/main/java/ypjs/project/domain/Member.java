@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
@@ -92,6 +92,8 @@ public class Member implements UserDetails {
         member.joinDate = LocalDateTime.now();
         member.status = Status.MEMBER;
         member.role = Role.CUSTOMER;
+        member.roles.add(String.valueOf(Status.MEMBER));
+        member.roles.add(String.valueOf(Role.CUSTOMER));
         return member;
     }
 
