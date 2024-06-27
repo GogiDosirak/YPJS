@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
 import ypjs.project.dto.paymentdto.PaymentDto;
+import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.dto.paymentdto.UpdatePointsRequest;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.PaymentService;
@@ -30,7 +31,18 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final MemberService memberService;
 
-    //결제응답//결제요청은 OrderController detail 메서드
+    //결제 창으로 연결하는 메서드
+    @GetMapping("/payment/{orderId}")
+    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
+                              Model model) {
+        paymentService.findAndCreatePayment(orderId);
+        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
+        model.addAttribute("requestPayDto", requestPayDto);
+
+        return "payment/payment";
+    }
+
+    //결제응답//결제요청은 OrderController create-> order.js
     //응답 엔티티
     @ResponseBody
     @PostMapping("/payment")
@@ -133,7 +145,6 @@ public class PaymentController {
 
 
 
-    //>>orderController, detail 로 이관
 //    //오더1111
 //    @GetMapping("/")
 //    public String home(){
@@ -161,13 +172,5 @@ public class PaymentController {
 //        return "redirect:/ypjs/payment/payment/" + orderId;
 //    }
 //
-//    //결제 창으로 연결하는 메서드
-//    @GetMapping("/payment/{orderId}")
-//    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
-//                              Model model) {
-//        paymentService.findAndCreatePayment(orderId);
-//        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
-//        model.addAttribute("requestPayDto", requestPayDto);
-//        return "payment/payment";
-//    }
+
 }

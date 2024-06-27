@@ -17,7 +17,6 @@ import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
-import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
 import ypjs.project.service.PaymentService;
@@ -124,11 +123,6 @@ public class OrderController {
         System.out.println("**주문 상세 조회 요청됨");
 
         OrderResponseDto o = orderService.findOne(orderId);
-        //payment 메서드 추가함//
-        paymentService.findAndCreatePayment(orderId);
-        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
-        model.addAttribute("requestPayDto", requestPayDto);
-        //payment 메서드 추가끝//
 
         model.addAttribute("order", o);
 

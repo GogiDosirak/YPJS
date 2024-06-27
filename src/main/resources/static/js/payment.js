@@ -28,6 +28,7 @@ $(document).ready(function() {
         var input3 = document.getElementById("orderPrice");
         var orderPrice = parseInt(input3.textContent.trim()); // 주문 금액 가져오기
 
+        //유효성 검사
         if (isNaN(points) || points <= 0) {
             alert("올바른 숫자를 입력하세요.");
             return;
@@ -43,12 +44,15 @@ $(document).ready(function() {
             return; // 포인트 사용을 막고 함수 종료
         }
 
+        // 사용할 포인트 보여주기 업데이트 로직
+        $("#showUsePoint").text(points + " 원");
+
         // 포인트 사용 처리 로직
         // 예시로 간단히 계산 후 최종 결제 금액 업데이트 함수 호출
         var finalPaymentAmount = orderPrice - points;
         updateFinalPaymentAmount(finalPaymentAmount);
 
-        //
+        //로그에서 확인
         console.log("사용할 포인트:", points);
         console.log("최종 결제 금액:", finalPaymentAmount);
     }
@@ -64,7 +68,7 @@ $(document).ready(function() {
     }
 
 
-    // 결제 버튼 클릭 시 처리 로직
+    //payment.html 결제 버튼 클릭 시 처리 로직
     $("#btn-sendPayment").click(function() {
         // JavaScript 변수로부터 주문 정보 읽기
         var orderUid = $("#orderUid").text();

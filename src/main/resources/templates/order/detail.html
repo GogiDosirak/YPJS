@@ -6,7 +6,6 @@
 <body>
 <!-- 아이엠포트 -->
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-<script src="/js/payment.js"></script>
 <script src="/js/order.js"></script>
 <!--header-->
 <header th:replace="frame/header :: header"></header>
@@ -109,58 +108,6 @@
                 <br>
                 <br>
 
-                <!-- 결제 정보 시작-->
-                <div class="row">
-                    <h2 class="h2 pb-4 fw-bold">결제 정보</h2>
-                </div>
-
-                <ul class="list-group rounded-0" style="border-bottom: 1px solid #dee2e6;">
-                    <li class="list-group-item py-4 border-0" style="border-top: 1px solid #000000 !important;">
-                        <div class="row">
-                            <div class="col-2 mb-3">
-                                <span class="h5">주문 번호:</span>
-                            </div>
-                            <div class="col-8">
-                                <span class="h5" id="orderUid" th:text="${requestPayDto.orderUid}"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2 mb-3">
-                                <span class="h5">구매자 이름:</span>
-                            </div>
-                            <div class="col-8">
-                                <span class="h5" id="payName" th:text="${requestPayDto.payName}"></span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2 mb-3">
-                                <span class="h5">구매자 전화번호:</span>
-                            </div>
-                            <div class="col-8">
-                                <span class="h5" id="buyerTel" th:text="${requestPayDto.phoneNumber}"></span>
-                            </div>
-                        </div>
-                        <p>사용 가능한 포인트: <span th:text="${requestPayDto.point}" id="availablePoints"></span></p>
-                        <div class="col-auto">
-                            <label class="sr-only" for="usePoint">usePoint</label>
-                            <div class="input-group mb-2">
-                                <input type="number" class="form-control border-dark" id="usePoint" placeholder="사용할 포인트를 입력하세요">
-                                <button class="input-group-text btn btn-success text-light" type="button" id="btn-usePoint">포인트 사용</button>
-                            </div>
-                        </div>
-                        <p>주문자 아이디: <span th:text="${requestPayDto.memberId}" id="buyerMemberId"></span></p>
-                        <div hidden="hidden">
-                            <p>상품 이름: <span th:text="${requestPayDto.itemName}" id="itemName"></span></p>
-                            <p>결제 금액: <span th:text="${requestPayDto.orderPrice}" id="orderPrice"></span></p>
-                            <p>구매자 이메일: <span th:text="${requestPayDto.payEmail}" id="payEmail"></span></p>
-                            <p>배송 주소: <span th:text="${requestPayDto.deliveryAddress}" id="deliveryAddress"></span></p>
-                            <p>우편번호: <span th:text="${requestPayDto.zipcode}" id="buyerPostcode"></span></p>
-
-                        </div>
-                    </li>
-
-                </ul>
-                <!--결제 정보 끝-->
 
                 <br>
                 <br>
@@ -217,17 +164,6 @@
                     </li>
                 </ul>
                 <!--배송 정보 끝-->
-
-                <!-- 최종 결제 금액 -->
-                <div>
-                    <h3>최종 결제 금액: <span id="finalPaymentAmount" th:text="${requestPayDto.orderPrice}"></span> 원</h3>
-                </div>
-
-                <!--payment 연결, 결제하기 버튼-->
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-success" id="btn-sendPayment">결제하기</button>
-                </div>
-                <!--결제하기 버튼 끝-->
 
             </div>
         </div>
