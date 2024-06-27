@@ -3,12 +3,15 @@ package ypjs.project.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemReview;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.itemdto.ItemOneDto;
 import ypjs.project.dto.itemdto.ItemReviewDto;
 import ypjs.project.dto.itemdto.ItemReviewListDto;
@@ -68,14 +71,24 @@ public class ItemReviewController {
 
     //아이템 당 리뷰조회
     @GetMapping("/ypjs/itemReview/get/{itemId}")
-    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model) {
+    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model,
+                                   @RequestParam(value = "page",defaultValue = "0") int page,
+                                   @RequestParam(value = "size",defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
 
         itemService.findOneItem(itemId);
 
-        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId);
+        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable);
 
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
         model.addAttribute("itemReviews", itemReviews);
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
+
 
         return "itemreview/itemReviewGet";
     }

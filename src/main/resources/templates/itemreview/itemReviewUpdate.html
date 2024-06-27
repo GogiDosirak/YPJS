@@ -24,7 +24,7 @@
 <script src="/js/summernote-lite.js"></script>
 <script src="/js/summernote-ko-KR.js"></script>
 <script src="/js/item/itemReview.js"></script>
-<script src="/js/item/itemRatings.js"></script>
+<script src="/js/item/itemRatingsPost.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -68,20 +68,6 @@
                 <textarea class="form-control" id="itemReviewContent" name="itemReviewContent" th:text="${itemReview.itemReviewContent}" rows="10"></textarea>
             </div>
 
-            <!-- Summernote 초기화 스크립트 -->
-            <script th:inline="javascript">
-                $(document).ready(function() {
-                    $("#itemReviewContent").summernote({
-                        height: 300, // 높이 설정
-                        placeholder: '내용을 입력하세요...', // 플레이스홀더 설정
-                        callbacks: {
-                            onChange: function(contents, $editable) {
-                                // 내용이 변경될 때 처리할 로직 추가 가능
-                            }
-                        }
-                    });
-                });
-            </script>
 
             <!-- 글 등록 버튼 -->
             <div class="row">

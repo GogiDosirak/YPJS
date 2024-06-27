@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.categorydto.*;
 import ypjs.project.dto.itemdto.ItemListDto;
@@ -63,19 +64,27 @@ public class CategoryController {
     public String getOneCategory (@PathVariable("categoryId") Long categoryId,
                                    Model model,
                                   @RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "5") int size) {
+                                  @RequestParam(value = "size", defaultValue = "3") int size,
+                                  @RequestParam(value = "keyword", required = false) String keyword) {
 
 
         Pageable pageable = PageRequest.of(page, size);
 
         Category findCategory = categoryService.findOneCategory(categoryId);
 
-        List<ItemListDto> items = itemService.findAllCategoryItem(categoryId, pageable);
+        List<ItemListDto> items = itemService.findAllCategoryItem(categoryId, pageable, keyword);
 
-//        CategoryOneDto category = new CategoryOneDto( findCategory, items);
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemService.countAllCategoryItem(keyword, categoryId), size);
+
 
         model.addAttribute("category", findCategory);
         model.addAttribute("items",items);
+        model.addAttribute("keyword", keyword); //검색조건 유지
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
+
 
         return "category/categoryGet";
 
@@ -85,25 +94,20 @@ public class CategoryController {
 
 
 
-    //categoryList보기
+
+
+    //카테고리 리스트 보기
     @GetMapping("/ypjs/category/get")
-    public String getCategoryList(Model model,
-                                  @RequestParam(value = "categoryId", required = false) Long categoryId,
-                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "8") int size,
-                                  @RequestParam(value = "keyword", required = false) String keyword) {
+    public String getCategoryList(Model model) {
 
-        Pageable pageable = PageRequest.of(page, size);
 
-        List<CategoryListDto> categories = categoryService.findAllCategory(categoryId, keyword, pageable);
+
+        List<CategoryListDto> categories = categoryService.findAllCategory();
 
         model.addAttribute("categories", categories);
 
         return "category/categoryList";
     }
-
-
-
 
 
 

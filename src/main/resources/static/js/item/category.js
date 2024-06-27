@@ -21,6 +21,18 @@ let categoryBoardObject = {
 
     insert: function() {
 
+       let categoryParent = $("#categoryParent").val();
+       let categoryName = $("#categoryName").val();
+
+       if (!categoryParent || categoryParent.trim().length === 0) {
+           alert("카테고리 부모 번호를 입력하세요");
+           return;
+       }
+
+       if(!categoryName || categoryName.trim().length === 0){
+           alert("카테고리 이름을 입력하세요");
+           return;
+       }
 
         let data = {
             categoryParent: $("#categoryParent").val(),
@@ -44,6 +56,25 @@ let categoryBoardObject = {
 
     update: function() {
         let categoryId = $("#categoryId").val();
+        let categoryParent = $("#categoryParent").val();
+        let categoryName = $("#categoryName").val();
+
+
+         if (!categoryId || categoryId.trim().length === 0) {
+              alert("카테고리 번호를 입력하세요");
+              return;
+          }
+
+
+         if (!categoryParent || categoryParent.trim().length === 0) {
+            alert("카테고리 부모 번호를 입력하세요");
+            return;
+          }
+
+        if(!categoryName || categoryName.trim().length === 0){
+           alert("카테고리 이름을 입력하세요");
+           return;
+        }
 
         let updateData = {
             categoryId: categoryId, // 수정된 부분: categoryId 추가
