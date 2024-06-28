@@ -6,6 +6,8 @@
 <body>
 
 <script src="/js/order.js"></script>
+<script src="/js/delivery.js"></script>
+
 
 <!--header-->
 <header th:replace="frame/header :: header"></header>
@@ -135,12 +137,12 @@
                                 <span class="h5">배송상태</span>
                             </div>
                             <div class="col-8">
-                                <span class="h5" id="delivery-status" th:text="${order.delivery.status}"></span>
+                                <span class="h5" id="delivery-status" th:text="${order.deliveryResponseDto.status}"></span>
                             </div>
                             <div class="col-2 mb-3 d-flex justify-content-end">
-                                <a class="btn btn-outline-success" href="https://tracker.delivery/#/kr.epost/1111111111111" target="_blank">배송조회</a>
-                                <a href="https://apis.tracker.delivery/carriers/kr.epost/tracks/1111111111111">배송조회2</a>
-                                <!--<button class="btn btn-outline-success" id="delivery-find-modal">배송조회</button>-->
+                                <button type="button" class="btn btn-outline-success" id="delivery-tracker-modal">배송조회</button>
+                                <input type="hidden" id="delivery-id" th:value="${order.deliveryResponseDto.deliveryId}">
+
                             </div>
                         </div>
                         <div class="row">
@@ -148,7 +150,7 @@
                                 <span class="h5">받으실 분</span>
                             </div>
                             <div class="col-8">
-                                <span class="h5" id="receiver" th:text="${order.delivery.receiver}"></span>
+                                <span class="h5" id="receiver" th:text="${order.deliveryResponseDto.receiver}"></span>
                             </div>
                         </div>
                         <div class="row">
@@ -158,13 +160,13 @@
                             <div class="col-8">
                                 <ul class="list-inline mb-2">
                                     <li class="list-inline-item">
-                                        <span class="h5" id="zipcode" th:text="${order.delivery.address.zipcode}"></span>
+                                        <span class="h5" id="zipcode" th:text="${order.deliveryResponseDto.address.zipcode}"></span>
                                     </li>
                                     <li class="list-inline-item">
-                                        <span class="h5" id="address" th:text="${order.delivery.address.address}"></span>
+                                        <span class="h5" id="address" th:text="${order.deliveryResponseDto.address.address}"></span>
                                     </li>
                                     <li class="list-inline-item">
-                                        <span class="h5" id="addressDetail" th:text="${order.delivery.address.addressDetail}"></span>
+                                        <span class="h5" id="addressDetail" th:text="${order.deliveryResponseDto.address.addressDetail}"></span>
                                     </li>
                                 </ul>
                             </div>
@@ -174,7 +176,7 @@
                                 <span class="h5">연락처</span>
                             </div>
                             <div class="col-8">
-                                <span class="h5" id="phoneNumber" th:text="${order.delivery.phoneNumber}"></span>
+                                <span class="h5" id="phoneNumber" th:text="${order.deliveryResponseDto.phoneNumber}"></span>
                             </div>
                         </div>
                     </li>
@@ -184,9 +186,86 @@
             </div>
         </div>
     </div>
-
 </div>
 <!-- End Content -->
+
+<!-- 배송 조회 모달 시작 -->
+<div class="modal fade" id="deliveryTrackerModal" tabindex="-1" aria-labelledby="deliveryTrackerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryTrackerModalLabel">배송조회</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="trackLogData" />
+                <div id="trackLogContent">
+                    <!-- 배송 정보를 여기에 동적으로 채웁니다 -->
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 배송 조회 모달 끝 -->
+
+<style>
+    .timeline {
+        position: relative;
+        margin: 0;
+    }
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 5%;
+        top: 0%;
+        bottom: 7%;
+        width: 2px;
+        background: #74a974;
+    }
+    .timeline-item {
+        position: relative;
+        margin: 10px 0;
+    }
+    .timeline-item .timeline-icon {
+        position: absolute;
+        left: 3.9%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 3px solid #74a974;
+        border-radius: 50%;
+        z-index: 1;
+    }
+    .timeline-item .timeline-content {
+        position: relative;
+        left: 12%;
+        width: 80%;
+        padding: 10px 20px;
+        border: 1px solid #e9ecef;
+        background: #fff;
+    }
+    .timeline-item .timeline-content .location {
+        font-weight: bold;
+    }
+    .timeline-item .timeline-content .status {
+        color: #007bff;
+    }
+    .timeline-item .timeline-content .time {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+</style>
+
+
 
 <!--footer-->
 <footer th:replace="frame/footer :: footer"></footer>

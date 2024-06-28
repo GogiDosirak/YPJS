@@ -50,8 +50,8 @@ public class ItemQnaService {
     }
 
     //==조회==//
-    public ItemQnaDetailDto findOne(Long id) {
-        ItemQna itemQna = itemQnaRepository.findOne(id);
+    public ItemQnaDetailDto findOne(Long itemId) {
+        ItemQna itemQna = itemQnaRepository.findOne(itemId);
         return new ItemQnaDetailDto(itemQna);
     }
 
