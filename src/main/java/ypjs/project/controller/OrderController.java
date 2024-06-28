@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartListDto;
-import ypjs.project.dto.deliverydto.DeliveryDto;
+import ypjs.project.dto.deliverydto.DeliveryCreateDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
@@ -21,7 +21,6 @@ import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
 import ypjs.project.service.PaymentService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public class OrderController {
         //Member m = memberService.findById(memberId);
         Member m = memberService.findOne(1L);
 
-        model.addAttribute("delivery", new DeliveryDto(m.getName(), m.getPhonenumber(), m.getAddress()));
+        model.addAttribute("delivery", new DeliveryCreateDto(m.getName(), m.getPhonenumber(), m.getAddress()));
         model.addAttribute("cartList", cartListDtos);
 
         //데이터 전달 후 제거
@@ -91,7 +90,7 @@ public class OrderController {
         System.out.println("**주문 생성 로직 요청됨");
         //Long memberId = (Long) request.getSession().getAttribute("loginMemberId");
 
-        System.out.println(orderCreateDto.getDeliveryDto());
+        System.out.println(orderCreateDto.getDeliveryCreateDto());
         System.out.println(orderCreateDto.getOrderItemRequestDtos());
 
         Long orderId = orderService.create(1L, orderCreateDto);

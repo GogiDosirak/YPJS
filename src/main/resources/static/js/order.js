@@ -65,7 +65,7 @@ $(document).ready(function() {
     //주문생성 처리
     $('#btn-create').click(function() {
         // delivery 정보
-        var deliveryDto = {
+        var deliveryCreateDto = {
             receiver: $('#receiver').text(),
             phoneNumber: $('#phoneNumber').text(),
             address: {
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
         // 전체 데이터
         var orderCreateDto = {
-            deliveryDto: deliveryDto,
+            deliveryCreateDto: deliveryCreateDto,
             orderItemRequestDtos: orderItemRequestDtos
         };
 

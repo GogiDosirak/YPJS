@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.OrderStatus;
-import ypjs.project.dto.deliverydto.DeliveryDto;
+import ypjs.project.dto.deliverydto.DeliveryCreateDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
@@ -43,7 +43,7 @@ public class OrderServiceTest {
 
         //배송정보
         Address address = new Address("주소", "상세", "12345");
-        DeliveryDto d = new DeliveryDto("A", "01012345678", address);
+        DeliveryCreateDto d = new DeliveryCreateDto("A", "01012345678", address);
 
         //주문상품리스트
         List<OrderItemRequestDto> orderItems = new ArrayList<>();

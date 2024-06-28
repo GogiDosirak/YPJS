@@ -27,8 +27,8 @@ public class ItemQnaRepository {
     }
 
     //==조회==//
-    public ItemQna findOne(Long id) {
-        return em.find(ItemQna.class, id);
+    public ItemQna findOne(Long itemQnaId) {
+        return em.find(ItemQna.class, itemQnaId);
     }
 
     public List<ItemQna> findAllByItemId(Long itemId, Pageable pageable) {
