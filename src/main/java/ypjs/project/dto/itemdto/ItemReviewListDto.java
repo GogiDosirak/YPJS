@@ -13,7 +13,7 @@ public class ItemReviewListDto {
 
     Long itemReviewId;
     Long itemId;
-    // String nickname;
+    String nickname;
     private int itemScore;
     private String itemReviewName;
     private String itemReviewContent;
@@ -27,7 +27,7 @@ public class ItemReviewListDto {
 
         itemReviewId = itemReview.getItemReviewId();
         itemId = itemReview.getItem().getItemId();
-        // nickname = itemReview.getMember().getNickname();
+        nickname = itemReview.getMember().getNickname();
         itemScore = itemReview.getItemScore();
         itemReviewName = itemReview.getItemReviewName();
         itemReviewContent = itemReview.getItemReviewContent();

@@ -36,37 +36,41 @@
 <div class="container py-5">
     <div class="row py-5">
 
-            <!-- 폼 요소들 -->
-            <div class="row">
 
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
                 <div class="form-group mb-3">
                     <label for="categoryId">카테고리 번호</label>
                     <input type="text" class="form-control mt-1" id="categoryId" name="categoryId" th:value="${category.categoryId}" placeholder="카테고리 번호">
                 </div>
+            </div>
+            <div class="col-md-8">
                 <div class="form-group mb-3">
                     <label for="categoryParent">카테고리 부모 번호</label>
                     <input type="text" class="form-control mt-1" id="categoryParent" name="categoryParent" th:value="${category.categoryParent}" placeholder="카테고리 부모 번호">
                 </div>
+            </div>
+            <div class="col-md-8">
                 <div class="form-group mb-3">
                     <label for="categoryName">카테고리 이름</label>
                     <input type="text" class="form-control mt-1" id="categoryName" name="categoryName" th:value="${category.categoryName}" placeholder="카테고리 이름">
                 </div>
-
-
-
-
-                <!-- 글 등록 버튼 -->
-                <div class="row">
-                    <div class="col text-end mt-2">
-
-                        <button type="button" id="btn-categoryUpdate" class="btn btn-success btn-lg px-3">수정하기</button>
-                    </div>
-                </div>
             </div>
+        </div>
 
-    </div>
-</div>
-<!-- End Contact -->
+
+
+        <!-- 글 등록 버튼 -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-end mt-2">
+                <button type="button" id="btn-categoryUpdate" class="btn btn-success btn-lg px-3">수정하기</button>
+            </div>
+        </div>
+
+
+
+        <!-- End Contact -->
 
 
 

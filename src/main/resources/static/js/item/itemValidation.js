@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Summernote 초기화
     $("#itemContent").summernote({
-        height: 600,
+        height: 500,
         placeholder: '상품 내용을 입력하세요...',
         callbacks: {
             onChange: function (contents, $editable) {

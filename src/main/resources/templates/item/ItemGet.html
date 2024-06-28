@@ -90,8 +90,12 @@
                 <ul class="list-unstyled d-flex mb-0 mr-3 text-left" id="starRating" th:attr="data-rating=${item.itemRatings}">
                     <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
                 </ul> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span id="itemRatings" class="font-weight-bold mr-3 text-left" th:text="${item.itemRatings}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span><a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}" class="font-weight-bold">| Reviews</a></span>
+                <span id="itemRatings"  th:text="${item.itemRatings}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                <div>
+                    <a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">
+                        Reviews  &nbsp;(<span th:text="${reviewCount}"></span>)
+                    </a>
+                </div>
             </div>
         </div>
     </div>

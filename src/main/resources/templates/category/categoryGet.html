@@ -20,12 +20,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- JS 파일 포함 -->
-<script src="/js/jquery-1.11.0.min.js"></script>
-<script src="/js/summernote-lite.js"></script>
-<script src="/js/summernote-ko-KR.js"></script>
 <script src="/js/item/category.js"></script>
 <script src="/js/item/item.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+
 
 <!-- Start Contact -->
 <div class="container py-5">
@@ -68,6 +65,25 @@
                  .h3-indent {
                     margin-left: 100px; /* 왼쪽 여백을 줌으로써 텍스트를 오른쪽으로 이동 */
                 }
+
+
+
+                 /* 썸머노트에서 삽입된 이미지의 스타일 */
+                #itemContent img {
+                    display: block;
+                    margin: 0 auto; /* 가운데 정렬 */
+                    max-width: 40%; /* 이미지 최대 너비 조정 */
+                    height: auto; /* 높이 자동 조정 */
+                    margin-bottom: 1px; /* 이미지 아래 여백을 5px로 설정 */
+                }
+
+                /* 썸머노트에서 삽입된 텍스트의 스타일 */
+                #itemContent p {
+                    text-align: left; /* 텍스트 왼쪽 정렬 */
+                    margin-bottom: 5px; /* 문단 아래 여백을 5px로 설정 */
+                }
+
+
             </style>
 
 
@@ -133,13 +149,21 @@
                         <div>
                             <span class="category-label">아이템 이름:</span>
                             &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span th:text="${item.itemName}"></span>
+                            <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
                         </div>
+
                         <div>
-                            <span class="category-label">아이템 내용:</span>
-                            &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span th:utext="${item.itemContent}"></span>
+                            <span class="category-label">아이템 내용&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                            <div id="itemContent">
+                                <span th:utext="${item.itemContent}"></span>
+                            </div>
                         </div>
+
+                        <style>
+
+                        </style>
+
+
                         <div>
                             <span class="category-label">아이템 가격:</span>
                             &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;

@@ -26,23 +26,23 @@ public class CategoryRepository {
 
 
     //categoryId 단건조회
-//    public Category findOneCategory(Long categoryId) {
-//        return em.find(Category.class, categoryId);
-//    }
+    public Category findOneCategory(Long categoryId) {
+        return em.find(Category.class, categoryId);
+    }
 
 
     //categoryId 단건조회
-    public Category findOneCategory(Long categoryId) {
-        if (categoryId == null) {
-            throw new IllegalArgumentException("Category ID must not be null");
-        }
-        Category category = em.find(Category.class, categoryId);
-
-        if (category == null) {
-            throw new IllegalArgumentException("Category not found for ID: " + categoryId);
-        }
-        return category;
-    }
+//    public Category findOneCategory(Long categoryId) {
+//        if (categoryId == null) {
+//            throw new IllegalArgumentException("Category ID must not be null");
+//        }
+//        Category category = em.find(Category.class, categoryId);
+//
+//        if (category == null) {
+//            throw new IllegalArgumentException("Category not found for ID: " + categoryId);
+//        }
+//        return category;
+//    }
 
 
     //CategoryParentId통해서 조회
@@ -69,6 +69,12 @@ public class CategoryRepository {
     }
 
 
+
+    //카테고리 부모가 null일 때 카테고리 보이게
+    public List<Category> findParentCategories() {
+        return em.createQuery("select c from Category c where c.categoryParent is null", Category.class)
+                .getResultList();
+    }
 
 
 

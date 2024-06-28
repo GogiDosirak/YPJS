@@ -73,18 +73,21 @@ public class ItemReviewController {
     @GetMapping("/ypjs/itemReview/get/{itemId}")
     public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model,
                                    @RequestParam(value = "page",defaultValue = "0") int page,
+                                   @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
                                    @RequestParam(value = "size",defaultValue = "10") int size) {
+
 
         Pageable pageable = PageRequest.of(page, size);
 
         itemService.findOneItem(itemId);
 
-        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable);
+        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable, sortBy);
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
         model.addAttribute("itemReviews", itemReviews);
+        model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
         model.addAttribute("size",size); //페이징
         model.addAttribute("totalPages", totalPages); //총 페이지 수
