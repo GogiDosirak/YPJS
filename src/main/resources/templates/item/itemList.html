@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
@@ -19,79 +20,62 @@
 <script src="/js/item/itemRatingsGet.js"></script>
 
 <!-- Start Content -->
+
+
 <div class="container py-5">
+<div class="container-fluid mt-3">
     <div class="row">
-
-
-        <div class="container-fluid mt-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <ul class="list-inline shop-top-menu pb-3 pt-1">
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/post}">상품 등록</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/category/post}">카테고리 등록</a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/category/get}">카테고리 보기</a>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="col-lg-3">
-            <h1 class="h2 pb-4">Categories</h1>
-            <ul class="list-unstyled templatemo-accordion">
-                <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Women
-                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-                    </a>
-                    <ul class="collapse show list-unstyled pl-3">
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=3)}">Outer</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=4)}">Top</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=5)}">Bottom</a></li>
-                    </ul>
+        <div class="col-md-12">
+            <ul class="list-inline shop-top-menu pb-3 pt-1">
+                <li class="list-inline-item">
+                    <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/post}">상품 등록</a>
                 </li>
-                <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Man
-                        <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                    </a>
-                    <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=6)}">Outer</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=7)}">Top</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=8)}">Bottom</a></li>
-                    </ul>
+                <li class="list-inline-item">
+                    <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/category/post}">카테고리 등록</a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/category/get}">카테고리 보기</a>
                 </li>
 
             </ul>
         </div>
+    </div>
+</div>
 
 
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Categories</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <!-- 최상위 부모 카테고리 목록 반복 -->
+                <li th:each="parentCategory : ${parentCategories}" class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${parentCategory.categoryId})}"
+                       th:text="${parentCategory.categoryName}">
+                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    </a>
+                    <ul class="collapse show list-unstyled pl-3">
+                        <!-- 하위 자식 카테고리 목록 반복 -->
+                        <li th:each="childCategory : ${parentCategory.categoryChild}">
+                            <a class="text-decoration-none"
+                               th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${childCategory.categoryId})}"
+                               th:text="${childCategory.categoryName}"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-
-
-
-
-        <div class="col-lg-9">
+        <div class="col-lg-9"> <!-- //수정된 부분// -->
             <div class="row">
                 <div class="col-md-6">
                     <ul class="list-inline shop-top-menu pb-3 pt-1">
                         <li class="list-inline-item">
                             <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/get}">All Items</a>
                         </li>
-
                     </ul>
                 </div>
-
-
-
 
                 <div class="col-lg-6">
                     <!-- 검색 폼 및 정렬 폼 통합 -->
@@ -113,142 +97,50 @@
                         </div>
                     </form>
                 </div>
+            </div>
 
-
-
-
-
-<!--                반별 추가-->
-
-<!--                <div class="container-fluid mt-3">-->
-<!--                    <div class="row">-->
-<!--                        &lt;!&ndash; items 리스트의 각 항목을 반복 &ndash;&gt;-->
-<!--                        <div th:each="item : ${items}" class="col-md-4">-->
-<!--                            <div class="card mb-4 product-wap rounded-0">-->
-<!--                                &lt;!&ndash; 제품 이미지 &ndash;&gt;-->
-<!--                                <div class="card rounded-0">-->
-<!--                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">-->
-<!--                                        <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">-->
-<!--                                        &lt;!&ndash; 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 &ndash;&gt;-->
-<!--                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">-->
-<!--                                            &lt;!&ndash; 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 &ndash;&gt;-->
-<!--                                            <ul class="list-unstyled">-->
-<!--                                                &lt;!&ndash; 리스트의 다른 요소들 &ndash;&gt;-->
-<!--                                            </ul>-->
-<!--                                        </div>-->
-<!--                                    </a>-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; 제품 정보 &ndash;&gt;-->
-<!--                                <div class="card-body">-->
-<!--                                    &lt;!&ndash; 제품 링크 &ndash;&gt;-->
-<!--                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>-->
-
-<!--                                    &lt;!&ndash; 별점 및 평점 표시 &ndash;&gt;-->
-<!--                                    <div class="d-flex justify-content-center mb-1 align-items-center">-->
-<!--                                        <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">-->
-<!--                                            &lt;!&ndash; 별 아이콘은 JavaScript로 생성됩니다 &ndash;&gt;-->
-<!--                                        </ul>&nbsp;&nbsp;&nbsp;&nbsp;-->
-<!--                                        <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>-->
-<!--                                    </div>-->
-
-<!--                                    &lt;!&ndash; 가격 표시 &ndash;&gt;-->
-<!--                                    <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>-->
-<!--                                    <span class="font-weight-bold">원</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <script>-->
-<!--                    document.addEventListener("DOMContentLoaded", function() {-->
-<!--                        var starRatingContainers = document.querySelectorAll("#starRating");-->
-
-<!--                        starRatingContainers.forEach(function(starRatingContainer) {-->
-<!--                            var rating = parseFloat(starRatingContainer.getAttribute("data-rating"));-->
-<!--                            starRatingContainer.innerHTML = generateStarRating(rating);-->
-<!--                        });-->
-<!--                    });-->
-
-<!--                    function generateStarRating(rating) {-->
-<!--                        var starsHTML = '';-->
-<!--                        var fullStars = Math.floor(rating);  // 정수 부분의 별 개수-->
-<!--                        var halfStar = (rating % 1 >= 0.1 && rating % 1 <= 0.9) ? 1 : 0; // 반 별 조건-->
-
-<!--                        // 정수 부분의 별 추가-->
-<!--                        for (var i = 0; i < fullStars; i++) {-->
-<!--                            starsHTML += '<i class="text-warning fa fa-star"></i>';-->
-<!--                        }-->
-
-<!--                        // 반 별 추가-->
-<!--                        if (halfStar) {-->
-<!--                            starsHTML += '<i class="text-warning fa fa-star-half-alt"></i>';-->
-<!--                        }-->
-
-<!--                        // 남은 빈 별 추가-->
-<!--                        var emptyStars = 5 - fullStars - halfStar;-->
-<!--                        for (var i = 0; i < emptyStars; i++) {-->
-<!--                            starsHTML += '<i class="text-muted fa fa-star"></i>';-->
-<!--                        }-->
-
-<!--                        return starsHTML;-->
-<!--                    }-->
-<!--                </script>-->
-
-
-
-
-
-<!--                꽉찬 별만-->
-                <div class="container-fluid mt-3">
-                    <div class="row">
-                        <!-- items 리스트의 각 항목을 반복 -->
-                        <div th:each="item : ${items}" class="col-md-4">
-                            <div class="card mb-4 product-wap rounded-0">
-                                <!-- 제품 이미지 -->
-                                <div class="card rounded-0">
-                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
-                                        <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
-                                        <!-- 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 -->
-                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                            <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
-                                            <ul class="list-unstyled">
-                                                <!-- 리스트의 다른 요소들 -->
-                                            </ul>
-                                        </div>
-                                    </a>
-                                </div>
-                                <!-- 제품 정보 -->
-                                <div class="card-body">
-                                    <!-- 제품 링크 -->
-                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
-
-                                    <!-- 별점 및 평점 표시 -->
-                                    <div class="d-flex justify-content-center mb-1 align-items-center">
-                                        <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
-                                            <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
-                                        </ul> &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <!-- items 리스트의 각 항목을 반복 -->
+                    <div th:each="item : ${items}" class="col-md-4">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <!-- 제품 이미지 -->
+                            <div class="card rounded-0">
+                                <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
+                                    <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
+                                    <!-- 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 -->
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
+                                        <ul class="list-unstyled">
+                                            <!-- 리스트의 다른 요소들 -->
+                                        </ul>
                                     </div>
+                                </a>
+                            </div>
+                            <!-- 제품 정보 -->
+                            <div class="card-body">
+                                <!-- 제품 링크 -->
+                                <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
 
-                                    <!-- 가격 표시 -->
-                                    <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
-                                    <span class="font-weight-bold">원</span>
+                                <!-- 별점 및 평점 표시 -->
+                                <div class="d-flex justify-content-center mb-1 align-items-center">
+                                    <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                                        <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                                    </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
                                 </div>
+
+                                <!-- 가격 표시 -->
+                                <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
+                                <span class="font-weight-bold">원</span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
-
     </div>
 </div>
-
-
 
 <!-- 페이지네이션 시작-->
 <nav th:unless="${#lists.isEmpty(items)}" class="mt-4">
@@ -264,10 +156,7 @@
         </li>
     </ul>
 </nav>
-
-<!--페이지네이션 끝-->
-
-
+<!-- 페이지네이션 끝-->
 
 <!-- End Content -->
 
@@ -297,7 +186,6 @@
                         <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
                             <!--Slides-->
                             <div class="carousel-inner product-links-wap" role="listbox">
-
                                 <!--First slide-->
                                 <div class="carousel-item active">
                                     <div class="row">
@@ -316,7 +204,6 @@
                                     </div>
                                 </div>
                                 <!--End First slide-->
-
                                 <!--Second slide-->
                                 <div class="carousel-item">
                                     <div class="row">
@@ -335,7 +222,6 @@
                                     </div>
                                 </div>
                                 <!--End Second slide-->
-
                                 <!--Third slide-->
                                 <div class="carousel-item">
                                     <div class="row">
@@ -354,7 +240,6 @@
                                     </div>
                                 </div>
                                 <!--End Third slide-->
-
                             </div>
                             <!--End Slides-->
                         </div>
@@ -375,9 +260,12 @@
 </section>
 <!--End Brands-->
 
-
+<!-- Start Footer -->
 <footer th:replace="frame/footer :: footer"></footer>
+<!-- End Footer -->
 
+
+<script src="/js/item/itemRatingsGet.js"></script>
+<!-- End Script -->
 </body>
-
 </html>

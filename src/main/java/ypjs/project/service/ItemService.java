@@ -202,6 +202,9 @@ public class ItemService {
         return itemRepository.countAllCategoryItem(keyword,categoryId);
     }
 
+
+
+
     //리스트 보려고 만듦
 //    public List<ItemOneDto> findAll() {
 //        List<Item> items = itemRepository.findAllItems();

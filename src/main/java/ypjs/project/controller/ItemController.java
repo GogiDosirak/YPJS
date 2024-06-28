@@ -17,6 +17,7 @@ import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Page;
 import ypjs.project.dto.ResponseDto;
+import ypjs.project.dto.categorydto.CategoryListDto;
 import ypjs.project.dto.categorydto.CategoryOneDto;
 import ypjs.project.dto.itemdto.*;
 import ypjs.project.dto.logindto.LoginDto;
@@ -80,10 +81,9 @@ public class ItemController {
         //조회수
         itemService.increaseItemCnt(itemId);
 
-        //리뷰리스트
-        //itemReviewService.findAllItemReview(itemId);
-
-
+        //리뷰 갯수
+        int reviewCount = itemReviewService.countAllItemReview(itemId);
+        model.addAttribute("reviewCount", reviewCount);
 
         return "item/itemGet";
 
@@ -126,6 +126,10 @@ public class ItemController {
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemService.countAllCategoryItem(keyword, categoryId), size);
 
+        //카테고리
+        List<Category> parentCategories = categoryService.findParentCategories();
+        model.addAttribute("parentCategories", parentCategories);
+
         model.addAttribute("items",items);
         model.addAttribute("category", category);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
@@ -161,6 +165,10 @@ public class ItemController {
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemService.countAll(keyword), size);
 
+        //카테고리
+        List<Category> parentCategories = categoryService.findParentCategories();
+        model.addAttribute("parentCategories", parentCategories);
+
         model.addAttribute("items", items);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("keyword", keyword); //검색조건 유지
@@ -173,11 +181,6 @@ public class ItemController {
 
 
     }
-
-
-
-
-
 
 
 
@@ -236,11 +239,6 @@ public class ItemController {
         itemService.deleteItem(itemId);
         return ResponseEntity.ok().build();
     }
-
-
-
-
-
 
 
 

@@ -18,39 +18,34 @@
 <header th:replace="frame/header :: header"></header>
 <script src="/js/item/itemRatingsGet.js"></script>
 
-<!-- Start Content -->
+
+
 <div class="container py-5">
     <div class="row">
-
+        <!-- 왼쪽 카테고리 메뉴 -->
         <div class="col-lg-3">
             <h1 class="h2 pb-4">Categories</h1>
             <ul class="list-unstyled templatemo-accordion">
-                <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Women
+                <!-- 최상위 부모 카테고리 목록 반복 -->
+                <li th:each="parentCategory : ${parentCategories}" class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${parentCategory.categoryId})}"
+                       th:text="${parentCategory.categoryName}">
                         <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
                     </a>
                     <ul class="collapse show list-unstyled pl-3">
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=3)}">Outer</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=4)}">Top</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=5)}">Bottom</a></li>
+                        <!-- 하위 자식 카테고리 목록 반복 -->
+                        <li th:each="childCategory : ${parentCategory.categoryChild}">
+                            <a class="text-decoration-none"
+                               th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${childCategory.categoryId})}"
+                               th:text="${childCategory.categoryName}"></a>
+                        </li>
                     </ul>
                 </li>
-                <li class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="#">
-                        Man
-                        <i class="pull-right fa fa-fw fa-chevron-circle-down mt-1"></i>
-                    </a>
-                    <ul id="collapseTwo" class="collapse list-unstyled pl-3">
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=6)}">Outer</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=7)}">Top</a></li>
-                        <li><a class="text-decoration-none" th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=8)}">Bottom</a></li>
-                    </ul>
-                </li>
-
             </ul>
         </div>
 
+        <!-- 오른쪽 쇼핑 메뉴 및 검색 폼 -->
         <div class="col-lg-9">
             <div class="row">
                 <div class="col-md-6">
@@ -58,13 +53,8 @@
                         <li class="list-inline-item">
                             <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/get}">All Items</a>
                         </li>
-
                     </ul>
                 </div>
-
-
-
-
                 <div class="col-lg-6">
                     <!-- 검색 폼 및 정렬 폼 통합 -->
                     <form th:action="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${category.categoryId})}" method="get" class="input-group">
@@ -85,22 +75,17 @@
                         </div>
                     </form>
                 </div>
+            </div>
 
-
-
-
-
-
-                <div class="container-fluid mt-3">
+            <!-- 상품 목록 -->
+            <div class="container-fluid mt-3">
                 <div class="row">
-                    <!-- items 리스트의 각 항목을 반복 -->
                     <div th:each="item : ${items}" class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
                             <!-- 제품 이미지 -->
                             <div class="card rounded-0">
                                 <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
                                     <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
-                                    <!-- 필요한 경우 오버레이나 추가 요소를 여기에 추가할 수 있습니다 -->
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
                                         <ul class="list-unstyled">
@@ -111,18 +96,13 @@
                             </div>
                             <!-- 제품 정보 -->
                             <div class="card-body">
-                                <!-- 제품 링크 -->
                                 <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
-
-                                <!-- 별점 및 평점 표시 -->
                                 <div class="d-flex justify-content-center mb-1 align-items-center">
                                     <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
                                         <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
                                     </ul> &nbsp;&nbsp;&nbsp;&nbsp;
                                     <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
                                 </div>
-
-                                <!-- 가격 표시 -->
                                 <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
                                 <span class="font-weight-bold">원</span>
                             </div>
@@ -130,12 +110,8 @@
                     </div>
                 </div>
             </div>
-
-
-            </div>
+        </div>
     </div>
-
-</div>
 </div>
 
 <!-- 페이지네이션 시작-->

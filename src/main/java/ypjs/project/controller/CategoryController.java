@@ -100,14 +100,14 @@ public class CategoryController {
     @GetMapping("/ypjs/category/get")
     public String getCategoryList(Model model) {
 
-
-
         List<CategoryListDto> categories = categoryService.findAllCategory();
 
         model.addAttribute("categories", categories);
 
         return "category/categoryList";
     }
+
+
 
 
 
@@ -148,6 +148,8 @@ public class CategoryController {
         categoryService.deleteCategory(categoryId);
         return ResponseEntity.ok().build();
     }
+
+
 
 
 

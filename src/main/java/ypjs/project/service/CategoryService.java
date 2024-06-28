@@ -83,7 +83,6 @@ public class CategoryService {
 
     public List<CategoryListDto> findAllCategory() {
 
-        //List<Category> categories = categoryRepository.findAllWithItem();
         List<Category> categories = categoryRepository.findAll();
 
 
@@ -122,5 +121,11 @@ public class CategoryService {
     }
 
 
+
+
+    //카테고리 부모가 null일 때 카테고리 보이게
+    public List<Category> findParentCategories() {
+        return categoryRepository.findParentCategories();
+    }
 
 }
