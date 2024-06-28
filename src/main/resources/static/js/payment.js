@@ -67,6 +67,26 @@ $(document).ready(function() {
         }
     }
 
+    // 결제 취소 눌렀을 때 처리 로직
+        $('.cancel-button').click(function(event) {
+            event.preventDefault();
+            var payId = $(this).siblings('input[type=hidden]').data('pay-id');
+            $.ajax({
+                url: '/ypjs/payment/cancel/' + payId,
+                type: 'DELETE',
+                success: function(response) {
+                    alert('주문 취소가 성공적으로 처리되었습니다.');
+                    window.location.reload(); // 페이지 새로고침
+                },
+                error: function(xhr, status, error) {
+                    alert('주문 취소 중 오류가 발생했습니다.');
+                    console.error(error);
+                    window.location.reload(); //페이지 새로고침
+                }
+            });
+        });
+
+
 
     //payment.html 결제 버튼 클릭 시 처리 로직
     $("#btn-sendPayment").click(function() {
