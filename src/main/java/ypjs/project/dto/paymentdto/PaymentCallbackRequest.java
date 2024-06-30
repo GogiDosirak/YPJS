@@ -9,4 +9,5 @@ import lombok.Data;
 public class PaymentCallbackRequest {
     private String paymentUid; // 결제 고유 번호
     private String orderUid; // 주문 고유 번호
+    private int usedPoint; //사용한 포인트
 }

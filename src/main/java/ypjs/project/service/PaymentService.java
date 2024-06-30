@@ -32,7 +32,6 @@ public class PaymentService {
     private final OrderRepository orderRepository;
 
     //회원찾기
-
     public Optional<Order> findOrderByUid (String orderUid){
         return paymentRepository.findOrderAndPayment(orderUid);}
 
@@ -49,6 +48,7 @@ public class PaymentService {
 
         // DTO 를 생성하여 반환
         return new RequestPayDto(
+                order.getOrderId(),
                 order.getOrderUid(), // 주문Uid
                 order.getOrderItemsNameInfo(), // 주문상품 이름
                 order.getMember().getName(), // 주문자 이름
@@ -63,10 +63,12 @@ public class PaymentService {
     }
 
     //주문 저장메서드
-    public Long findAndCreatePayment(Long orderId){
+    public Long createPayment(Long orderId){
+
+        //주문 조회
+        ypjs.project.domain.Payment findPayment = paymentRepository.findByOrderId(orderId);
 
         //이미 주문정보가 있을 때
-        ypjs.project.domain.Payment findPayment = paymentRepository.findByOrderId(orderId);
         if(findPayment!=null){
             if(findPayment.getPayStatus().equals(PayStatus.OK)){
                 throw new IllegalStateException("이미 완료된 주문입니다");
@@ -88,6 +90,7 @@ public class PaymentService {
         return payment.getPayId();
     }
 
+    //payId로 payment 찾기
     public ypjs.project.domain.Payment findOnePayment(Long payId){
         ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
         if (payment == null) {
@@ -129,12 +132,9 @@ public class PaymentService {
     //결제 완료 후 반환 메서드
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request){
         try {
-
             // 결제 단건 조회(아임포트)
             IamportResponse<Payment> iamportResponse = iamportClient.paymentByImpUid(request.getPaymentUid());
 
-            System.out.println(request.getPaymentUid());
-            System.out.println(request.getOrderUid()+"@@@@@@@@@@@@@@2");
             Order order = paymentRepository.findOrderAndPayment(request.getOrderUid())
                     .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
@@ -143,26 +143,29 @@ public class PaymentService {
                 throw new RuntimeException("결제 미완료");
             }
 
-            //todo : 포인트 결제해도 다른 값이라 위변조에 걸리는데 확인 필요
-//            // DB에 저장된 결제 금액
-//            int price = order.getPayment().getPayPrice();
-//            System.out.println("DB에 저장된 결제 금액"+price);
-//
-//            // 실 결제 금액
-//            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
-//            System.out.println("실 결제 금액"+iamportPrice);
-//
-//            // 결제 금액 검증
-//            if(iamportPrice != price) {
-//
-//                // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
-//                iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
-//
-//                throw new RuntimeException("결제금액 위변조 의심");
-//            }
+            int usedPoint = request.getUsedPoint();
+            System.out.println("사용한 포인트"+usedPoint);
+
+            int price = order.getPayment().getPayPrice();
+            System.out.println("DB에 저장된 결제 금액"+price);
+
+            // 실 결제 금액
+            int iamportPrice = iamportResponse.getResponse().getAmount().intValue();
+            System.out.println("실 결제 금액"+iamportPrice);
+
+            // 결제 금액 검증
+            if(iamportPrice != price-usedPoint) {
+
+                // 결제금액 위변조로 의심되는 결제금액을 취소(아임포트)
+                iamportClient.cancelPaymentByImpUid(new CancelData(iamportResponse.getResponse().getImpUid(), true, new BigDecimal(iamportPrice)));
+                ypjs.project.domain.Payment payment = order.getPayment();
+                payment.changeStatus(PayStatus.CANCEL);
+
+                throw new RuntimeException("결제금액 위변조 의심");
+            }
 
             // 결제 상태 변경
-            order.getPayment().changePaymentBySuccess(PayStatus.OK, iamportResponse.getResponse().getImpUid());
+            order.getPayment().changePaymentUidAndStatus(PayStatus.OK, iamportResponse.getResponse().getImpUid());
 
             return iamportResponse;
 

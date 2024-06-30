@@ -10,6 +10,7 @@ import lombok.Data;
 @JsonNaming(PropertyNamingStrategy.class) //데이터베이스에 저장할 떄 order_id 로 저장되게 하는 어노테이션
 @AllArgsConstructor
 public class RequestPayDto {
+    private Long orderId;
     private String orderUid;  //주문Uid
     private String itemName; //주문상품
     private String payName; //구매자 이름
