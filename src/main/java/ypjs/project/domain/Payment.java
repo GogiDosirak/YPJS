@@ -49,10 +49,14 @@ public class Payment {
         return payment;
     }
 
-    //==결제 완료 상태처리 메서드==//
-    public void changePaymentBySuccess(PayStatus payStatus, String payPaymentUid){
+    //==결제 상태처리 메서드==//
+    public void changePaymentUidAndStatus(PayStatus payStatus, String payPaymentUid){
         this.payStatus = payStatus;
         this.payPaymentUid = payPaymentUid;
+    }
+
+    public void changeStatus(PayStatus payStatus){
+        this.payStatus = payStatus;
     }
 
     //==결제 취소 상태처리 메서드==//
@@ -64,4 +68,6 @@ public class Payment {
         }
         this.payStatus = PayStatus.CANCEL;
     }
+
+
 }

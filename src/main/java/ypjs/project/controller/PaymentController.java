@@ -35,7 +35,7 @@ public class PaymentController {
     @GetMapping("/payment/{orderId}")
     public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
                               Model model) {
-        paymentService.findAndCreatePayment(orderId);
+        paymentService.createPayment(orderId);
         RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
         model.addAttribute("requestPayDto", requestPayDto);
 
@@ -129,11 +129,9 @@ public class PaymentController {
     //payment 포인트 사용 함수
     @PostMapping("/updateMemberPoints")
     public ResponseEntity<String> updateMemberPoints(@RequestBody UpdatePointsRequest request) {
-        Long memberId = request.getMemberId();
-        int usedPoints = request.getUsedPoints();
 
         // 회원 포인트 업데이트 서비스 호출
-        boolean updated = memberService.updateMemberPoints(memberId, usedPoints);
+        boolean updated = memberService.updateMemberPoints(request);
 
         if (updated) {
             return ResponseEntity.ok("회원 포인트 업데이트 성공");

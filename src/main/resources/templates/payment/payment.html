@@ -30,7 +30,8 @@
                                 <span class="h5">주문 번호:</span>
                             </div>
                             <div class="col-8">
-                                <span id="orderUid" th:text="${requestPayDto.orderUid}"></span>
+                                <span id="orderId" th:text="${requestPayDto.orderId}"></span>
+                                <span hidden="hidden" id="orderUid" th:text="${requestPayDto.orderUid}"></span>
                             </div>
                         </div>
                         <div class="row">

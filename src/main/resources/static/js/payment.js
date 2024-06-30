@@ -17,88 +17,81 @@ $(document).ready(function() {
     });
 
 
-    // 포인트 조건식 및 업데이트
     function usePoints() {
-        var input = document.getElementById("usePoint");
-        var points = parseInt(input.value); // 입력된 포인트 값 가져오기 (정수로 변환)
+            var points = calculateUsedPoints();
+            var availablePoints = parseInt(document.getElementById("availablePoints").textContent.trim());
+            var orderPrice = parseInt(document.getElementById("orderPrice").textContent.trim());
 
-        var input2 = document.getElementById("availablePoints");
-        var availablePoints = parseInt(input2.textContent.trim()); // 맴버에 있는 포인트 값 가져오기
+            if (isNaN(points) || points <= 0) {
+                alert("올바른 숫자를 입력하세요.");
+                return;
+            }
 
-        var input3 = document.getElementById("orderPrice");
-        var orderPrice = parseInt(input3.textContent.trim()); // 주문 금액 가져오기
+            if (!Number.isInteger(points)) {
+                alert("포인트는 정수여야 합니다.");
+                return;
+            }
 
-        //유효성 검사
-        if (isNaN(points) || points <= 0) {
-            alert("올바른 숫자를 입력하세요.");
-            return;
-        }
+            if (points > availablePoints) {
+                alert("사용할 수 있는 포인트를 초과했습니다.");
+                return;
+            }
 
-        if (points > availablePoints) {
-            alert("사용할 수 있는 포인트를 초과했습니다.");
-            return; // 포인트 사용을 막고 함수 종료
-        }
+            if (orderPrice - points < 10) {
+                alert("10원 이상 결제해야 합니다.");
+                return;
+            }
 
-        if (orderPrice - points < 10) {
-            alert("10원 이상 결제해야 합니다.");
-            return; // 포인트 사용을 막고 함수 종료
-        }
+            $("#showUsePoint").text(points + " 원");
+            var finalPaymentAmount = orderPrice - points;
 
-        // 사용할 포인트 보여주기 업데이트 로직
-        $("#showUsePoint").text(points + " 원");
+            if (finalPaymentAmount < 0) {
+                alert("포인트 사용으로 결제 금액이 음수가 될 수 없습니다.");
+                return;
+            }
 
-        // 포인트 사용 처리 로직
-        // 예시로 간단히 계산 후 최종 결제 금액 업데이트 함수 호출
-        var finalPaymentAmount = orderPrice - points;
-        updateFinalPaymentAmount(finalPaymentAmount);
+            updateFinalPaymentAmount(finalPaymentAmount);
 
-        //로그에서 확인
-        console.log("사용할 포인트:", points);
-        console.log("최종 결제 금액:", finalPaymentAmount);
+            console.log("사용할 포인트:", points);
+            console.log("최종 결제 금액:", finalPaymentAmount);
     }
 
     // 최종 결제 금액 업데이트 함수
     function updateFinalPaymentAmount(amount) {
-        var finalAmountElement = document.getElementById("finalPaymentAmount");
-        if (amount !== undefined) {
-            finalAmountElement.textContent = amount;
-        } else {
-            finalAmountElement.textContent =orderPrice;
-        }
+        document.getElementById("finalPaymentAmount").textContent = amount !== undefined ? amount : orderPrice;
     }
 
     // 결제 취소 눌렀을 때 처리 로직
-        $('.cancel-button').click(function(event) {
-            event.preventDefault();
-            var payId = $(this).siblings('input[type=hidden]').data('pay-id');
-            $.ajax({
-                url: '/ypjs/payment/cancel/' + payId,
-                type: 'DELETE',
-                success: function(response) {
-                    alert('주문 취소가 성공적으로 처리되었습니다.');
-                    window.location.reload(); // 페이지 새로고침
-                },
-                error: function(xhr, status, error) {
-                    alert('주문 취소 중 오류가 발생했습니다.');
-                    console.error(error);
-                    window.location.reload(); //페이지 새로고침
-                }
-            });
+    $('.cancel-button').click(function(event) {
+        event.preventDefault();
+        var payId = $(this).siblings('input[type=hidden]').data('pay-id');
+        $.ajax({
+            url: '/ypjs/payment/cancel/' + payId,
+            type: 'DELETE',
+            success: function(response) {
+                alert('주문 취소가 성공적으로 처리되었습니다.');
+                window.location.reload(); // 페이지 새로고침
+            },
+            error: function(xhr, status, error) {
+                alert('주문 취소 중 오류가 발생했습니다.');
+                console.error(error);
+                window.location.reload(); //페이지 새로고침
+            }
         });
-
-
+    });
 
     //payment.html 결제 버튼 클릭 시 처리 로직
     $("#btn-sendPayment").click(function() {
         // JavaScript 변수로부터 주문 정보 읽기
         var orderUid = $("#orderUid").text();
         var itemName = $("#itemName").text();
-        var paymentPrice = document.getElementById("finalPaymentAmount").textContent;
+        var payPrice = parseInt(document.getElementById("finalPaymentAmount").textContent);
         var buyerName = $("#payName").text();
         var buyerEmail = $("#payEmail").text();
         var buyerAddress = $("#deliveryAddress").text();
         var buyerTel = $("#buyerTel").text();
         var buyerPostcode = $("#buyerPostcode").text();
+        var usedPoints = calculateUsedPoints();
 
         // 아임포트 API를 통한 결제 요청
         IMP.request_pay({
@@ -106,7 +99,7 @@ $(document).ready(function() {
             pay_method: 'card',
             merchant_uid: orderUid, // 주문 번호
             name: itemName, // 상품 이름
-            amount: paymentPrice, // 상품 가격
+            amount: payPrice, // 상품 가격
             buyer_email: buyerEmail, // 구매자 이메일
             buyer_name: buyerName, // 구매자 이름
             buyer_tel: buyerTel, // 구매자 번호
@@ -123,15 +116,14 @@ $(document).ready(function() {
                     headers: { "Content-Type": "application/json" },
                     data: JSON.stringify({
                         "payment_uid": rsp.imp_uid,      // 결제 고유번호
-                        "order_uid": rsp.merchant_uid   // 주문번호
+                        "order_uid": rsp.merchant_uid,   // 주문번호
+                        "used_point": usedPoints //사용한 포인트
                     })
                 }).done(function(response) {
                     console.log(response);
                     // 가맹점 서버 결제 API 성공시 로직
                     var memberId = $("#buyerMemberId").text();
                     console.log(memberId);
-                    var usedPoints = calculateUsedPoints(); // 사용된 포인트 계산 함수 호출
-                    console.log(usedPoints);
                     updateMemberPoints(memberId, usedPoints); // 회원 포인트 업데이트 함수 호출
                     alert('결제 완료!');
                     window.location.href = "/ypjs/payment/success-payment";
@@ -145,15 +137,13 @@ $(document).ready(function() {
 
     //사용된 포인트 계산
     function calculateUsedPoints() {
-        var input = document.getElementById("usePoint");
-        var points = parseInt(input.value); // 입력된 포인트 값 가져오기 (정수로 변환)
-        return points;
+        return parseInt(document.getElementById("usePoint").value) || 0;
     }
 
     // 회원 포인트 업데이트 함수
     function updateMemberPoints(memberId, usedPoints) {
         $.ajax({
-            url: "/ypjs/payment/updateMemberPoints", // 서버 엔드포인트
+            url: "/ypjs/payment/updateMemberPoints",
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data: JSON.stringify({
@@ -163,11 +153,9 @@ $(document).ready(function() {
         }).done(function(response) {
         alert("회원 포인트 업데이트 성공:", response);
             console.log("회원 포인트 업데이트 성공:", response);
-            // 성공적으로 처리된 경우, 여기에 추가적인 로직을 구현할 수 있습니다.
         }).fail(function(error) {
         alert("회원 포인트 업데이트 실패:", error);
             console.error("회원 포인트 업데이트 실패:", error);
-            // 실패한 경우, 적절한 오류 처리를 수행합니다.
         });
     }
 });

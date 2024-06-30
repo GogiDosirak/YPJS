@@ -114,8 +114,11 @@ public class Member {
         }
     }
 
-    //포인트 세팅 메소드
-    public void updatePoint(int newPoints){
+    // 포인트 세팅 메소드
+    public void updatePoint(int newPoints) {
+        if (newPoints < 0) {
+            throw new IllegalArgumentException("포인트는 0 이상이어야 합니다.");
+        }
         this.point = newPoints;
     }
 

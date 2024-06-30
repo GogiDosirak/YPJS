@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Member;
+import ypjs.project.dto.paymentdto.UpdatePointsRequest;
 import ypjs.project.repository.MemberRepository;
 
 import java.util.List;
@@ -69,27 +70,31 @@ public class MemberService {
 
     //payment 포인트 업데이트 관련 로직
     @Transactional
-    public boolean updateMemberPoints(Long memberId, int usedPoints) {
-        try {
+    public boolean updateMemberPoints(UpdatePointsRequest request) {
+
+            Long memberId = request.getMemberId();
+            int usedPoints = request.getUsedPoints();
+
             Member member = memberRepository.findOne(memberId);
+            if (member == null) {
+                throw new IllegalArgumentException("회원이 존재하지 않습니다.");
+            }
             int currentPoints = member.getPoint();
             int newPoints = currentPoints - usedPoints;
 
-            if (newPoints >= 0) {
-                member.updatePoint(newPoints);
-                memberRepository.save(member);
-                return true;
-            } else {
+            if (newPoints < 0) {
                 throw new IllegalArgumentException("사용할 포인트가 현재 포인트보다 많습니다.");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+
+            member.updatePoint(newPoints);
+            memberRepository.save(member);
+
+            return true;
+
         }
     }
 
 
-    }
 
 
 
