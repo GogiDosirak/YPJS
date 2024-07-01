@@ -36,7 +36,7 @@ public class Order {
     private int price;  //주문금액
 
     @Column(name = "order_created")
-    private LocalDateTime created;  //주문시간
+    private LocalDateTime created;  //주문생성시간
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
@@ -75,6 +75,11 @@ public class Order {
     //==상태 변경 메서드==//
     public Long updateOrderStatus(OrderStatus orderStatus) {
         this.status = orderStatus;
+        return this.orderId;
+    }
+
+    public Long updateOrderCreated(LocalDateTime payDate) {
+        this.created = payDate;
         return this.orderId;
     }
 

@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Delivery;
 import ypjs.project.dto.deliverydto.DeliveryResponseDto;
+import ypjs.project.dto.deliverydto.DeliveryTrackerDto;
 import ypjs.project.service.DeliveryService;
 
 @RestController
@@ -32,5 +30,12 @@ public class DeliveryController {
             System.out.println("**배송 추적 불가 - 배송준비중");
             return ResponseEntity.ok().build();
         }
+    }
+
+    @PostMapping("/addTracker")
+    public ResponseEntity addTracker(@RequestBody DeliveryTrackerDto deliveryTrackerDto) {
+        System.out.println("**배송정보 등록 요청됨");
+        deliveryService.addTracker(deliveryTrackerDto);
+        return ResponseEntity.ok().build();
     }
 }

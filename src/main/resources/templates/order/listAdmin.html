@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/orderAdmin.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+            <!-- 검색 폼 시작 -->
+            <div class="card mb-5 text-center border-0">
+                <form class="row align-items-center justify-content-end me-0" method="GET" th:action="@{/orders}">
+                    <div class="col-auto">
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="startDate" id="startDate" aria-placeholder="시작 날짜" placeholder="시작 날짜">
+                    </div>
+                    <div class="col-auto">
+                        <span class="align-middle" style="font-size: 0.75rem !important;"> ~ </span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="endDate" id="endDate" placeholder="종료 날짜">                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Small button group">
+                            <input class="btn-check" type="radio" name="duration" id="duration1" value="1" onclick="setDates(1)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration1" style="font-size: 0.75rem !important;">1개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration3" value="3" onclick="setDates(3)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration3" style="font-size: 0.75rem !important;">3개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration6" value="6" onclick="setDates(6)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration6" style="font-size: 0.75rem !important;">6개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration12" value="12" onclick="setDates(12)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration12" style="font-size: 0.75rem !important;">12개월</label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+
+                        <select class="form-select form-select-sm" style="font-size: 0.75rem !important;" name="searchStatus">
+                            <option value="">전체</option>
+                            <option value="결제대기중">결제대기중</option>
+                            <option value="주문완료">주문완료</option>
+                            <option value="배송준비중">배송준비중</option>
+                            <option value="배송중">배송중</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 pe-0">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="search" id="search" placeholder="">
+                            <button type="submit" class="btn btn-success btn-sm" style="font-size: 0.75rem !important;">검색</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- 검색 폼 끝 -->
+
+
+            <!-- 주문내역 표시 시작-->
+            <div class="row mb-4">
+                <h2 class="h2 fw-bold text-primary">주문 내역(관리자)</h2>
+            </div>
+
+            <!-- orderList가 비어 있는 경우 -->
+            <div th:if="${#lists.isEmpty(orderList)}">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <span>주문 내역이 없습니다.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- orderList가 있는 경우 -->
+            <div th:unless="${#lists.isEmpty(orderList)}">
+                <table class="table table-hover">
+                    <thead class="table-light text-center">
+                        <tr>
+                            <th scope="col">주문번호</th>
+                            <th scope="col">주문시간</th>
+                            <th scope="col">구매자ID</th>
+                            <th scope="col">주문상품</th>
+                            <th scope="col">총(개)</th>
+                            <th scope="col">주문상태</th>
+                            <th scope="col">배송상태</th>
+                            <th scope="col">배송등록</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <tr th:each="order, orderIndex : ${orderList}" th:id="${order.orderId}">
+                            <td th:text="${order.orderId}" id="orderId"></td>
+                            <td th:text="${#temporals.format(order.created, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                            <td th:text="${order.memberAccountId}"></td>
+
+                            <td style="width:250px;">
+                                <p class="d-flex justify-content-start mx-4 mb-0" th:each="oi : ${order.orderItems}">
+                                    <a href="#" th:text="${oi.itemName}"></a>
+                                </p>
+                            </td>
+
+                            <td th:text="${order.itemTotalCount}"></td>
+                            <td th:text="${order.status}"></td>
+                            <td th:text="${order.deliveryResponseDto.status}"></td>
+                            <td>
+                                <button th:if="${#lists.isEmpty(order.deliveryResponseDto.trackId)}"
+                                        class="btn btn-secondary btn-sm btn-addTracker"
+                                        th:data-delivery-id="${order.deliveryResponseDto.deliveryId}">
+                                    미등록
+                                </button>
+                                <button th:unless="${#lists.isEmpty(order.deliveryResponseDto.trackId)}"
+                                        class="btn btn-primary btn-sm btn-trackerInfo"
+                                        th:data-delivery-id="${order.deliveryResponseDto.deliveryId}"
+                                        th:data-carrier-id="${order.deliveryResponseDto.carrierId}"
+                                        th:data-track-id="${order.deliveryResponseDto.trackId}">
+                                    등록
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <!--주문내역 표시 끝-->
+
+            <!-- 페이지네이션 시작-->
+            <nav th:unless="${#lists.isEmpty(orderList)}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list/admin?page=' + ${page - 1} + '&size=' + ${size}}">이전</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == i} ? 'active'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list/admin?page=' + ${i} + '&size=' + ${size}}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list/admin?page=' + ${page + 1} + '&size=' + ${size}}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--페이지네이션 끝-->
+        </div>
+
+    </div>
+</div>
+<!-- End Content -->
+
+
+<!-- 배송등록 모달 시작 -->
+<div class="modal fade" id="trackerModal" tabindex="-1" role="dialog" aria-labelledby="trackerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trackerModalLabel">배송정보 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="=row">
+                    <h5>주문번호: </h5>
+                    <span class="h5" id="modalOrderId"></span>
+                </div>
+                <div class="row mb-2 ps-1">
+                    <div class="col-3 me-2">
+                        <h5>운송회사</h5>
+                    </div>
+                    <div class="col-4">
+                        <h5>운송장번호</h5>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <select id="carrierId" class="form-select me-2" aria-label="Default select example">
+                        <option selected>선택</option>
+                        <option value="kr.cjlogistics">CJ대한통운</option>
+                        <option value="kr.epost">우체국택배</option>
+                        <option value="kr.hanjin">한진택배</option>
+                        <option value="kr.logen">로젠택배</option>
+                        <option value="kr.lotte">롯데택배</option>
+                    </select>
+                    <input type="text" aria-label="1-4" class="form-control" id="trackId1" placeholder="4자리">
+                    <span class="p-2 fw-semibold"> - </span>
+                    <input type="text" aria-label="5-8" class="form-control" id="trackId2" placeholder="4자리">
+                    <span class="p-2 fw-semibold"> - </span>
+                    <input type="text" aria-label="9-12" class="form-control" id="trackId3" placeholder="4자리">
+
+                    <input type="hidden" class="form-control" id="deliveryId">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-success" id="btn-saveTracker">저장</button>
+                <button type="button" class="btn btn-warning" id="btn-updateTracker">수정</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 배송등록 모달 끝 -->
+
+
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

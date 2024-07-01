@@ -12,11 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryCreateDto;
+import ypjs.project.dto.orderdto.OrderAdminDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.service.DeliveryService;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
 import ypjs.project.service.PaymentService;
@@ -32,6 +35,7 @@ public class OrderController {
 
     private final OrderService orderService;
     private final MemberService memberService;
+    private final DeliveryService deliveryService;
     private final PaymentService paymentService;
 
     //임시 로케이션
@@ -39,6 +43,7 @@ public class OrderController {
     public String hello() {
         return "hello";
     }
+
 
     //==주문 생성 페이지==//
     @GetMapping("/create")
@@ -84,6 +89,7 @@ public class OrderController {
         return "order/create";
     }
 
+
     //==주문 생성==//
     @PostMapping("/create")
     public ResponseEntity<Long> create(@RequestBody @Valid OrderCreateDto orderCreateDto, HttpServletRequest request) {
@@ -98,6 +104,31 @@ public class OrderController {
         System.out.println("**세션 장바구니ID 목록 전달 확인_> " + request.getSession().getAttribute("cardIds"));
 
         return ResponseEntity.ok().body(orderId);
+
+    }
+
+
+    //==주문 전체 조회(관리자)==//
+    @GetMapping("/list/admin")
+    public String listAdmin(
+            HttpSession session, Model model,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestParam(name = "orderStatus", defaultValue = "") String orderStatus) {
+        System.out.println("**주문 전체 조회(관리자) 요청됨");
+
+        Pageable pageable = PageRequest.of(page, size);
+        List<OrderAdminDto> o = orderService.findAll(pageable, orderStatus);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(orderService.countAll(), size);
+
+        model.addAttribute("orderList", o);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("today", LocalDateTime.now());
+        return "order/listAdmin";
     }
 
 
@@ -113,7 +144,14 @@ public class OrderController {
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(page, size);
         List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderStatus);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(orderService.countByMemberId(memberId), size);
+
         model.addAttribute("orderList", o);
+        model.addAttribute("page", page);
+        model.addAttribute("size", size);
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("today", LocalDateTime.now());
         return "order/list";
     }

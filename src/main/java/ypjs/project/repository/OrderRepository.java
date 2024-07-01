@@ -22,9 +22,35 @@ public class OrderRepository {
         em.persist(order);
     }
 
+    public void delete(Order order) {
+        em.remove(order);
+    }
+
     public Order findOne(Long orderId) {
         return em.find(Order.class, orderId);
     }
+
+
+    public List<Order> findAll(Pageable pageable, String orderStatus) {
+        String jpql = "select o from Order o";
+
+        if(StringUtils.hasText(orderStatus)) {
+            jpql += " where o.status = :status";
+        }
+
+        jpql += " order by o.orderId desc";
+
+        TypedQuery<Order> query = em.createQuery(jpql, Order.class)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        if(StringUtils.hasText(orderStatus)) {
+            query.setParameter("status", orderStatus);
+        }
+
+        return query.getResultList();
+    }
+
 
     public List<Order> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
         //JPQL 쿼리
@@ -50,6 +76,22 @@ public class OrderRepository {
 
         //결과 리스트 가져와서 리턴
         return query.getResultList();
+    }
+
+
+    //==총 개수 조회==//
+    public int countAll() {
+        return em.createQuery("select count(o) from Order o", Long.class)
+                .getSingleResult()
+                .intValue();
+    }
+
+
+    public int countByMemberId(Long memberId) {
+        return em.createQuery("select count(o) from Order o where o.member.memberId = :id", Long.class)
+                .setParameter("id", memberId)
+                .getSingleResult()
+                .intValue();
     }
 
 /*

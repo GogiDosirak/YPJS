@@ -16,7 +16,7 @@ public class DeliveryResponseDto {
 
     private Long deliveryId;  //배송번호
 
-    //private Long orderId;  //주문번호
+    private Long orderId;  //주문번호
 
     private String receiver;  //받으실 분
 
@@ -32,7 +32,7 @@ public class DeliveryResponseDto {
 
     public DeliveryResponseDto (Delivery d) {
         deliveryId = d.getDeliveryId();
-        //orderId = d.getOrder().getOrderId();
+        orderId = d.getOrder().getOrderId();
         receiver = d.getReceiver();
         phoneNumber = d.getPhoneNumber();
         address = d.getAddress();
