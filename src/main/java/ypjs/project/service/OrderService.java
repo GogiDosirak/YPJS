@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
+import ypjs.project.dto.orderdto.OrderAdminDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
@@ -13,6 +14,7 @@ import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,32 @@ public class OrderService {
 
     }
 
+    @Transactional
+    public void delete(Long orderId) {
+        Order o = orderRepository.findOne(orderId);
+        orderRepository.delete(o);
+
+    }
+
+
+    //==주문 1건 조회==//
+    public OrderResponseDto findOne(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+
+        return new OrderResponseDto(order);
+    }
+
+
+    //==주문 전체 조회==//
+    public List<OrderAdminDto> findAll(Pageable pageable, String orderStatus) {
+        List<Order> orders = orderRepository.findAll(pageable, orderStatus);
+
+        return orders.stream()
+                .map(o -> new OrderAdminDto(o))
+                .collect(toList());
+    }
+
+
     //==멤버별 주문 전체 조회==//
     public List<OrderResponseDto> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
         List<Order> orders = orderRepository.findAllByMemberId(memberId, pageable, orderStatus);
@@ -73,11 +101,15 @@ public class OrderService {
                 .collect(toList());
     }
 
-    //==주문 1건 조회==//
-    public OrderResponseDto findOne(Long orderId) {
-        Order order = orderRepository.findOne(orderId);
 
-        return new OrderResponseDto(order);
+    //==개수 조회==//
+    public int countAll() {
+        return orderRepository.countAll();
+    }
+
+
+    public int countByMemberId(Long memberId) {
+        return orderRepository.countByMemberId(memberId);
     }
 
 
