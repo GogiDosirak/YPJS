@@ -66,7 +66,7 @@ $(document).ready(function() {
         event.preventDefault();
         var payId = $(this).siblings('input[type=hidden]').data('pay-id');
         $.ajax({
-            url: '/ypjs/payment/cancel/' + payId,
+            url: '/api/ypjs/payment/cancel/' + payId,
             type: 'DELETE',
             success: function(response) {
                 alert('주문 취소가 성공적으로 처리되었습니다.');
@@ -109,7 +109,7 @@ $(document).ready(function() {
             if (rsp.success) {
                 // jQuery로 HTTP 요청
                 $.ajax({
-                    url: "/ypjs/payment/payment",
+                    url: "/api/ypjs/payment/payment",
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     data: JSON.stringify({
@@ -128,7 +128,7 @@ $(document).ready(function() {
                 });
             } else {
                     $.ajax({
-                        url: "/ypjs/payment/fail-payment",
+                        url: "/api/ypjs/payment/fail-payment",
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         data: JSON.stringify({
@@ -152,7 +152,7 @@ $(document).ready(function() {
     // 회원 포인트 업데이트 함수
     function updateMemberPoints(memberId, usedPoints) {
         $.ajax({
-            url: "/ypjs/payment/updateMemberPoints",
+            url: "/api/ypjs/payment/updateMemberPoints",
             method: "POST",
             headers: { "Content-Type": "application/json" },
             data: JSON.stringify({

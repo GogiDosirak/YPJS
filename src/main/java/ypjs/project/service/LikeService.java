@@ -76,8 +76,4 @@ public class LikeService {
         return Optional.ofNullable(itemRepository.findOne(itemId))
                 .orElseThrow(() -> new IllegalStateException("상품이 존재하지 않습니다."));
     }
-
-
-
-
 }

@@ -18,7 +18,7 @@ public class PaymentDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class FailPaymentDTO {
+    public static class FailPaymentDto {
         private String orderUid;
         private String errorMessage;
     }

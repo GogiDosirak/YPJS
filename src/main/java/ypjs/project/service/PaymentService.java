@@ -117,7 +117,7 @@ public class PaymentService {
 
     //결제 중단 시 오더랑 페이먼트 삭제 메서드
     @Transactional
-    public String deleteOrderAndPayment(PaymentDto.FailPaymentDTO failPaymentDTO){
+    public String deleteOrderAndPayment(PaymentDto.FailPaymentDto failPaymentDTO){
         Order order = paymentRepository.findOrderAndPayment(failPaymentDTO.getOrderUid())
                 .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
