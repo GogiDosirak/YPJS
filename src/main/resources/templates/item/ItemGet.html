@@ -91,11 +91,21 @@
                     <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
                 </ul> &nbsp;&nbsp;&nbsp;&nbsp;
                 <span id="itemRatings"  th:text="${item.itemRatings}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
-                <div>
-                    <a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">
-                        Reviews  &nbsp;(<span th:text="${reviewCount}"></span>)
-                    </a>
+                <!-- 리뷰가 있는 경우 -->
+                <div th:if="${reviewCount != null and reviewCount > 0}">
+                    <div>
+                        <!-- 리뷰 링크 표시 -->
+                        <a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">
+                            Reviews  &nbsp;(<span th:text="${reviewCount}"></span>)
+                        </a>
+                    </div>
                 </div>
+
+                <!-- 리뷰가 없는 경우 -->
+                <div th:if="${reviewCount == null or reviewCount == 0}">
+                    <p>리뷰가 없습니다.</p>
+                </div>
+
             </div>
         </div>
     </div>
@@ -175,6 +185,7 @@
 </div>
 
 </form>
+
 
                     </div>
                 </div>

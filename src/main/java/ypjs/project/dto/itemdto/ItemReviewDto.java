@@ -1,5 +1,8 @@
 package ypjs.project.dto.itemdto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 
@@ -9,9 +12,16 @@ import java.time.LocalDateTime;
 public class ItemReviewDto {
 
     private Long itemId;
+
     private Long itemReviewId;
+
+    @Min(value = 1, message = "itemScore must be at least 1 or greater.")
     private int itemScore;
+
+    @NotBlank(message = "itemReviewName not be null")
     private String itemReviewName;
+
+    @NotBlank(message = "itemReviewContent not be null")
     private String itemReviewContent;
 
 

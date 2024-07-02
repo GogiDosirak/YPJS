@@ -40,7 +40,7 @@
 <!-- Start Contact -->
 <div class="container py-5">
     <div class="row py-5">
-        <form id="itemForm" th:action="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="col-md-9 m-auto" method="post" th:object="${item}" enctype="multipart/form-data">
+        <form id="itemForm" th:action="@{/api/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="col-md-9 m-auto" method="post" th:object="${item}" enctype="multipart/form-data">
 
             <!-- 폼 요소들 -->
             <div class="row">

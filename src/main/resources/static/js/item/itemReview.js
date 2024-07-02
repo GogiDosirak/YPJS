@@ -74,7 +74,7 @@ let itemBoardObject = {
 
         $.ajax({
             type: "POST",
-            url: "/ypjs/itemReview/post/" + itemId,  // URL에 itemId를 추가
+            url: "/api/ypjs/itemReview/post/" + itemId,  // URL에 itemId를 추가
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
@@ -127,7 +127,7 @@ let itemBoardObject = {
             $.ajax({
                 type: "PUT",
 
-                url: "/ypjs/itemReview/update/" + itemReviewId,
+                url: "/api/ypjs/itemReview/update/" + itemReviewId,
                 data: JSON.stringify(updateData),
                 contentType: "application/json; charset=utf-8",
                 success: function(response) {
@@ -151,7 +151,7 @@ let itemBoardObject = {
 
                  $.ajax({
                      type: "DELETE",
-                     url: "/ypjs/itemReview/delete/" + itemReviewId,
+                     url: "/api/ypjs/itemReview/delete/" + itemReviewId,
                      success: function(response) {
                          alert("리뷰가 삭제되었습니다.");
 

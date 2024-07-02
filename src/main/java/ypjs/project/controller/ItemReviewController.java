@@ -1,21 +1,18 @@
 package ypjs.project.controller;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemReview;
 import ypjs.project.domain.Page;
-import ypjs.project.dto.itemdto.ItemOneDto;
 import ypjs.project.dto.itemdto.ItemReviewDto;
 import ypjs.project.dto.itemdto.ItemReviewListDto;
-import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
 import ypjs.project.service.MemberService;
@@ -40,33 +37,6 @@ public class ItemReviewController {
         model.addAttribute("item", findItem);
 
         return "itemreview/itemReviewPost";}
-
-
-   //리뷰등록
-    @ResponseBody
-    @PostMapping("/ypjs/itemReview/post/{itemId}")
-    public ResponseEntity saveItemReview(@PathVariable("itemId") Long itemId, HttpSession session, Model model,
-                                        @RequestBody @Valid ItemReviewDto requestDto) {
-
-        //멤버정보 찾기
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-
-        Item findItem = itemService.findOneItem(itemId);
-        //ItemReview itemReview = itemReviewService.saveItemReview(requestDto, responseLogin.getMemberId());
-        ItemReview itemReview = itemReviewService.saveItemReview(requestDto, 1L);
-
-
-        model.addAttribute("item", findItem);
-
-
-        return ResponseEntity.ok().build();
-    }
-
-
-
-
-
-
 
 
     //아이템 당 리뷰조회
@@ -121,47 +91,5 @@ public class ItemReviewController {
         // 반환할 뷰 이름 (템플릿 파일 경로, 예: templates/itemReview/update.html)
         return "itemReview/itemReviewUpdate";
     }
-
-
-
-    //수정등록
-    @ResponseBody
-    @PutMapping("/ypjs/itemReview/update/{itemReviewId}")
-    public ResponseEntity updateItemReview(@PathVariable(name ="itemReviewId") Long itemReviewId,
-                                           @RequestBody @Valid ItemReviewDto itemReviewDto,
-                                           HttpSession session) {
-
-        //멤버정보 찾기
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-
-
-        itemReviewService.updateItemReview(itemReviewId, itemReviewDto);
-        ItemReview findItemReview = itemReviewService.findOneItemReview(itemReviewId);
-
-        return ResponseEntity.ok().body(findItemReview.getItem().getItemId());
-
-    }
-
-
-
-
-    //삭제
-    @DeleteMapping("/ypjs/itemReview/delete/{itemReviewId}")
-    public ResponseEntity deleteItemReview(@PathVariable("itemReviewId") Long itemReviewId){
-        itemReviewService.deleteItemReview(itemReviewId);
-
-        return ResponseEntity.ok().build();
-    }
-
-
-
-
-
-
-
-
-
-
-
 
 }
