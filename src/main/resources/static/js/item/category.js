@@ -41,7 +41,7 @@ let categoryBoardObject = {
 
         $.ajax({
             type: "POST",
-            url: "/ypjs/category/post",
+            url: "/api/ypjs/category/post",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
@@ -49,8 +49,8 @@ let categoryBoardObject = {
                 window.location.href = "/ypjs/category/get";
             },
             error: function(error) {
-                window.location.href = "/ypjs/category/get";
-            }
+                           alert("에러 발생: " + JSON.stringify(error));
+                       }
         });
     },
 
@@ -84,7 +84,7 @@ let categoryBoardObject = {
 
         $.ajax({
             type: "PUT",
-            url: "/ypjs/category/update/" + categoryId,
+            url: "/api/ypjs/category/update/" + categoryId,
             data: JSON.stringify(updateData),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
@@ -102,7 +102,7 @@ let categoryBoardObject = {
 
         $.ajax({
             type: "DELETE",
-            url: "/ypjs/category/delete/" + categoryId,
+            url: "/api/ypjs/category/delete/" + categoryId,
             success: function(response) {
                   alert("카테고리가 삭제되었습니다.");
                 window.location.href = "/ypjs/category/get"; // 삭제 후 페이지 이동

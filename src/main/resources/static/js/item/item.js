@@ -23,7 +23,7 @@ let itemBoardObject = {
 
         $.ajax({
             type: "DELETE",
-            url: "/ypjs/item/delete/" + itemId,
+            url: "/api/ypjs/item/delete/" + itemId,
             success: function(response) {
                 alert("삭제되었습니다.");
                 window.location.href = "/ypjs/item/get"; // 삭제 후 페이지 이동
@@ -38,7 +38,7 @@ let itemBoardObject = {
      let categoryId = $("#categoryId").val(); // 삭제할 categoryId 가져오기
             $.ajax({
                 type: "DELETE",
-                url: "/ypjs/item/delete/" + itemId,
+                url: "/api/ypjs/item/delete/" + itemId,
                 success: function(response) {
                      alert("삭제되었습니다.");
                     window.location.href = "/ypjs/category/get/" + categoryId; // 삭제 후 페이지 이동

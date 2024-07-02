@@ -1,34 +1,24 @@
 package ypjs.project.controller;
 
-
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Page;
-import ypjs.project.dto.ResponseDto;
-import ypjs.project.dto.categorydto.CategoryListDto;
-import ypjs.project.dto.categorydto.CategoryOneDto;
-import ypjs.project.dto.itemdto.*;
-import ypjs.project.dto.logindto.LoginDto;
-import ypjs.project.dto.noticedto.NoticeDto;
-import ypjs.project.repository.ItemReviewRepository;
+import ypjs.project.dto.itemdto.ItemListDto;
+import ypjs.project.dto.itemdto.ItemOneDto;
+import ypjs.project.dto.itemdto.ItemUpdateDto;
 import ypjs.project.service.CategoryService;
 import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
 
 import java.util.List;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -46,30 +36,10 @@ public class ItemController {
 
 
 
-    //item등록
-    @PostMapping("/ypjs/item/post")
-    public String saveItem(@RequestParam("file") MultipartFile file,
-                           @Valid @ModelAttribute  ItemRequestDto requestDto,
-                           @Valid @ModelAttribute  ItemFileDto itemFileDto, HttpSession session) throws Exception {
-        //멤버정보 찾기
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-
-//        itemService.saveItem(requestDto, responseLogin.getMemberId(), itemFileDto, file);
-
-        //멤버 임시로 넣어 놈
-        itemService.saveItem(requestDto, 1L, itemFileDto, file);
-
-        return "redirect:/ypjs/item/get";
-
-
-    }
-
-
-
     //item1개 조회
     @GetMapping("/ypjs/item/get/{itemId}")
     public String getOneItem (@PathVariable("itemId") Long itemId,
-                                  Model model) {
+                              Model model) {
 
         Item findItem = itemService.findOneItem(itemId);
 
@@ -88,7 +58,6 @@ public class ItemController {
         return "item/itemGet";
 
     }
-
 
 
 
@@ -114,7 +83,7 @@ public class ItemController {
                                      @RequestParam(value = "size",defaultValue = "3") int size,
                                      @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
                                      @RequestParam(value = "keyword", required = false) String keyword,
-                             Model model) {
+                                     Model model) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -152,11 +121,11 @@ public class ItemController {
     //아이템 전체 조회
     @GetMapping("/ypjs/item/get")
     public String getAllItem(
-                                     @RequestParam(value = "page",defaultValue = "0") int page,
-                                     @RequestParam(value = "size",defaultValue = "3") int size,
-                                     @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
-                                     @RequestParam(value = "keyword", required = false) String keyword,
-                                     Model model) {
+            @RequestParam(value = "page",defaultValue = "0") int page,
+            @RequestParam(value = "size",defaultValue = "3") int size,
+            @RequestParam(value = "sortBy", defaultValue = "itemId") String sortBy,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            Model model) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -210,35 +179,6 @@ public class ItemController {
         return "item/itemUpdate";
     }
 
-
-
-
-
-    //수정등록
-    @PostMapping("/ypjs/item/update/{itemId}")
-    public String updateItem(@PathVariable("itemId") Long itemId,
-                                    @RequestParam("file") MultipartFile file,
-                                    @Valid @ModelAttribute  ItemUpdateDto itemUpdateDto,
-                                    @Valid @ModelAttribute  ItemFileDto itemFileDto, Model model, HttpSession session) throws Exception {
-
-        //멤버정보 찾기
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-
-        itemService.findOneItem(itemId);
-        itemService.updateItem(itemId, itemUpdateDto, itemFileDto, file);
-
-
-        return "redirect:/ypjs/item/get/{itemId}";
-
-    }
-
-
-    //삭제
-    @DeleteMapping("/ypjs/item/delete/{itemId}")
-    public ResponseEntity deleteItem(@PathVariable("itemId") Long itemId) {
-        itemService.deleteItem(itemId);
-        return ResponseEntity.ok().build();
-    }
 
 
 
