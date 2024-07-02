@@ -17,15 +17,18 @@
 
             <!-- 검색 폼 시작 -->
             <div class="card mb-5 text-center border-0">
-                <form class="row align-items-center justify-content-end me-0" method="GET" th:action="@{/orders}">
-                    <div class="col-auto">
-                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="startDate" id="startDate" aria-placeholder="시작 날짜" placeholder="시작 날짜">
+                <form class="row align-items-center justify-content-end me-0" method="GET" th:action="@{/ypjs/order/list/admin}">
+                    <div class="col-auto ps-0">
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important; width: 100px;"
+                               name="startDate" id="startDate" aria-placeholder="시작 날짜" placeholder="시작 날짜">
+                    </div>
+                    <div class="col-auto px-0">
+                        <span class="align-middle" style="font-size: 0.75rem !important;">~</span>
                     </div>
                     <div class="col-auto">
-                        <span class="align-middle" style="font-size: 0.75rem !important;"> ~ </span>
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important; width: 100px;"
+                               name="endDate" id="endDate" placeholder="종료 날짜">
                     </div>
-                    <div class="col-auto">
-                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="endDate" id="endDate" placeholder="종료 날짜">                    </div>
                     <div class="col-auto">
                         <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Small button group">
                             <input class="btn-check" type="radio" name="duration" id="duration1" value="1" onclick="setDates(1)">
@@ -40,10 +43,30 @@
                             <input class="btn-check" type="radio" name="duration" id="duration12" value="12" onclick="setDates(12)">
                             <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration12" style="font-size: 0.75rem !important;">12개월</label>
                         </div>
+
+                        <script>
+                            function setDates(months) {
+                                const today = new Date();
+                                const startDate = new Date(today);
+                                startDate.setMonth(today.getMonth() - months);
+
+                                // 날짜 형식을 YYYY-MM-DD로 설정
+                                const formatDate = (date) => {
+                                    const year = date.getFullYear();
+                                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                                    const day = String(date.getDate()).padStart(2, '0');
+                                    return `${year}-${month}-${day}`;
+                                };
+
+                                document.getElementById('startDate').value = formatDate(startDate);
+                                document.getElementById('endDate').value = formatDate(today);
+                            }
+                        </script>
+
                     </div>
                     <div class="col-auto">
 
-                        <select class="form-select form-select-sm" style="font-size: 0.75rem !important;" name="searchStatus">
+                        <select class="form-select form-select-sm" style="font-size: 0.75rem !important;" name="searchOrderStatus" id="searchOrderStatus">
                             <option value="">전체</option>
                             <option value="결제대기중">결제대기중</option>
                             <option value="주문완료">주문완료</option>
@@ -53,10 +76,13 @@
                             <option value="주문취소">주문취소</option>
                         </select>
                     </div>
-                    <div class="col-md-4 pe-0">
+                    <div class="col-md-5 px-0">
                         <div class="input-group">
-                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="search" id="search" placeholder="">
-                            <button type="submit" class="btn btn-success btn-sm" style="font-size: 0.75rem !important;">검색</button>
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="searchOrderId" id="searchOrderId" placeholder="주문번호">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="searchMemberAccountId" id="searchMemberAccountId" placeholder="고객ID">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="searchOrderItemName" id="searchOrderItemName" placeholder="상품명 입력">
+
+                            <button type="submit" class="btn btn-success btn-sm" style="font-size: 0.75rem !important;" id="btn-search">검색</button>
                         </div>
                     </div>
                 </form>

@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
-import ypjs.project.dto.orderdto.OrderAdminDto;
-import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.orderdto.OrderItemRequestDto;
-import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.dto.orderdto.*;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
@@ -82,8 +79,8 @@ public class OrderService {
 
 
     //==주문 전체 조회==//
-    public List<OrderAdminDto> findAll(Pageable pageable, String orderStatus) {
-        List<Order> orders = orderRepository.findAll(pageable, orderStatus);
+    public List<OrderAdminDto> findAll(Pageable pageable, OrderSearchDto orderSearchDto) {
+        List<Order> orders = orderRepository.findAll(pageable, orderSearchDto);
 
         return orders.stream()
                 .map(o -> new OrderAdminDto(o))
@@ -92,8 +89,8 @@ public class OrderService {
 
 
     //==멤버별 주문 전체 조회==//
-    public List<OrderResponseDto> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
-        List<Order> orders = orderRepository.findAllByMemberId(memberId, pageable, orderStatus);
+    public List<OrderResponseDto> findAllByMemberId(Long memberId, Pageable pageable, OrderSearchDto orderSearchDto) {
+        List<Order> orders = orderRepository.findAllByMemberId(memberId, pageable, orderSearchDto);
 
         //Page<Order> -> Page<OrderResponseDto> 변환
         return orders.stream()
