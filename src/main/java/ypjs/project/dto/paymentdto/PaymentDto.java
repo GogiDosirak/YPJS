@@ -2,6 +2,7 @@ package ypjs.project.dto.paymentdto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +13,14 @@ public class PaymentDto {
         private Long orderId;
         private int payPrice;
         private LocalDateTime payDate;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FailPaymentDTO {
+        private String orderUid;
+        private String errorMessage;
     }
 
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartAddDto;
 import ypjs.project.dto.cartdto.CartItemDto;
 import ypjs.project.dto.cartdto.CartListDto;
@@ -44,10 +45,17 @@ public class CartController {
     public ResponseEntity add(@RequestBody @Valid CartAddDto cartAddDto, HttpServletRequest request) {
         System.out.println("**장바구니 추가 요청됨");
 
-        if(cartAddDto.getItemId() == cartService.findItemIdByMemberId(cartAddDto.getMemberId())) {
+        //todo : 머지하고 가져오는 방법 바꿔야함
+        HttpSession session = request.getSession();
+        Long memberId = (Long) session.getAttribute("loginMemberId");
+
+        if(cartAddDto.getItemId() == cartService.findItemIdByMemberId(memberId)) {
             return ResponseEntity.badRequest().body("장바구니에 이미 추가된 상품입니다.");
         }
+
+        cartAddDto.setMemberId(memberId);
         cartService.add(cartAddDto);
+
         return ResponseEntity.ok().build();
     }
 

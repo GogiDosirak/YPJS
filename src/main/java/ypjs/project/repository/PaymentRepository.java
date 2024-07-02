@@ -24,6 +24,11 @@ public class PaymentRepository {
         return em.find(Payment.class, payId);
     }
 
+    //결제 단건 제거
+    public void delete(Payment payment) {
+        em.remove(payment);
+    }
+
     //==orderId로 payment 찾기
     public Payment findByOrderId(Long orderId) {
         try {

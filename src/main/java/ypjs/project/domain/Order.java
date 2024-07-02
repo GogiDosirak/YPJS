@@ -82,6 +82,10 @@ public class Order {
         return this.orderId;
     }
 
+    public Long updateOrderCreated(LocalDateTime payDate) {
+        this.created = payDate;
+        return this.orderId;
+    }
 
     //==취소 메서드==//
     public void cancel() {

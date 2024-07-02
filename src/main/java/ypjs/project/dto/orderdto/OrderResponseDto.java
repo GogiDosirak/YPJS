@@ -9,6 +9,7 @@ import ypjs.project.domain.Delivery;
 import ypjs.project.domain.Order;
 import ypjs.project.domain.OrderItem;
 import ypjs.project.domain.enums.OrderStatus;
+import ypjs.project.dto.deliverydto.DeliveryResponseDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class OrderResponseDto {
     private Long orderId;  //주문번호
 
     @NotNull
-    private Delivery delivery;  //배송정보
+    private DeliveryResponseDto deliveryResponseDto;  //배송정보
 
     @NotNull
     private int price;  //주문금액
@@ -39,7 +40,7 @@ public class OrderResponseDto {
 
     public OrderResponseDto(Order order) {
         orderId = order.getOrderId();
-        delivery = order.getDelivery();
+        deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
         price = order.getPrice();
         created = order.getCreated();
         status = order.getStatus();

@@ -107,8 +107,6 @@ $(document).ready(function() {
             buyer_postcode: buyerPostcode // 구매자 우편번호
         }, function(rsp) {
             if (rsp.success) {
-                alert('call back!!: ' + JSON.stringify(rsp));
-                // 결제 성공 시: 결제 승인 또는 가상계좌 발급에 성공한 경우
                 // jQuery로 HTTP 요청
                 $.ajax({
                     url: "/ypjs/payment/payment",
@@ -129,8 +127,19 @@ $(document).ready(function() {
                     window.location.href = "/ypjs/payment/success-payment";
                 });
             } else {
-                alert("결제에 실패하였습니다. : " + rsp.error_msg);
-                window.location.href = "/ypjs/payment/fail-payment";
+                    $.ajax({
+                        url: "/ypjs/payment/fail-payment",
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        data: JSON.stringify({
+                            "orderUid": orderUid,          // 주문 번호
+                            "errorMessage": rsp.error_msg // 결제 실패 메시지
+                        })
+                    }).done(function(response) {
+                        console.log(response);
+                        alert("결제에 실패하였습니다. : " + rsp.error_msg);
+                        window.location.href = "/ypjs/payment/fail-payment";
+                    });
             }
         });
     });

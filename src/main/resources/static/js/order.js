@@ -28,8 +28,8 @@ $(document).ready(function() {
         // orderItemList의 첫 번째 요소의 이름 가져오기
         var firstItemName = $("#itemName_0").text();
         // 이름이 7글자 이상인 경우 ' ... '를 붙이고, 그렇지 않으면 그대로 반환
-        if (firstItemName.length > 7) {
-            return firstItemName.substring(0, 7) + ' ... ';
+        if (firstItemName.length > 12) {
+            return firstItemName.substring(0, 12) + ' ... ';
         } else {
             return firstItemName;
         }
@@ -65,7 +65,7 @@ $(document).ready(function() {
     //주문생성 처리
     $('#btn-create').click(function() {
         // delivery 정보
-        var deliveryDto = {
+        var deliveryCreateDto = {
             receiver: $('#receiver').text(),
             phoneNumber: $('#phoneNumber').text(),
             address: {
@@ -92,7 +92,7 @@ $(document).ready(function() {
 
         // 전체 데이터
         var orderCreateDto = {
-            deliveryDto: deliveryDto,
+            deliveryCreateDto: deliveryCreateDto,
             orderItemRequestDtos: orderItemRequestDtos
         };
 
@@ -126,21 +126,7 @@ $(document).ready(function() {
      //종료 일자 오늘 표시
      var today = new Date().toISOString().split('T')[0];
      $('#endDate').value = today;
-    /*
-    // 각 주문 목록을 순회
-         $('[id^=collapse_]').each(function() {
-            var orderIndex = $(this).attr('id').split('_')[1];
 
-            // 각 주문 내의 itemCount를 합산
-            var totalCount = 0;
-            $(this).find('[id^=itemCount_]').each(function() {
-                totalCount += parseInt($(this).text());
-            });
-
-            // 합산한 값 표시
-            $('#itemTotalCount_' + orderIndex).text(totalCount);
-        });
-        */
 
 //** detail. html **//
     // 각 주문 목록을 순회

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Order;
+import ypjs.project.domain.enums.OrderStatus;
 import ypjs.project.domain.enums.PayStatus;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
 import ypjs.project.dto.paymentdto.PaymentDto;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class PaymentService {
 
@@ -32,16 +32,30 @@ public class PaymentService {
     private final OrderRepository orderRepository;
 
     //회원찾기
+    @Transactional
     public Optional<Order> findOrderByUid (String orderUid){
         return paymentRepository.findOrderAndPayment(orderUid);}
 
-    //주문찾기
+    //결제 성공 메서드
+    @Transactional
     public PaymentDto.SuccessPaymentDto findPaymentByPaymentUid(String paymentUid){
         ypjs.project.domain.Payment payment = paymentRepository.findPaymentByPaymentUid(paymentUid);
+        //주문상태 변경
+        payment.getOrder().updateOrderStatus(OrderStatus.주문완료);
+        //결제완료 시간으로 order 업데이트
+        payment.getOrder().updateOrderCreated(payment.getPayDate());
         return new PaymentDto.SuccessPaymentDto(payment.getOrder().getOrderId(), payment.getPayPrice(), payment.getPayDate());
     }
 
+    //결제 단건 제거 메서드
+    @Transactional
+    public void delete(Long payId) {
+        ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
+        paymentRepository.delete(payment);
+    }
+
     //주문 생성
+    @Transactional
     public RequestPayDto makeRequestPayDto(Long orderId){
         Order order = paymentRepository.findOrderAndPaymentAndMember(orderId)
                 .orElseThrow(()->new IllegalArgumentException("주문이 없습니다."));
@@ -63,6 +77,7 @@ public class PaymentService {
     }
 
     //주문 저장메서드
+    @Transactional
     public Long createPayment(Long orderId){
 
         //주문 조회
@@ -91,6 +106,7 @@ public class PaymentService {
     }
 
     //payId로 payment 찾기
+    @Transactional
     public ypjs.project.domain.Payment findOnePayment(Long payId){
         ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
         if (payment == null) {
@@ -99,8 +115,20 @@ public class PaymentService {
         return payment;
     }
 
+    //결제 중단 시 오더랑 페이먼트 삭제 메서드
+    @Transactional
+    public String deleteOrderAndPayment(PaymentDto.FailPaymentDTO failPaymentDTO){
+        Order order = paymentRepository.findOrderAndPayment(failPaymentDTO.getOrderUid())
+                .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
-    //결제 취소 메서드
+        orderRepository.delete(order);
+        paymentRepository.delete(order.getPayment());
+
+        return failPaymentDTO.getErrorMessage();
+    }
+
+    //결제 끝나고 아임포트 결제 취소, 결제 상태 취소로 업데이트 메서드
+    @Transactional
     public void cancelPayment(Long payId){
         ypjs.project.domain.Payment payment = paymentRepository.findOne(payId);
 
@@ -112,6 +140,8 @@ public class PaymentService {
             // 결제건 조회 후 취소
             iamportClient.cancelPaymentByImpUid(new CancelData(payment.getPayPaymentUid(), true, new BigDecimal(payment.getPayPrice())));
             payment.changePaymentStatusCanceled();
+            //order status 주문 취소로 변경
+            payment.getOrder().updateOrderStatus(OrderStatus.주문취소);
         } catch (IamportResponseException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -119,17 +149,20 @@ public class PaymentService {
 
 
     // 결제 내역 조회 메서드
+    @Transactional
     public List<ypjs.project.domain.Payment> findPaymentsByMemberId(Long memberId, int offset, int limit) {
         return paymentRepository.findByOrderMemberId(memberId, offset, limit);
     }
 
     //결제 내역 조회 페이징을 위한 결제 갯수 메서드
+    @Transactional
     public long countPaymentsByMemberId(Long memberId) {
         return paymentRepository.countByOrderMemberId(memberId);
     }
 
     //아임포트랑 연동, 리턴타임의 Payment 는 아임포트에서 제공하는 클래스임
     //결제 완료 후 반환 메서드
+    @Transactional
     public IamportResponse<Payment> paymentByCallback(PaymentCallbackRequest request){
         try {
             // 결제 단건 조회(아임포트)
@@ -164,8 +197,11 @@ public class PaymentService {
                 throw new RuntimeException("결제금액 위변조 의심");
             }
 
+            //결제된 금액으로 payPrice 변경
+            order.getPayment().changePayPrice(iamportPrice);
+
             // 결제 상태 변경
-            order.getPayment().changePaymentUidAndStatus(PayStatus.OK, iamportResponse.getResponse().getImpUid());
+            order.getPayment().changePaymentUidAndStatusAndPayDate(PayStatus.OK, iamportResponse.getResponse().getImpUid());
 
             return iamportResponse;
 
