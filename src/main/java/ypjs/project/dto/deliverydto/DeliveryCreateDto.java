@@ -8,7 +8,7 @@ import ypjs.project.domain.Address;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeliveryDto {
+public class DeliveryCreateDto {
 
     private String receiver;  //받으실 분
 

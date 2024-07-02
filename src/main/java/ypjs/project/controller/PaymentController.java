@@ -103,9 +103,22 @@ public class PaymentController {
     //결제 실패시 화면 연결
     @GetMapping("/fail-payment")
     public String failPaymentPage() {
-        //todo : 결제 실패한걸 오더 기록에 남기는 메서드
         return "payment/fail-payment";
     }
+
+    //결제 중단 시 실행하는 메서드(order 랑 payment 삭제)
+    @PostMapping("/fail-payment")
+    @ResponseBody
+    public ResponseEntity<String> handlePaymentFailure(@RequestBody PaymentDto.FailPaymentDTO failPaymentDTO) {
+
+        String errorMessage = paymentService.deleteOrderAndPayment(failPaymentDTO);
+
+        System.out.println(errorMessage);
+
+        return ResponseEntity.ok("중단된 결제 관련 정보를 삭제했습니다.");
+    }
+
+    //결제 실패시
 
     // 결제 내역 조회 페이지
     @GetMapping("/list/{memberId}")

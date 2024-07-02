@@ -42,7 +42,6 @@ public class LikeController {
 
         int totalPages = (int) Math.ceil((double) allPages / (double) size);
 
-
         model.addAttribute("likedItems" , likedItems);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("page", page);

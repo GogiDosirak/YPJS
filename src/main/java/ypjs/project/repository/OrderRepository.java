@@ -26,6 +26,10 @@ public class OrderRepository {
         return em.find(Order.class, orderId);
     }
 
+    public void delete(Order order) {
+        em.remove(order);
+    }
+
     public List<Order> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
         //JPQL 쿼리
         String jpql = "select o from Order o join fetch o.member m where m.memberId = :id";

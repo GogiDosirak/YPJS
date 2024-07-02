@@ -20,6 +20,7 @@ public class Payment {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    //실결제금액
     private int payPrice;
 
     private String payName;
@@ -28,7 +29,7 @@ public class Payment {
 
     private String payEmail;
 
-    private LocalDateTime payDate; //결제 날짜
+    private LocalDateTime payDate; //결제 완료 날짜
 
     @Enumerated(EnumType.STRING)
     private PayStatus payStatus; //OK, READY, CANCEL
@@ -49,14 +50,21 @@ public class Payment {
         return payment;
     }
 
-    //==결제 상태처리 메서드==//
-    public void changePaymentUidAndStatus(PayStatus payStatus, String payPaymentUid){
+    //==결제 완료 시 paymentUid, 상태, 결제완료 날짜로 업데이트 메서드==//
+    public void changePaymentUidAndStatusAndPayDate(PayStatus payStatus, String payPaymentUid){
         this.payStatus = payStatus;
         this.payPaymentUid = payPaymentUid;
+        this.payDate = LocalDateTime.now();
     }
 
+    //==결제 상태 메서드==//
     public void changeStatus(PayStatus payStatus){
         this.payStatus = payStatus;
+    }
+
+    //==결제 완료 후 포인트 사욯한 금액으로 업데이트 메서드==//
+    public void changePayPrice(int payPrice){
+        this.payPrice = payPrice;
     }
 
     //==결제 취소 상태처리 메서드==//

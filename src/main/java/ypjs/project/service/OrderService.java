@@ -35,9 +35,9 @@ public class OrderService {
 
         //배송정보 생성
         Delivery delivery = new Delivery(
-                orderCreateDto.getDeliveryDto().getReceiver(),
-                orderCreateDto.getDeliveryDto().getPhoneNumber(),
-                orderCreateDto.getDeliveryDto().getAddress(),
+                orderCreateDto.getDeliveryCreateDto().getReceiver(),
+                orderCreateDto.getDeliveryCreateDto().getPhoneNumber(),
+                orderCreateDto.getDeliveryCreateDto().getAddress(),
                 DeliveryStatus.배송준비중
         );
 
@@ -90,6 +90,13 @@ public class OrderService {
 
         //주문 취소
         order.cancel();
+    }
+
+    @Transactional
+    public void delete(Long orderId) {
+        Order o = orderRepository.findOne(orderId);
+        orderRepository.delete(o);
+
     }
 
 /*
