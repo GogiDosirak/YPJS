@@ -19,6 +19,7 @@ import ypjs.project.dto.orderdto.OrderAdminDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.dto.orderdto.OrderSearchDto;
 import ypjs.project.service.DeliveryService;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.OrderService;
@@ -114,11 +115,11 @@ public class OrderController {
             HttpSession session, Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "orderStatus", defaultValue = "") String orderStatus) {
+            @ModelAttribute OrderSearchDto orderSearchDto) {
         System.out.println("**주문 전체 조회(관리자) 요청됨");
 
         Pageable pageable = PageRequest.of(page, size);
-        List<OrderAdminDto> o = orderService.findAll(pageable, orderStatus);
+        List<OrderAdminDto> o = orderService.findAll(pageable, orderSearchDto);
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(orderService.countAll(), size);
@@ -138,12 +139,12 @@ public class OrderController {
             HttpSession session, Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
-            @RequestParam(name = "orderStatus", defaultValue = "") String orderStatus) {
+            @ModelAttribute OrderSearchDto orderSearchDto) {
         System.out.println("**멤버별 주문 전체 조회 요청됨");
         //Long memberId = (Long) session.getAttribute("loginMemberId");
         Long memberId = 1L;
         Pageable pageable = PageRequest.of(page, size);
-        List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderStatus);
+        List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderSearchDto);
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(orderService.countByMemberId(memberId), size);

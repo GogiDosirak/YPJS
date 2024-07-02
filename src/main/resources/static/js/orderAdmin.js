@@ -1,26 +1,29 @@
 $(document).ready(function() {
-    // 모달 열기
-    $('#btn-addTracker').click(function() {
-        const orderId = $('#orderId').val();
+    // Event delegation for dynamically generated buttons
+    $(document).on('click', '.btn-addTracker', function() {
+        const orderId = $(this).closest('tr').attr('id');
         const deliveryId = $(this).data('delivery-id');
         $('#modalOrderId').text(orderId);
         $('#deliveryId').val(deliveryId);
-        $('#carrierId').val();
+        $('#carrierId').val('');
+        $('#trackId1').val('');
+        $('#trackId2').val('');
+        $('#trackId3').val('');
 
-        // 수정 버튼 숨기기
+
+
+        // Hide update button and show save button
         $('#btn-updateTracker').hide();
-        // 저장 버튼 보이기
         $('#btn-saveTracker').show();
 
         $('#trackerModal').modal('show');
     });
 
-
-    $('#btn-trackerInfo').click(function() {
-        const orderId = $('#orderId').val();
+    $(document).on('click', '.btn-trackerInfo', function() {
+        const orderId = $(this).closest('tr').attr('id');
         const deliveryId = $(this).data('delivery-id');
         const carrierId = $(this).data('carrier-id');
-        const trackId = $(this).data('track-id').toString();  // trackId를 jQuery data() 메서드로 가져옵니다.
+        const trackId = $(this).data('track-id').toString();
 
         $('#modalOrderId').text(orderId);
         $('#deliveryId').val(deliveryId);
@@ -30,44 +33,36 @@ $(document).ready(function() {
         $('#trackId2').val(trackId.substring(4, 8));
         $('#trackId3').val(trackId.substring(8, 12));
 
-        // 수정 버튼 보이기
+        // Show update button and hide save button
         $('#btn-updateTracker').show();
-        // 저장 버튼 숨기기
         $('#btn-saveTracker').hide();
 
         $('#trackerModal').modal('show');
     });
 
-
-    // 모달 닫기
+    // Modal close button
     $('.btn-close').click(function() {
         $('#trackerModal').modal('hide');
     });
 
-    // 저장 버튼 클릭
+    // Save button click
     $('#btn-saveTracker').click(function() {
-        var trackId1 = $('#trackId1').val();
-        var trackId2 = $('#trackId2').val();
-        var trackId3 = $('#trackId3').val();
+        const trackId1 = $('#trackId1').val();
+        const trackId2 = $('#trackId2').val();
+        const trackId3 = $('#trackId3').val();
 
-        var deliveryId = $('#deliveryId').val();
-        var carrierId = $('#carrierId').val();
-        var trackId = trackId1 + trackId2 + trackId3;
+        const deliveryId = $('#deliveryId').val();
+        const carrierId = $('#carrierId').val();
+        const trackId = trackId1 + trackId2 + trackId3;
 
-
-        // 추가적으로 저장 작업을 여기서 수행합니다.
-        console.log('배송 ID:', deliveryId);
-        console.log('배송회사:', carrierId);
-        console.log('운송장번호:', trackId);
-
-
-        var deliveryTrackerDto = {
+        // Create deliveryTrackerDto
+        const deliveryTrackerDto = {
             deliveryId: deliveryId,
             carrierId: carrierId,
             trackId: trackId
         };
 
-        // AJAX 요청
+        // AJAX request to save tracker info
         $.ajax({
             type: 'POST',
             url: '/ypjs/delivery/addTracker',
@@ -87,7 +82,6 @@ $(document).ready(function() {
                 });
             },
             error: function(xhr, status, error) {
-                // 오류 발생 시 처리
                 console.error('오류가 발생했습니다.', error);
             }
         });
