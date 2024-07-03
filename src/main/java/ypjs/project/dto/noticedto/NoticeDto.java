@@ -30,6 +30,7 @@ public class NoticeDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateNoticeRequest {
+        private Long noticeId;
         @NotBlank(message = "제목을 입력해주세요.")
         private String noticeTitle;
         @NotBlank(message = "내용을 입력해주세요.")

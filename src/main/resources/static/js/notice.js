@@ -19,12 +19,12 @@ let noticeObject = {
 
         $.ajax({
             type: "POST",
-            url: "/ypjs/board/notice/insert",
+            url: "/api/ypjs/board/notice/insert",
             data: JSON.stringify(request),
             contentType: "application/json; charset=utf-8"
         }).done(function(response) {
             console.log("insert successful:", response);
-            location.href = "/ypjs/board/notice/notice";
+            location.href = "/ypjs/board/notice/notices";
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("Error occurred:", textStatus, errorThrown);
             alert("에러 발생: " + jqXHR.responseText);
