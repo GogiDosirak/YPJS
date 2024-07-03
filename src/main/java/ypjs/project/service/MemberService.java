@@ -17,6 +17,7 @@ import ypjs.project.common.auth.JwtToken;
 import ypjs.project.common.auth.JwtTokenProvider;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
+import ypjs.project.dto.memberdto.MemberDto;
 import ypjs.project.repository.MemberRepository;
 
 import java.sql.Date;
@@ -33,13 +34,22 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    // 멤버 가입
     @Transactional
-    public Long join(Member member) {
+    public Member join(MemberDto.CreateMemberRequest request) { // 초기 메소드에만 DTO를 받아줘서 엔티티로 변환해서 반환
+        Member member = new Member();
+        CreateMemberRequestToEntity(request, member);
         validateDuplicateMember(member); //중복 회원 검증
         memberRepository.save(member);
-        return member.getMemberId();
+        return member;
     }
 
+    private void CreateMemberRequestToEntity(MemberDto.CreateMemberRequest request, Member member) {
+        member.createMember(request.getAccountId(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(),
+                request.getGender(), request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber());
+    }
+
+    // 중복 검증
     public void validateDuplicateMember(Member member) {
         List<Member> findMembers = memberRepository.findByAccountId(member.getAccountId());
         if(!findMembers.isEmpty()) {
@@ -47,12 +57,15 @@ public class MemberService {
         }
     }
 
+    // 멤버 수정
     @Transactional
-    public void update(Long memberId, String password, String nickname) {
-        Member member = memberRepository.findOne(memberId);
-        member.updateMember(password, nickname);
+    public Member update(MemberDto.UpdateMemberRequest updateMemberRequest) {
+        Member member = memberRepository.findOne(updateMemberRequest.getMemberId());
+        member.updateMember(updateMemberRequest.getPassword(), updateMemberRequest.getNickname());
+        return member;
     }
 
+    // 멤버 탈퇴
     @Transactional
     public void witrdraw(Long memberId) {
         Member member = memberRepository.findOne(memberId);
@@ -100,6 +113,10 @@ public class MemberService {
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return jwtToken;
+    }
+
+    public Member findOneByAccountId(String accountId) {
+        return memberRepository.findOneByAccountId(accountId);
     }
 
 

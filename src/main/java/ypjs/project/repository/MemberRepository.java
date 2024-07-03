@@ -37,6 +37,13 @@ public class MemberRepository {
                 .getResultList();
     }
 
+    public Member findOneByAccountId(String accountId) {
+        return em.createQuery(
+                        "select m from Member m where m.accountId =:accountId", Member.class)
+                .setParameter("accountId", accountId)
+                .getSingleResult();
+    }
+
     public Optional<Member> loginAccountId(String accountId) {
             return em.createQuery(
                             "select m from Member m where m.accountId =:accountId", Member.class)

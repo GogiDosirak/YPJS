@@ -36,7 +36,7 @@ let memberObject = {
 
         $.ajax({
             type: "POST",
-            url: "/ypjs/member/join",
+            url: "/api/ypjs/member/join",
             data: JSON.stringify(request),
             contentType: "application/json; charset=utf-8"
         }).done(function(response) {
@@ -60,7 +60,7 @@ let memberObject = {
 
         $.ajax({
             type: "POST",
-            url: "/ypjs/member/login",
+            url: "/api/ypjs/member/login",
             data: JSON.stringify(loginForm),
             contentType: "application/json; charset=utf-8"
         }).done(function(response) {
@@ -85,7 +85,7 @@ let memberObject = {
 
          $.ajax({
              type: "PUT",
-             url: "/ypjs/member/update/" + id,
+             url: "/api/ypjs/member/update/" + id,
              dataType: "json",
              data: JSON.stringify(request),
              contentType: "application/json; charset=utf-8"

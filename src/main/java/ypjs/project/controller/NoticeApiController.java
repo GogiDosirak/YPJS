@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.web.bind.annotation.*;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Notice;
@@ -45,23 +46,21 @@ public class NoticeApiController {
    }
 
     // 글등록
-    @PostMapping("/ypjs/board/notice/insert")
-    public NoticeDto.CreateNoticeResponse insertNotice(@RequestBody @Valid NoticeDto.CreateNoticeRequest createNoticeRequest, HttpSession session) {
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-        Member member = memberService.findOne(responseLogin.getMemberId());
-        noticeService.insertNotice(member, createNoticeRequest.getNoticeTitle(),createNoticeRequest.getNoticeContent());
-        return new NoticeDto.CreateNoticeResponse(createNoticeRequest.getNoticeTitle());
+    @PostMapping("/api/ypjs/board/notice/insert")
+    public NoticeDto.CreateNoticeResponse insertNotice(HttpSession session, @RequestBody @Valid NoticeDto.CreateNoticeRequest createNoticeRequest) {
+        Notice notice = noticeService.insertNotice(session, createNoticeRequest);
+        return new NoticeDto.CreateNoticeResponse(notice.getNoticeTitle());
     }
 
-    @PutMapping("/ypjs/board/notice/update/{noticeId}")
+    @PutMapping("/api/ypjs/board/notice/update/{noticeId}")
     public NoticeDto.UpdateNoticeResponse updateNotice(@PathVariable Long noticeId,
                                                        @RequestBody @Valid NoticeDto.UpdateNoticeRequest updateNoticeRequest) {
-        noticeService.updateNotice(noticeId,updateNoticeRequest.getNoticeTitle(),updateNoticeRequest.getNoticeContent());
-        return new NoticeDto.UpdateNoticeResponse(updateNoticeRequest.getNoticeTitle());
+        Notice notice = noticeService.updateNotice(updateNoticeRequest);
+        return new NoticeDto.UpdateNoticeResponse(notice.getNoticeTitle());
     }
 
 
-    @DeleteMapping("/ypjs/board/notice/delete/{noticeId}")
+    @DeleteMapping("/api/ypjs/board/notice/delete/{noticeId}")
     public NoticeDto.DeleteNoticeResponse deleteNotice(@PathVariable Long noticeId) {
         noticeService.deleteNotice(noticeId);
         return new NoticeDto.DeleteNoticeResponse(noticeId);

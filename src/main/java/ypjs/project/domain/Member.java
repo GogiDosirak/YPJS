@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import ypjs.project.domain.enums.Role;
 import ypjs.project.domain.enums.Status;
 
@@ -114,6 +116,8 @@ public class Member implements UserDetails {
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+
+
 
     // 출석 포인트 적립 메소드
     public void attendancePoint() {
