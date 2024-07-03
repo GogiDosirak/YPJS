@@ -27,6 +27,16 @@ public class PaymentApiController {
     private final PaymentService paymentService;
     private final MemberService memberService;
 
+    //order.js 랑 연결된 결제창 연결 전 세션에 orderId 저장하는 메서드
+    @PostMapping("/saveOrderIdToSession")
+    public ResponseEntity<Void> saveOrderIdToSession(@RequestBody PaymentDto.OrderIdDto request, HttpServletRequest httpRequest) {
+        Long orderId = request.getOrderId();
+        System.out.println("Received orderId: " + orderId); // 로그 추가
+        HttpSession session = httpRequest.getSession();
+        session.setAttribute("orderId", orderId);
+        return ResponseEntity.ok().build();
+    }
+
     //결제응답//결제요청은 OrderController create-> order.js
     //응답 엔티티
     @PostMapping("/payment")

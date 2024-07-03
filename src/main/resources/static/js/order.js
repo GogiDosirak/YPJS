@@ -105,7 +105,23 @@ $(document).ready(function() {
             success: function(response) {
                 console.log('주문이 성공적으로 전송되었습니다.');
                 //결제페이지로 연결
-                location = "/ypjs/payment/payment/" + response;
+                //payment, orderId 를 보내는 로직 추가
+                    $.ajax({
+                            type: 'POST',
+                            url: '/api/ypjs/payment/saveOrderIdToSession',
+                            contentType: 'application/json',
+                            data: JSON.stringify({ orderId: response }),
+                            success: function() {
+                                console.log('orderId가 서버 세션에 저장되었습니다.');
+                                // 결제 페이지로 이동
+                                location.href = "/ypjs/payment/payment";
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('orderId 세션 저장 중 오류 발생:', error);
+                            }
+                        });
+                    //payment, orderId 를 보내는 로직 추가 끝
+                //location = "/ypjs/payment/payment/" + response;
             },
             error: function(xhr, status, error) {
                 // 오류 발생 시 처리

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.dto.paymentdto.PaymentDto;
 import ypjs.project.dto.paymentdto.RequestPayDto;
-import ypjs.project.service.MemberService;
 import ypjs.project.service.PaymentService;
 
 import java.util.List;
@@ -22,15 +21,27 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final MemberService memberService;
 
     //결제 창으로 연결하는 메서드
-    @GetMapping("/payment/{orderId}")
-    public String paymentPage(@PathVariable(name = "orderId", required = false) Long orderId,
-                              Model model) {
+    @GetMapping("/payment")
+    public String paymentPage(HttpServletRequest request, Model model) {
+        //세션에 저장한 orderId 꺼내오기
+        HttpSession session = request.getSession();
+        Long orderId = (Long)session.getAttribute("orderId");
+
+        //todo : 오류났을 떄 넘길 페이지로 연결
+        if (orderId == null) {
+            return "/";
+        }
+
+        //todo : 세션에 저장된 order 와 로그인한 order.member 가 같은지 확인하는 로직 추가 필요
+
         paymentService.createPayment(orderId);
         RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
         model.addAttribute("requestPayDto", requestPayDto);
+
+        //세션에서 값 제거
+        session.removeAttribute("orderId");
 
         return "payment/payment";
     }
@@ -79,7 +90,6 @@ public class PaymentController {
         return "payment/list";
     }
 
-    //payment 포인트 사용 함수 끝
 
 
     //    @GetMapping("/findOnePayment")

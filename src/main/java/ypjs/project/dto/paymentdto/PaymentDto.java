@@ -23,5 +23,12 @@ public class PaymentDto {
         private String errorMessage;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class OrderIdDto {
+        private Long orderId;
+    }
+
 
 }
