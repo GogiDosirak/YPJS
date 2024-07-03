@@ -32,7 +32,6 @@ public class LikeRepository {
         return Optional.ofNullable(like);
     }
 
-
     //회원과 상품으로 좋아요 내역 찾기
     public Optional<Like> findByMemberAndItem(Long memberId, Long itemId) {
 

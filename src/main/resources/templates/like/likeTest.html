@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>좋아요 테스트</title>
+    <th:block th:replace="frame/header :: head"></th:block>
+    <!-- JavaScript 파일 링크 -->
+    <script th:src="@{/js/like.js}"></script>
+
+</head>
+<body>
+<header th:replace="frame/header :: header"></header>
+<h1>좋아요 버튼 테스트</h1>
+
+<!-- 아이템 정보 (테스트를 위해 직접 작성) -->
+<div>
+    <p>아이템 ID: <span id="itemId">1</span></p>
+    <p>회원 ID: <span id="memberId">1</span></p>
+</div>
+
+
+<a class="btn btn-success text-white" >
+    <i class="far fa-heart"></i>
+</a>
+<a class="btn btn-success text-white" >
+    <i class="fas fa-heart"></i>
+</a>
+
+
+여기는 버전 5
+<i class="far fa-heart"></i>
+<i class="fas fa-heart"></i>
+
+<!-- 좋아요 버튼 시작 -->
+좋아요 연동 테스트
+<a class="btn btn-success text-white" >
+<i id="like-button"
+   data-itemId = "${itemId}"
+   class="fa-heart"
+   th:classappend="${isLiked}? 'fas' : 'far'"></i>
+</a>
+
+<!-- 좋아요 버튼 끝 -->
+
+<!-- 상태 표시 영역 -->
+<div id="likeStatus" class="like-status"></div>
+
+<footer th:replace="frame/footer :: footer"></footer>
+</body>
+</html>
