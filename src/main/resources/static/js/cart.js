@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 
     // 상품목록에서 장바구니 버튼 클릭 시
-    $('#btn-cart').click(function() {
+    $('#btn-addCartFromItemList').click(function() {
         var itemId = $(this).attr('id'); // 버튼의 ID에서 cartId 추출
         var itemCount = 1;
 
@@ -48,9 +48,9 @@ $(document).ready(function() {
     });
 
     //상품상세에서 장바구니 버튼 클릭 시
-    $('#btn-cart').click(function() {
+    $('#btn-addCartFromItemDetail').click(function() {
         var itemId = $('#itemId').val();
-        var itemCount = $('#itemCount').text();
+        var itemCount = $('#product-quanity').val();
 
         var cartAddDto = {
             itemId: itemId,
@@ -68,7 +68,8 @@ $(document).ready(function() {
             url: '/api/ypjs/cart/add',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(cartAddDto),
-        }).done(function(response) {
+        }).done(function(response, textStatus, xhr) {
+            console.log("AJAX 성공:", xhr.status, response);
             Swal.fire({
                 title: '장바구니 추가 완료',
                 text: "장바구니를 확인하시겠습니까?",
@@ -80,13 +81,31 @@ $(document).ready(function() {
                 if (result.isConfirmed) {
                     location = "/ypjs/cart/list";
                 } else {
-                   location.reload();
-                 }             });
+                    location.reload();
+                }
+            });
         }).fail(function(error) {
-            console.log(error);
-            alert('에러');
+            console.log("AJAX 실패:", error.status, error.responseText);
+            if (error.status === 400) {
+                Swal.fire({
+                    text: error.responseText,
+                    showCancelButton: true,
+                    confirmButtonColor: '#007bff',
+                    confirmButtonText: '장바구니 확인하기',
+                    cancelButtonText: '쇼핑 계속하기'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location = "/ypjs/cart/list";
+                    } else {
+                       location.reload();
+                    }
+                });
+            } else {
+                console.log("기타 오류:", error);
+            }
         });
     }
+
 
 
     // 삭제 버튼 클릭 시
@@ -163,7 +182,7 @@ $(document).ready(function() {
                 data: JSON.stringify(cartListDtos),
                 success: function(response) {
                     console.log(response);
-                    location = "/api/ypjs/order/create";
+                    location = "/ypjs/order/createFromCart";
                 },
                 error: function(error) {
                     console.log(error);

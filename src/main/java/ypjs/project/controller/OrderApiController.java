@@ -40,6 +40,18 @@ public class OrderApiController {
     private final PaymentService paymentService;
 
 
+    //==상품 주문하기==//
+    @PostMapping("/item")
+    public ResponseEntity<Void> item(@RequestBody @Valid List<CartListDto> cartListDtos, HttpServletRequest request) {
+        System.out.println("**상품상세 상품 주문 요청됨");
+        System.out.println(cartListDtos);
+
+        request.getSession().setAttribute("cartList", cartListDtos);
+
+        return ResponseEntity.ok().build();
+    }
+
+
     //==주문 생성==//
     @PostMapping("/create")
     public ResponseEntity<Long> create(@RequestBody @Valid OrderCreateDto orderCreateDto, HttpServletRequest request) {

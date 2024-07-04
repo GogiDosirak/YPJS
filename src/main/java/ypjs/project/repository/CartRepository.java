@@ -48,11 +48,11 @@ public class CartRepository {
     }
 
     //==멤버별 중복 상품 조회==//
-    public Long findItemIdByMemberId(Long memberId) {
-        return em.createQuery("select c.item.itemId from Cart c join fetch c.member m where m.memberId = :id"
+    public List<Long> findItemIdByMemberId(Long memberId) {
+        return em.createQuery("select c.item.itemId from Cart c where c.member.memberId = :id"
                         , Long.class)
                 .setParameter("id", memberId)
-                .getSingleResult();
+                .getResultList();
     }
 
     //==삭제==//

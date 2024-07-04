@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartAddDto {
 
-    @NotNull
     private Long memberId;  //멤버번호
 
     @NotNull

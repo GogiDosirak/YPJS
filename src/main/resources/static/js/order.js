@@ -61,7 +61,6 @@ $(document).ready(function() {
 
 
 
-
     //주문생성 처리
     $('#btn-create').click(function() {
         // delivery 정보
@@ -140,6 +139,56 @@ $(document).ready(function() {
 
             // 합산한 값 표시
             $('#itemTotalCount_' + orderIndex).text(totalCount);
+        });
+
+
+//** itemGet.html **//
+
+    // 상품 구매하기 버튼 클릭 시
+        $('#btn-orderItem').click(function() {
+            var cartListDtos = [];
+
+            var itemId = $('#itemId').val();
+            var itemName = $('#itemName').text();
+            var itemCount = $('#product-quanity').val();
+            var itemPrice = $('#itemPrice').text();
+
+            console.log(itemId);
+            console.log(itemName);
+            console.log(itemCount);
+            console.log(itemPrice);
+
+            cartListDtos.push({
+                itemId: itemId,
+                itemName: itemName,
+                itemCount: itemCount,
+                itemPrice: itemPrice
+            });
+
+            if (cartListDtos.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/ypjs/order/item', // 주문하기 컨트롤러 URL
+                    contentType: 'application/json;charset=UTF-8',
+                    data: JSON.stringify(cartListDtos),
+                    success: function(response) {
+                        console.log(response);
+                        location = "/ypjs/order/createFromItem?itemId=" + itemId;
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('에러');
+                    }
+                });
+            } else {
+                Swal.fire({
+                    text: "선택된 상품이 없습니다.",
+                    confirmButtonColor: '#007bff',
+                    iconColor: '#007bff',
+                    icon: "warning"
+                });
+            }
         });
 
 
