@@ -16,8 +16,23 @@ let categoryBoardObject = {
         $("#btn-categoryDelete").on("click", function() {
 
             _this.delete(); // 수정된 부분: delete 함수 호출
-        });
+        }),
+        _this.categoryValues();
     },
+
+     categoryValues: function() {
+            // hidden input 요소의 값을 categoryParent select box에 설정
+            let categoryParent = $("#hiddenCategoryParent").val();
+            if (categoryParent != null) {
+                $("#categoryParent").val(categoryParent.toString());
+            }
+
+            // hidden input 요소의 값을 categoryName select box에 설정
+            let categoryName = $("#hiddenCategoryName").val();
+            if (categoryName != null) {
+                $("#categoryName").val(categoryName.toString());
+            }
+        },
 
     insert: function() {
 
@@ -55,32 +70,25 @@ let categoryBoardObject = {
     },
 
     update: function() {
-        let categoryId = $("#categoryId").val();
         let categoryParent = $("#categoryParent").val();
         let categoryName = $("#categoryName").val();
 
-
-         if (!categoryId || categoryId.trim().length === 0) {
-              alert("카테고리 번호를 입력하세요");
-              return;
-          }
-
-
-         if (!categoryParent || categoryParent.trim().length === 0) {
+        if (!categoryParent || categoryParent.trim().length === 0) {
             alert("카테고리 부모 번호를 입력하세요");
             return;
-          }
+        }
 
-        if(!categoryName || categoryName.trim().length === 0){
-           alert("카테고리 이름을 입력하세요");
-           return;
+        if (!categoryName || categoryName.trim().length === 0) {
+            alert("카테고리 이름을 입력하세요");
+            return;
         }
 
         let updateData = {
-            categoryId: categoryId, // 수정된 부분: categoryId 추가
-            categoryParent: $("#categoryParent").val(),
-            categoryName: $("#categoryName").val(),
+            categoryParent: categoryParent,
+            categoryName: categoryName,
         };
+
+        let categoryId = $("#categoryId").text(); // categoryId 가져오기
 
         $.ajax({
             type: "PUT",
@@ -88,14 +96,17 @@ let categoryBoardObject = {
             data: JSON.stringify(updateData),
             contentType: "application/json; charset=utf-8",
             success: function(response) {
-            alert("카테고리가 수정되었습니다.");
-                window.location.href = "/ypjs/category/get";
+                alert("카테고리가 수정되었습니다.");
+                window.location.href = "/ypjs/category/get/" + categoryId;
             },
             error: function(error) {
                 alert("에러 발생: " + JSON.stringify(error));
             }
         });
     },
+
+
+
 
     delete: function() {
         let categoryId = $("#categoryId").val(); // 삭제할 categoryId 가져오기

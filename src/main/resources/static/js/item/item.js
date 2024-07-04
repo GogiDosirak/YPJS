@@ -14,6 +14,16 @@ let itemBoardObject = {
             // 아이템 삭제 함수 호출
              _this.deleteItem(itemId);
                });
+
+         _this.categoryValues();
+    },
+
+     categoryValues: function() {
+         // hidden input 요소의 값을 hiddenCategoryId select box에 설정
+        let categoryId = $("#hiddenCategoryId").val();
+         if (categoryId != null) {
+                $("#categoryId").val(categoryId.toString());
+            }
     },
 
 

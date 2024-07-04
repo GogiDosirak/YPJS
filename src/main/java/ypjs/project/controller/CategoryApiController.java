@@ -31,32 +31,33 @@ public class CategoryApiController {
 
     //category등록
     @PostMapping("/api/ypjs/category/post")
-    public ResponseEntity saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDtorequest,
+    public ResponseEntity saveCategory(@RequestBody @Valid CategoryRequestDto categoryRequestDto,
                                        HttpSession session){
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
 
-        Category category = categoryService.saveCategory(categoryRequestDtorequest);
+        categoryService.saveCategory(categoryRequestDto);
 
         return ResponseEntity.ok().build();
 
     }
 
 
-
-    //category수정
+    //    category수정
     @ResponseBody
     @PutMapping("/api/ypjs/category/update/{categoryId}")
     public ResponseEntity updateCategory(@PathVariable("categoryId") Long categoryId,
-                                            @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
+                                         @RequestBody @Valid CategoryUpdateDto categoryUpdateDto) {
 
-        categoryService.updateCategory(categoryId, categoryUpdateDto);
-        Category findCategory = categoryService.findOneCategory(categoryId);
+        categoryService.findOneCategory(categoryId);
+        categoryService.updateCategory(categoryId,categoryUpdateDto);
+
 
         return ResponseEntity.ok().build();
 
-   }
+    }
+
 
 
 

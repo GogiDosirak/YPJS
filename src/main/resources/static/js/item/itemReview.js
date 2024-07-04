@@ -68,10 +68,6 @@ let itemBoardObject = {
             itemReviewContent: $("#itemReviewContent").val(),
         };
 
-
-
-
-
         $.ajax({
             type: "POST",
             url: "/api/ypjs/itemReview/post/" + itemId,  // URL에 itemId를 추가

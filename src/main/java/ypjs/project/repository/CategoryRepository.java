@@ -64,7 +64,7 @@ public class CategoryRepository {
     //category전체 조회
     public List<Category> findAll() {
         return em.createQuery(
-                        "select distinct c from Category c", Category.class)
+                        "select distinct c from Category c join fetch categoryParent", Category.class)
                 .getResultList();
     }
 
