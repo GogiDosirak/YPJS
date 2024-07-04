@@ -43,8 +43,13 @@ public class CategoryService {
 
         categoryRepository.saveCategory(category);
 
+        parentCategory.addChildCategory(category);
+
         return category;
     }
+
+
+
 
 
 
@@ -67,20 +72,6 @@ public class CategoryService {
 
 
     //category전체 조회
-//    public List<CategoryListDto> findAllCategory(Long categoryId, String keyword, Pageable pageable) {
-//
-//       //List<Category> categories = categoryRepository.findAllWithItem();
-//        List<Category> categories = categoryRepository.findAll(categoryId, keyword, pageable);
-//
-//
-//        List<CategoryListDto> result = categories.stream()
-//                .map(c -> new CategoryListDto(c))
-//                .collect(Collectors.toList());
-//
-//        return result;
-//    }
-
-
     public List<CategoryListDto> findAllCategory() {
 
         List<Category> categories = categoryRepository.findAll();
@@ -97,21 +88,21 @@ public class CategoryService {
 
 
 
-
-
     //category수정
     @Transactional
     public void updateCategory(Long categoryId, CategoryUpdateDto categoryUpdateDto) {
-        Category category = categoryRepository.findOneCategory(categoryId);
 
+        Category category = categoryRepository.findOneCategory(categoryId);
         Category parentCategory = categoryRepository.findOneCategory(categoryUpdateDto.getCategoryParent());
 
+
         category.changeCategory(
-                categoryUpdateDto.getCategoryId(),
                 parentCategory,
                 categoryUpdateDto.getCategoryName()
         );
+
     }
+
 
 
 

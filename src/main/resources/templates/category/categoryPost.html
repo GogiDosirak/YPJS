@@ -29,28 +29,39 @@
 <div class="container py-5">
     <div class="row py-5">
 
-            <!-- 폼 요소들 -->
-            <div class="row">
-                <div class="form-group mb-3">
-                    <label for="categoryParent">카테고리 부모 번호</label>
-                    <input type="text" class="form-control mt-1" id="categoryParent" name="categoryParent"
-                           placeholder="카테고리 부모 번호">
-                </div>
-                <div class="form-group mb-3">
-                    <label for="categoryName">카테고리 이름</label>
-                    <input type="text" class="form-control mt-1" id="categoryName" name="categoryName"
-                           placeholder="카테고리 이름">
-                </div>
 
-                <!-- 글 등록 버튼 -->
-                <div class="row">
-                    <div class="col text-end mt-2">
-                        <!-- 버튼 id가 btn-categoryPost로 변경되었습니다. -->
-                        <button type="button" id="btn-categoryPost" class="btn btn-success btn-lg px-3">카테고리
-                            등록</button>
-                    </div>
-                </div>
+
+
+        <!-- 폼 요소들 -->
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryParent">카테고리 부모 번호</label>
+                <select class="form-control mt-1" id="categoryParent" name="categoryParent" style="width: 100%;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
             </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryName">카테고리 이름</label>
+                <select class="form-control mt-1" id="categoryName" name="categoryName" style="width: 100%;">
+                    <option value="outer">outer</option>
+                    <option value="top">top</option>
+                    <option value="bottom">bottom</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+        <!-- 글 등록 버튼 -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-end mt-2">
+                <button type="button" id="btn-categoryPost" class="btn btn-success btn-lg px-3">카테고리 등록</button>
+            </div>
+        </div>
 
     </div>
 </div>

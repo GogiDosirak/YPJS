@@ -37,28 +37,36 @@
     <div class="row py-5">
 
 
-
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="form-group mb-3">
-                    <label for="categoryId">카테고리 번호</label>
-                    <input type="text" class="form-control mt-1" id="categoryId" name="categoryId" th:value="${category.categoryId}" placeholder="카테고리 번호">
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group mb-3">
-                    <label for="categoryParent">카테고리 부모 번호</label>
-                    <input type="text" class="form-control mt-1" id="categoryParent" name="categoryParent" th:value="${category.categoryParent}" placeholder="카테고리 부모 번호">
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="form-group mb-3">
-                    <label for="categoryName">카테고리 이름</label>
-                    <input type="text" class="form-control mt-1" id="categoryName" name="categoryName" th:value="${category.categoryName}" placeholder="카테고리 이름">
-                </div>
+            <div class="form-group mb-3" style="display: flex; align-items: center; width: 70%;">
+                <span class="category-label" style="margin-right: 10px;">카테고리 번호</span>
+                <span>:</span>
+                <span style="margin-left: 10px;" id="categoryId"  th:text="${category.categoryId}"></span>
             </div>
         </div>
 
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryParent">카테고리 부모 번호</label>
+                <select class="form-control mt-1" id="categoryParent" name="categoryParent" style="width: 100%;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+                <input type="hidden" id="hiddenCategoryParent" th:value="${category.categoryParent}">
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryName">카테고리 이름</label>
+                <select class="form-control mt-1" id="categoryName" name="categoryName" style="width: 100%;">
+                    <option value="outer">outer</option>
+                    <option value="top">top</option>
+                    <option value="bottom">bottom</option>
+                </select>
+                <input type="hidden" id="hiddenCategoryName" th:value="${category.categoryName}">
+            </div>
+        </div>
 
 
         <!-- 글 등록 버튼 -->

@@ -8,10 +8,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "category")
 public class Category {
 
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CATEGORY_ID")
     private Long categoryId;
 
@@ -51,8 +52,15 @@ public class Category {
     }
 
     //카테고리 변경 메서드
-    public Long changeCategory (Long categoryId, Category categoryParent, String categoryName) {
-        this.categoryId = categoryId;
+//    public Long changeCategory (Long categoryId, Category categoryParent, String categoryName) {
+//        this.categoryId = categoryId;
+//        this.categoryParent = categoryParent;
+//        this.categoryName = categoryName;
+//
+//        return this.categoryId;
+//    }
+
+    public Long changeCategory ( Category categoryParent, String categoryName) {
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;
 

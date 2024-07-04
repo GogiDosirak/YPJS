@@ -41,14 +41,24 @@
 <div class="container py-5">
     <div class="row py-5">
         <form id="itemForm" th:action="@{/api/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="col-md-9 m-auto" method="post" th:object="${item}" enctype="multipart/form-data">
-
-            <!-- 폼 요소들 -->
             <div class="row">
                 <div class="form-group mb-3">
                     <label for="categoryId">카테고리 번호</label>
-                    <input type="text" class="form-control mt-1" id="categoryId" name="categoryId"  th:value="${item.categoryId}" placeholder="카테고리 번호">
+                    <select class="form-control mt-1" id="categoryId" name="categoryId" style="width: 100%;">
+                        <option value="3">3 (women, outer)</option>
+                        <option value="4">4 (women, top)</option>
+                        <option value="5">5 (women, bottom)</option>
+                        <option value="6">6 (men, outer)</option>
+                        <option value="7">7 (men, top)</option>
+                        <option value="8">8 (men, bottom)</option>
+                    </select>
+                    <!-- Hidden input 요소로 categoryId 값을 전달 -->
+                    <input type="hidden" id="hiddenCategoryId" th:value="${item.categoryId}">
                 </div>
-                <div class="form-group mb-3">
+            </div>
+
+
+            <div class="form-group mb-3">
                     <label for="itemName">상품명</label>
                     <input type="text" class="form-control mt-1" id="itemName" name="itemName" th:value="${item.itemName}" placeholder="상품명">
                 </div>
@@ -76,8 +86,6 @@
                     <label>상품내용</label>
                     <textarea class="form-control" id="itemContent" name="itemContent" th:utext="${item.itemContent}" rows="10"></textarea>
                 </div>
-            </div>
-
 
 
             <!-- 글 등록 버튼 -->
