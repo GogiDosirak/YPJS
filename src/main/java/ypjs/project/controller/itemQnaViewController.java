@@ -1,7 +1,6 @@
 package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ypjs.project.domain.Item;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Page;
 import ypjs.project.dto.itemqnadto.*;
@@ -25,7 +23,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/ypjs/itemqna")
-public class itemQnaController {
+public class itemQnaViewController {
 
     private final ItemQnaService itemQnaService;
     private final MemberService memberService;
@@ -39,18 +37,6 @@ public class itemQnaController {
         model.addAttribute("itemId", 1/*itemId*/);
         model.addAttribute("itemName", "임시상품명"/*i.getItemName*/);
         return "itemqna/create";
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity create(@RequestBody @Valid ItemQnaCreateDto itemQnaCreateDto, HttpServletRequest request) {
-        System.out.println("**상품문의 등록 요청됨");
-        //HttpSession session = request.getSession();
-        //Long memberId = (Long) session.getAttribute("memberId");
-        //itemQnaCreateDto.setMemberId(memberId);
-
-        itemQnaCreateDto.setMemberId(1L);
-        Long itemId = itemQnaService.create(itemQnaCreateDto);
-        return ResponseEntity.ok().body(itemId);
     }
 
 
@@ -142,26 +128,6 @@ public class itemQnaController {
         model.addAttribute("aMemberId", m.getMemberId());
         return "itemqna/answer";
     }
-
-    @PostMapping("/answer")
-    public ResponseEntity answer(@RequestBody @Valid ItemQnaAnswerDto itemQnaAnswerDto) {
-        System.out.println("**상품문의 답변 등록 요청됨");
-
-        System.out.println("itemQnaId= " + itemQnaAnswerDto.getItemQnaId());
-        System.out.println("aMemberId= " + itemQnaAnswerDto.getMemberId());
-        System.out.println("answer= " + itemQnaAnswerDto.getAnswer());
-
-        itemQnaService.answer(itemQnaAnswerDto);
-        return ResponseEntity.ok().build();
-    }
-
-
-    @DeleteMapping("/delete/{itemQnaId}")
-    public ResponseDto<?> delete(@PathVariable @Valid Long itemQnaId) {
-        itemQnaService.delete(itemQnaId);
-        return new ResponseDto<>(HttpStatus.OK.value(), "삭제가 완료되었습니다.");
-    }
-
 
 
 }

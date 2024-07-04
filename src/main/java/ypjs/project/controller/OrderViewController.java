@@ -32,18 +32,12 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/ypjs/order")  //클래스 내의 모든 핸들러 메서드에 대해 공통된 경로를 지정
-public class OrderController {
+public class OrderViewController {
 
     private final OrderService orderService;
     private final MemberService memberService;
     private final DeliveryService deliveryService;
     private final PaymentService paymentService;
-
-    //임시 로케이션
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
 
 
     //==주문 생성 페이지==//
@@ -88,24 +82,6 @@ public class OrderController {
         System.out.println("**세션 장바구니ID 목록 확인-> " + session.getAttribute("cardIds"));
 
         return "order/create";
-    }
-
-
-    //==주문 생성==//
-    @PostMapping("/create")
-    public ResponseEntity<Long> create(@RequestBody @Valid OrderCreateDto orderCreateDto, HttpServletRequest request) {
-        System.out.println("**주문 생성 로직 요청됨");
-        //Long memberId = (Long) request.getSession().getAttribute("loginMemberId");
-
-        System.out.println(orderCreateDto.getDeliveryCreateDto());
-        System.out.println(orderCreateDto.getOrderItemRequestDtos());
-
-        Long orderId = orderService.create(1L, orderCreateDto);
-
-        System.out.println("**세션 장바구니ID 목록 전달 확인_> " + request.getSession().getAttribute("cardIds"));
-
-        return ResponseEntity.ok().body(orderId);
-
     }
 
 
@@ -178,15 +154,6 @@ public class OrderController {
         orderService.cancel(orderId);
         return new ResponseDto<>(HttpStatus.OK.value(), "취소 완료");
     }
-
-
-/*
-    //==검색 조회==//
-    @PostMapping("/search")
-    public void search(@RequestBody @Valid OrderSearchDto orderSearchDto) {
-        orderService.search(orderSearchDto);
-    }
- */
 
 
 }

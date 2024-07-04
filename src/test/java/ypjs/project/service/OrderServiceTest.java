@@ -17,6 +17,7 @@ import ypjs.project.dto.deliverydto.DeliveryCreateDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.dto.orderdto.OrderSearchDto;
 import ypjs.project.repository.OrderRepository;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class OrderServiceTest {
     public void  주문내역조회() throws Exception {
         Pageable pageable = PageRequest.of(1,5);
 
-        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L, pageable, "");
+        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L, pageable, new OrderSearchDto());
 
         for(OrderResponseDto o : orders) {
             System.out.println(o);

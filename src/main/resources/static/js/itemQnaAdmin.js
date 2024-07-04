@@ -11,7 +11,7 @@ $(document).ready(function() {
 /** detailAdmin.html **/
     $('#btn-answer').click(function() {
         var itemQnaId = $('#itemQnaId').val();
-        location = '/ypjs/itemqna/answer?itemQnaId=' + itemQnaId;
+        location = '/api/ypjs/itemqna/answer?itemQnaId=' + itemQnaId;
     });
 
 /** answer.html **/
@@ -33,7 +33,7 @@ $(document).ready(function() {
         // AJAX 요청
         $.ajax({
             type: 'POST',
-            url: '/ypjs/itemqna/answer',
+            url: '/api/ypjs/itemqna/answer',
             contentType: 'application/json',
             data: JSON.stringify(ItemQnaAnswerDto),
             success: function(response) {
