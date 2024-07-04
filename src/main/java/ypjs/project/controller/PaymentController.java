@@ -23,11 +23,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     //결제 창으로 연결하는 메서드
-    @GetMapping("/payment")
-    public String paymentPage(HttpServletRequest request, Model model) {
-        //세션에 저장한 orderId 꺼내오기
-        HttpSession session = request.getSession();
-        Long orderId = (Long)session.getAttribute("orderId");
+    @GetMapping("/payment/{orderId}")
+    public String paymentPage(@PathVariable(name = "orderId") Long orderId , Model model) {
 
         //todo : 오류났을 떄 넘길 페이지로 연결
         if (orderId == null) {
@@ -39,9 +36,6 @@ public class PaymentController {
         paymentService.createPayment(orderId);
         RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
         model.addAttribute("requestPayDto", requestPayDto);
-
-        //세션에서 값 제거
-        session.removeAttribute("orderId");
 
         return "payment/payment";
     }
