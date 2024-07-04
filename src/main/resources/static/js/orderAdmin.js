@@ -65,7 +65,7 @@ $(document).ready(function() {
         // AJAX request to save tracker info
         $.ajax({
             type: 'POST',
-            url: '/ypjs/delivery/addTracker',
+            url: '/api/ypjs/delivery/addTracker',
             contentType: 'application/json',
             data: JSON.stringify(deliveryTrackerDto),
             success: function(response) {

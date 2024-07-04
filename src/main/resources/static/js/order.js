@@ -99,7 +99,7 @@ $(document).ready(function() {
         // AJAX 요청
         $.ajax({
             type: 'POST',
-            url: '/ypjs/order/create', // 실제 서버 엔드포인트 URL로 변경해야 함
+            url: '/api/ypjs/order/create', // 실제 서버 엔드포인트 URL로 변경해야 함
             contentType: 'application/json',
             data: JSON.stringify(orderCreateDto),
             success: function(response) {

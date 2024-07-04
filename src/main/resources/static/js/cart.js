@@ -65,7 +65,7 @@ $(document).ready(function() {
     function addCart(cartAddDto) {
         $.ajax({
             type: 'POST',
-            url: '/ypjs/cart/add',
+            url: '/api/ypjs/cart/add',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify(cartAddDto),
         }).done(function(response) {
@@ -115,7 +115,7 @@ $(document).ready(function() {
     function deleteCart(cartId) {
         $.ajax({
             type: 'DELETE',
-            url: '/ypjs/cart/delete?cartId=' + cartId, // URL 수정
+            url: '/api/ypjs/cart/delete?cartId=' + cartId, // URL 수정
             contentType: 'application/json;charset=UTF-8',
         }).done(function(response) {
             Swal.fire({
@@ -158,12 +158,12 @@ $(document).ready(function() {
         if (cartListDtos.length > 0) {
             $.ajax({
                 type: 'POST',
-                url: '/ypjs/cart/order', // 주문하기 컨트롤러 URL
+                url: '/api/ypjs/cart/order', // 주문하기 컨트롤러 URL
                 contentType: 'application/json;charset=UTF-8',
                 data: JSON.stringify(cartListDtos),
                 success: function(response) {
                     console.log(response);
-                    location = "/ypjs/order/create";
+                    location = "/api/ypjs/order/create";
                 },
                 error: function(error) {
                     console.log(error);

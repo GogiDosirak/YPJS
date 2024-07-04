@@ -16,7 +16,7 @@ $(document).ready(function() {
         // AJAX 요청
         $.ajax({
             type: 'POST',
-            url: '/ypjs/itemqna/create',
+            url: '/api/ypjs/itemqna/create',
             contentType: 'application/json',
             data: JSON.stringify(itemQnaCreateDto),
             success: function(response) {

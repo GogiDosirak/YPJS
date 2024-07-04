@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ypjs.project.domain.Member;
 import ypjs.project.dto.cartdto.CartAddDto;
-import ypjs.project.dto.cartdto.CartItemDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
 import ypjs.project.service.CartService;
@@ -19,26 +17,10 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/ypjs/cart")
-public class CartController {
+@RequestMapping("/api/ypjs/cart")
+public class CartApiController {
 
     private final CartService cartService;
-
-    //==멤버별 장바구니 전체 조회==//
-    @GetMapping("/list")
-    public String list(HttpServletRequest request, Model model) {
-        //HttpSession session = request.getSession();
-        //멤버정보
-        //Long memberId = (Long) session.getAttribute("loginMemberId");
-        Long memberId = 1L;  //임시
-
-        if(memberId == null) {
-            return "redirect:/ypjs/member/login";
-        }
-
-        model.addAttribute("cartList", cartService.findAllByMemberId(memberId));
-        return "cart/list";
-    }
 
     //==장바구니 추가==//
     @PostMapping("/add")
@@ -75,7 +57,7 @@ public class CartController {
     //==장바구니 상품 주문하기==//
     @PostMapping("/order")
     public ResponseEntity<Void> order(@RequestBody @Valid List<CartListDto> cartListDtos, HttpServletRequest request) {
-        System.out.printf("**장바구니 상품 주문 요청됨");
+        System.out.println("**장바구니 상품 주문 요청됨");
         System.out.println(cartListDtos);
 
         request.getSession().setAttribute("cartList", cartListDtos);
