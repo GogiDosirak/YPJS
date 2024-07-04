@@ -78,7 +78,7 @@ public class CartService {
 
 
     //==멤버별 중복 상품 조회==//
-    public Long findItemIdByMemberId(Long memberId) {
+    public List<Long> findItemIdByMemberId(Long memberId) {
         return cartRepository.findItemIdByMemberId(memberId);
     }
 

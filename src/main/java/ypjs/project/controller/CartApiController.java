@@ -27,11 +27,13 @@ public class CartApiController {
     public ResponseEntity add(@RequestBody @Valid CartAddDto cartAddDto, HttpServletRequest request) {
         System.out.println("**장바구니 추가 요청됨");
 
-        HttpSession session = request.getSession();
-        Long memberId = (Long) session.getAttribute("loginMemberId");
+        //임시 멤버 todo: **로그인 멤버 정보로 바꿔야 함
+        Long memberId = 1L;
 
-        if(cartAddDto.getItemId() == cartService.findItemIdByMemberId(memberId)) {
-            return ResponseEntity.badRequest().body("장바구니에 이미 추가된 상품입니다.");
+        for(Long itemId : cartService.findItemIdByMemberId(memberId)) {
+            if(cartAddDto.getItemId().equals(itemId)) {
+                return ResponseEntity.badRequest().body("장바구니에 이미 추가된 상품입니다.");
+            }
         }
 
         cartAddDto.setMemberId(memberId);

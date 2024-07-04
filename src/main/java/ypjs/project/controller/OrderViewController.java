@@ -40,10 +40,43 @@ public class OrderViewController {
     private final PaymentService paymentService;
 
 
-    //==주문 생성 페이지==//
-    @GetMapping("/create")
-    public String createPage(Model model, HttpServletRequest request) throws Exception{
-        System.out.println("**주문 생성 페이지 요청됨");
+    //상품상세 -> 주문 생성 페이지==//
+    @GetMapping("/createFromItem")
+    public String createFromItem(@RequestParam(name = "itemId") String itemId, Model model, HttpServletRequest request) throws  Exception {
+        System.out.println("**상품상세 -> 주문 생성 페이지 요청됨");
+
+        HttpSession session = request.getSession();
+        List<CartListDto> cartListDtos = (List<CartListDto>) session.getAttribute("cartList");
+
+        /*주문 상품이 없는 경우*/
+        if(cartListDtos == null) {
+            request.setAttribute("msg", "잘못된 접근입니다.");
+            request.setAttribute("url", "/ypjs/item/get/" + itemId);
+            return "alert";
+        }
+
+        //멤버정보 -> 배송정보 생성
+        //Long memberId = (Long) session.getAttribute("loginMemberId");
+        //Member m = memberService.findById(memberId);
+        Member m = memberService.findOne(1L);
+
+        model.addAttribute("delivery", new DeliveryCreateDto(m.getName(), m.getPhonenumber(), m.getAddress()));
+        model.addAttribute("cartList", cartListDtos);
+
+        //데이터 전달 후 제거
+        session.removeAttribute("cartList");
+
+        System.out.println("**세션 주문상품 삭제 확인-> " + session.getAttribute("cartList"));
+
+        return "order/create";
+
+    }
+
+
+    //장바구니 -> 주문 생성 페이지==//
+    @GetMapping("/createFromCart")
+    public String createFromCart(Model model, HttpServletRequest request) throws Exception{
+        System.out.println("**장바구니 -> 주문 생성 페이지 요청됨");
         //System.out.println(model.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
         //System.out.println(request.getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 소실
         //System.out.println(request.getSession().getAttribute("orderItemList")); AJAX 응답을 거치면서 데이터 유지
