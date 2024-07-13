@@ -17,7 +17,7 @@ public class MemberDto {
         @NotBlank(message = "아이디를 입력해주세요.")
         @Pattern(regexp = "^[a-z\\d]{8,16}$",
                 message = "아이디 형식이 틀립니다.")
-        private String accountId;
+        private String username;
 
         @NotBlank(message = "비밀번호를 입력해주세요.")
         @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,16}$",
@@ -73,7 +73,7 @@ public class MemberDto {
     @AllArgsConstructor
     public static class UpdateMemberResponse {
         private Long memberId;
-        private String accountId;
+        private String username;
     }
 
 
@@ -81,7 +81,7 @@ public class MemberDto {
     @AllArgsConstructor
     public static class MemberApiDto {
         private Long memberId;
-        private String accountId;
+        private String username;
         private String nickname;
     }
 
@@ -89,7 +89,7 @@ public class MemberDto {
     @AllArgsConstructor
     public static class MypageDto {
         private Long memberId;
-        private String accountId;
+        private String username;
         private String password;
         private String nickname;
         private String name;

@@ -17,7 +17,7 @@ public class LoginDto {
     @NoArgsConstructor
     @ToString
     public static class RequestLogin {
-        private String accountId;
+        private String username;
         private String password;
     }
 
@@ -26,7 +26,7 @@ public class LoginDto {
     @AllArgsConstructor
     public static class ResponseLogin {
         private Long memberId;
-        private String accountId;
+        private String username;
         private String nickname;
     }
 
