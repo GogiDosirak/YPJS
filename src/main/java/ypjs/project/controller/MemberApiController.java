@@ -40,7 +40,7 @@ public class MemberApiController {
                                                         HttpSession session)  {
         Member member = memberService.update(request);
         session.setAttribute("member",member); // 수정할 시 session에 정보 업데이트
-        return new MemberDto.UpdateMemberResponse(member.getMemberId(), member.getAccountId());
+        return new MemberDto.UpdateMemberResponse(member.getMemberId(), member.getUsername());
     }
 
     // 멤버 전체 조회 (관리자 페이지)
@@ -49,7 +49,7 @@ public class MemberApiController {
         List<Member> findMembers = memberService.findAll();
         // 찾은 정보를 Dto로 변환 후, Data로 감쌈
         List<MemberDto.MemberApiDto> result = findMembers.stream()
-                .map(m -> new MemberDto.MemberApiDto(m.getMemberId(),m.getAccountId(),m.getNickname()))
+                .map(m -> new MemberDto.MemberApiDto(m.getMemberId(),m.getUsername(),m.getNickname()))
                 .collect(Collectors.toList());
         return new Result(result);
     }

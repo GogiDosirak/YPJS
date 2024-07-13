@@ -45,13 +45,13 @@ public class MemberService {
     }
 
     private void CreateMemberRequestToEntity(MemberDto.CreateMemberRequest request, Member member) {
-        member.createMember(request.getAccountId(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(),
+        member.createMember(request.getUsername(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(),
                 request.getGender(), request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber());
     }
 
     // 중복 검증
     public void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByAccountId(member.getAccountId());
+        List<Member> findMembers = memberRepository.findByAccountId(member.getUsername());
         if(!findMembers.isEmpty()) {
             throw new IllegalStateException("중복된 회원 아이디입니다.");
         }

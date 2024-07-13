@@ -32,7 +32,7 @@ public class MemberController {
     // member를 Dto로 감싸주는 역할
     private MemberDto.MypageDto getMypageData(Long memberId) {
         Member member = memberService.findOne(memberId);
-        MemberDto.MypageDto result = new MemberDto.MypageDto(member.getMemberId(),member.getAccountId(),member.getPassword(),member.getNickname(), member.getName(), member.getBirth(), member.getEmail(), member.getGender(), member.getAddress(),
+        MemberDto.MypageDto result = new MemberDto.MypageDto(member.getMemberId(),member.getUsername(),member.getPassword(),member.getNickname(), member.getName(), member.getBirth(), member.getEmail(), member.getGender(), member.getAddress(),
                 member.getPhonenumber(), member.getJoinDate(), member.getRole());
         return result;
     }

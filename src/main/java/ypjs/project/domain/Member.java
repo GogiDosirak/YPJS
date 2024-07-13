@@ -31,8 +31,8 @@ public class Member implements UserDetails {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "member_account_id")
-    private String accountId;
+    @Column(name = "member_username")
+    private String username;
 
     @Column(name = "member_password")
     private String password;
@@ -80,9 +80,9 @@ public class Member implements UserDetails {
     private LocalDateTime pointDate;
 
     // 멤버 생성 메소드
-    public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
+    public Member createMember(String username, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
         Member member = new Member();
-        member.accountId = accountId;
+        member.username = username;
         member.password = password;
         member.nickname = nickname;
         member.name = name;
@@ -142,7 +142,7 @@ public class Member implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.accountId;
+        return this.username;
     }
 
     @Override
