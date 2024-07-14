@@ -3,48 +3,83 @@ package ypjs.project.common.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import ypjs.project.repository.RefreshRepository;
 
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtTokenProvider jwtTokenProvider;
 
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
+
+
+
+
+    //AuthenticationManager Bean 등록
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                // REST API이므로 basic auth 및 csrf 보안을 사용하지 않음
-                .httpBasic().disable()
-                .csrf().disable()
-                // JWT를 사용하기 때문에 세션을 사용하지 않음
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                // 해당 API에 대해서는 모든 요청을 허가
-                .requestMatchers("/ypjs/member/join").permitAll()
-                .requestMatchers("/ypjs/member/login").permitAll()
-                // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers("/ypjs/member/test").hasRole("MEMBER")
-                // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
-                .anyRequest().authenticated()
-                .and()
-                // JWT 인증을 위하여 직접 구현한 필터를 UsernamePasswordAuthenticationFilter 전에 실행
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class).build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
+        return configuration.getAuthenticationManager();
+    }
+
+    // 비밀번호를 항상 암호화 해야함
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        // BCrypt Encoder 사용
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        // csrf disable
+        http
+                .csrf((auth) -> auth.disable());
+
+        // form 로그인 disable
+        http
+                .formLogin((auth) ->auth.disable());
+
+        // http basic 인증 disable
+        http
+                .httpBasic((auth) -> auth.disable());
+
+        // 경로별 인가 작업
+        http
+                .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/login","/index","/","/api/**","/ypjs/**","/reissue").permitAll()
+                        .requestMatchers("/css/**", "/img/**", "/js/**", "/webfonts/**").permitAll()
+                        .requestMatchers("/admin").hasAnyRole("ADMIN")
+                        .anyRequest().authenticated());
+
+        // 세션 설정 (JWT에선 항상 세션을 STATELESS 상태로 관리)
+        http
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // 필터 등록
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
+        // AuthenticationManger를 의존성 주입해서 사용했기 떄문에, 파라미터에 넣어줘야함
+        // -> AuthenticationManger Bean 등록 필요
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil,refreshRepository), LogoutFilter.class);
+
+
+        return http.build();
     }
-
-
 }

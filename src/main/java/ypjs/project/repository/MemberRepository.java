@@ -30,25 +30,34 @@ public class MemberRepository {
     }
 
 
-    public List<Member> findByAccountId(String username) {
-        return em.createQuery(
-                "select m from Member m where m.username =:username", Member.class)
-                .setParameter("username", username)
+    public Optional<Member> findByUsername(String username) {
+        List<Member> members = em.createQuery(
+                        "select m from Member m where m.username = :username", Member.class)
+                .setParameter("username",username)
+                .getResultList();
+        if (members.isEmpty()) {
+            return Optional.empty();
+        } else {
+            return Optional.of(members.get(0));
+        }
+    }
+
+    public List<Member> findByUsernames(String username) {
+        return  em.createQuery(
+                        "select m from Member m where m.username = :username", Member.class)
+                .setParameter("username",username)
                 .getResultList();
     }
 
-    public Member findOneByAccountId(String username) {
+
+
+
+    public Member findOneByUsername(String username) {
         return em.createQuery(
                         "select m from Member m where m.username =:username", Member.class)
                 .setParameter("username", username)
                 .getSingleResult();
     }
 
-    public Optional<Member> loginAccountId(String username) {
-            return em.createQuery(
-                            "select m from Member m where m.username =:username", Member.class)
-                    .setParameter("username", username)
-                    .getResultList().stream().findAny();
-    }
 
 }
