@@ -2,7 +2,9 @@ package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import ypjs.project.domain.Item;
 import ypjs.project.domain.Like;
 
 import java.util.List;
@@ -30,7 +32,6 @@ public class LikeRepository {
         return Optional.ofNullable(like);
     }
 
-
     //회원과 상품으로 좋아요 내역 찾기
     public Optional<Like> findByMemberAndItem(Long memberId, Long itemId) {
 
@@ -42,13 +43,38 @@ public class LikeRepository {
     }
 
     //페치조인으로 한번에 조회 로직
-    public List<Like> findAllWithMemberItem(int offset, int limit){
-        return em.createQuery(
-                "select l from Like l" +
-                        " join fetch l.member m" +
-                        " join fetch l.item i", Like.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
+    public List<Item> findLikedItemByMemberId(Long memberId, Pageable pageable, String sortBy){
+
+        String questyString = "select i from Like l" +
+                " join l.member m" +
+                " join l.item i" +
+                " where m.memberId = :memberId";
+
+        switch (sortBy){
+            case "recentItem":
+                questyString += " order by i.itemId desc, l.likeId desc";
+                break;
+            default:
+                questyString += " order by l.likeId desc";
+                break;
+
+        }
+
+        return em.createQuery(questyString, Item.class)
+                .setParameter("memberId", memberId)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
+    }
+
+    public int countLikedItemByMemberId(Long memberId){
+        return em.createQuery(
+                "select count(l) from Like l" +
+                        " join l.member m" +
+                        " join l.item i" +
+                        " where m.memberId = :memberId", Long.class)
+                .setParameter("memberId", memberId)
+                .getSingleResult()
+                .intValue();
     }
 }

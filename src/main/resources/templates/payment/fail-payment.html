@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="frame/header :: head">
+    <title>결제 실패</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        .btn-retry {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-retry:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="frame/header :: header"></header>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="bg-danger card-header text-white text-center">
+            <h1>결제 실패</h1>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>결제 처리 중 문제가 발생했습니다.</p>
+                    <p> 잠시후 다시 시도해 주세요.</p>
+                </div>
+            </div>
+            <div class="col-md-12 text-center">
+                <a href="/ypjs/cart/list" class="btn btn-danger btn-lg">
+                    <i class="fas fa-home"></i> 카트로 돌아가기
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="frame/footer :: footer"></footer>
+</body>
+</html>
