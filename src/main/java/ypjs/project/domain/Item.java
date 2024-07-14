@@ -155,4 +155,17 @@ public class Item {
 
 
 
+    //==좋아요 메서드==//
+    public void addLike(){
+        this.likeCount += 1;
+    }
+
+    public void deleteLike(){
+        if (this.likeCount > 0) {
+            this.likeCount -= 1;
+        }
+    }
+
+
+
 }
