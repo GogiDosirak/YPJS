@@ -2,6 +2,7 @@ package ypjs.project.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,13 @@ public class MemberController {
     public String join() {
         return "member/join";
     }
+
+//    // admin 테스트용
+//    @GetMapping("/admin")
+//    public String admin(Model model) {
+//        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
+//        return "member/admin";
+//    }
 
     // 마이페이지
     @GetMapping("/ypjs/member/mypage/{memberId}")

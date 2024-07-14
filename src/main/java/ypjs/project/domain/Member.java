@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ypjs.project.domain.enums.Role;
 import ypjs.project.domain.enums.Status;
 
@@ -20,11 +21,12 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-public class Member implements UserDetails {
+public class Member  {
 
     @Id
     @GeneratedValue
@@ -80,23 +82,21 @@ public class Member implements UserDetails {
     private LocalDateTime pointDate;
 
     // 멤버 생성 메소드
-    public Member createMember(String username, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
-        Member member = new Member();
-        member.username = username;
-        member.password = password;
-        member.nickname = nickname;
-        member.name = name;
-        member.birth = birth;
-        member.gender = gender;
-        member.address = new Address(address,addressDetail,zipcode);
-        member.email = email;
-        member.phonenumber = phonenumber;
-        member.joinDate = LocalDateTime.now();
-        member.status = Status.MEMBER;
-        member.role = Role.CUSTOMER;
-        member.roles.add(String.valueOf(Status.MEMBER));
-        member.roles.add(String.valueOf(Role.CUSTOMER));
-        return member;
+    public void createMember(String username, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.username = username;
+//        this.password = bCryptPasswordEncoder.encode(password); //(JWT 버전 쓸때 다시 살리기)
+        this.password = password;
+        this.nickname = nickname;
+        this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+        this.address = new Address(address,addressDetail,zipcode);
+        this.email = email;
+        this.phonenumber = phonenumber;
+        this.joinDate = LocalDateTime.now();
+        this.status = Status.MEMBER;
+        this.role = Role.ROLE_ADMIN;
     }
 
     // 멤버 수정 메소드
@@ -130,40 +130,6 @@ public class Member implements UserDetails {
         }
     }
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
 
 

@@ -8,29 +8,31 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ypjs.project.domain.Member;
+import ypjs.project.dto.memberdto.CustomUserDetails;
 import ypjs.project.repository.MemberRepository;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    // DB에 접근해야하므로 Repository 의존성 주입
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
+
+    // DB에서 특정 유저를 조회해서 return
     @Override
-    public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
-        return memberRepository.loginAccountId(accountId)
-                .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
-    }
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-    // 해당하는 User 의 데이터가 존재한다면 UserDetails 객체로 만들어서 return
-    private UserDetails createUserDetails(Member member) {
-        return User.builder()
-                .username(member.getUsername())
-                .password(passwordEncoder.encode(member.getPassword()))
-                .roles(member.getRoles().toArray(new String[0]))
-                .build();
-    }
+        Member memberData = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
+
+        // 조회한 데이터를 검증
+        if (memberData != null) {
+            // 아이디를 가진 회원이 있다면, CustomUserDetails에 넣어서 반환 -> AuthenticationManager에서 비밀번호도 맞는지 검증
+            return new CustomUserDetails(memberData);
+        }
+
+        return null;
+    }
 }

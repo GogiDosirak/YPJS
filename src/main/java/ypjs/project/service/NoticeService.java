@@ -25,7 +25,7 @@ public class NoticeService {
         return noticeRepository.findOne(noticeId);
     }
 
-    // 페이징 +
+//     페이징 +
 //    public List<Notice> findAll(int offset, int limit) {
 //        return noticeRepository.findAll(offset,limit);
 //    }
