@@ -8,14 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.Like;
 import ypjs.project.domain.Member;
+
 import ypjs.project.dto.likedto.LikeRequestDto;
 import ypjs.project.dto.likedto.LikeResponseDto;
+
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.LikeRepository;
 import ypjs.project.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +57,7 @@ public class LikeService {
         }
     }
 
+
     private Member findMember(Long memberId) {
         return Optional.ofNullable(memberRepository.findOne(memberId))
                 .orElseThrow(() -> new IllegalStateException("회원이 존재하지 않습니다."));
@@ -65,4 +70,6 @@ public class LikeService {
 
 
 
+
 }
+

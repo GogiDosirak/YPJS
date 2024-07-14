@@ -17,12 +17,18 @@ public class NoticeRepository {
         return em.find(Notice.class, noticeId);
     }
 
-    // 공지사항 전체 조회
-    public List<Notice> findAll(int offset, int limit) {
+//    // 공지사항 전체 조회 페이징+
+//    public List<Notice> findAll(int offset, int limit) {
+//        return em.createQuery(
+//                "select n from Notice n", Notice.class)
+//                .setFirstResult(offset)
+//                .setMaxResults(limit)
+//                .getResultList();
+//    }
+
+    public List<Notice> findAll() {
         return em.createQuery(
-                "select n from Notice n", Notice.class)
-                .setFirstResult(offset)
-                .setMaxResults(limit)
+                        "select n from Notice n", Notice.class)
                 .getResultList();
     }
 

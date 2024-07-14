@@ -26,16 +26,20 @@ public class OrderRepository {
         return em.find(Order.class, orderId);
     }
 
+    public void delete(Order order) {
+        em.remove(order);
+    }
+
     public List<Order> findAllByMemberId(Long memberId, Pageable pageable, String orderStatus) {
         //JPQL 쿼리
         String jpql = "select o from Order o join fetch o.member m where m.memberId = :id";
 
         //orderStatus 조건이 있는 경우 조건 추가
         if(StringUtils.hasText(orderStatus)) {
-                jpql += " and o.status = :status";
+            jpql += " and o.status = :status";
         }
 
-        jpql += " order by o.id desc";
+        jpql += " order by o.orderId desc";
 
         //쿼리 생성
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)

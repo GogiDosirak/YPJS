@@ -7,11 +7,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
 import ypjs.project.domain.enums.DeliveryStatus;
 import ypjs.project.dto.orderdto.OrderCreateDto;
+import ypjs.project.dto.orderdto.OrderItemRequestDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 import ypjs.project.repository.OrderRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -27,22 +29,30 @@ public class OrderService {
 
     //==주문==//
     @Transactional
-    public Long create(OrderCreateDto orderCreateDto) {
+    public Long create(Long memberId, OrderCreateDto orderCreateDto) {
         //멤버정보 생성
-        Member member = memberRepository.findOne(orderCreateDto.getMemberId());
+        Member member = memberRepository.findOne(memberId);
 
         //배송정보 생성
         Delivery delivery = new Delivery(
-                orderCreateDto.getDeliveryDto().getReceiver(),
-                orderCreateDto.getDeliveryDto().getPhoneNumber(),
-                orderCreateDto.getDeliveryDto().getAddress(),
-                DeliveryStatus.READY
+                orderCreateDto.getDeliveryCreateDto().getReceiver(),
+                orderCreateDto.getDeliveryCreateDto().getPhoneNumber(),
+                orderCreateDto.getDeliveryCreateDto().getAddress(),
+                DeliveryStatus.배송준비중
         );
 
         //주문상품리스트 생성
-        List<OrderItem> orderItems = orderCreateDto.getOrderItems().stream()
-                .map(oI -> new OrderItem())
-                .toList();
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for(OrderItemRequestDto oid : orderCreateDto.getOrderItemRequestDtos()) {
+            orderItems.add(
+                    OrderItem.create(
+                            itemRepository.findOne(oid.getItemId()),
+                            oid.getItemCount(),
+                            oid.getItemPrice()
+                    )
+            );
+        }
 
         //주문 생성
         Order order = Order.create(member, delivery, orderItems);
@@ -59,8 +69,15 @@ public class OrderService {
 
         //Page<Order> -> Page<OrderResponseDto> 변환
         return orders.stream()
-                .map(OrderResponseDto::new)
+                .map(order -> new OrderResponseDto(order))
                 .collect(toList());
+    }
+
+    //==주문 1건 조회==//
+    public OrderResponseDto findOne(Long orderId) {
+        Order order = orderRepository.findOne(orderId);
+
+        return new OrderResponseDto(order);
     }
 
 
@@ -73,6 +90,13 @@ public class OrderService {
 
         //주문 취소
         order.cancel();
+    }
+
+    @Transactional
+    public void delete(Long orderId) {
+        Order o = orderRepository.findOne(orderId);
+        orderRepository.delete(o);
+
     }
 
 /*
