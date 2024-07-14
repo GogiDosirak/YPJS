@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/itemQna.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">상품문의 등록</h2>
+
+                <input type="hidden" id="itemId" th:value="${itemId}">
+
+                <div class="form-group mb-3 ms-1">
+                    <span id="itemName" th:text="${itemName}"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <textarea rows="15" class="form-control mt-1" id="question" placeholder="문의 내용을 입력해주세요."></textarea>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btn-success btn-lg me-4" id="btn-create">등록</button>
+                    <button type="button" class="btn btn-secondary btn-lg" id="btn-cancel">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

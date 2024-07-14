@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/itemQnaAdmin.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+            <!--링크-->
+            <div class="row">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-chevron-right me-1" style="font-size: 0.65rem !important; color: #bfbfbf;"></i>
+                    <a href="/ypjs/itemqna/list/admin" class="custom-link fw-bold" style="font-size: 0.75rem !important; color: #bfbfbf !important;"> 상품문의 내역(관리자)</a>
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold text-primary">상품문의 상세(관리자)</h2>
+
+                <input type="hidden" id="itemQnaId" th:value="${itemQna.itemQnaId}">
+
+                <div class="mb-3 row">
+                    <label for="status" class="col-sm-2 col-form-label">처리상태</label>
+                    <div class="col-sm-10 pt-1">
+                        <span class="btn btn-success" id="status" th:text="${itemQna.status}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="itemId" class="col-sm-2 col-form-label">상품명</label>
+                    <div class="col-sm-10 pt-2">
+                        <a href="#" class="custom-link fw-bold" id="itemId" th:text="${itemQna.itemName}"></a>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="qMemberAccountId" class="col-sm-2 col-form-label">문의작성자</label>
+                    <div class="col-sm-10 pt-2">
+                        <input type="text" class="form-control" id="qMemberAccountId" th:value="${itemQna.qMemberAccountId}" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <div class="col-sm-2">
+                        <label for="qCreated" class="col-form-label">작성일</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="qCreated" th:value="${#temporals.format(itemQna.qCreated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-2">
+                        <label for="qCreated" class="col-form-label">최종수정일</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="qUpdated" th:value="${#temporals.format(itemQna.qUpdated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="question" class="col-sm-2 col-form-label">문의 내용</label>
+                    <div class="col-sm-10">
+                        <textarea rows="3" class="form-control" id="question" th:text="${itemQna.question}" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="aMemberAccountId" class="col-sm-2 col-form-label">답변작성자</label>
+                    <div class="col-sm-10 pt-2">
+                        <input type="text" class="form-control" id="aMemberAccountId" th:value="${itemQna.aMemberAccountId}" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <div class="col-sm-2">
+                        <label for="qCreated" class="col-form-label">답변일</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="aCreated" th:value="${#temporals.format(itemQna.aCreated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                    </div>
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-2">
+                        <label for="qCreated" class="col-form-label">최종수정일</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="aUpdated" th:value="${#temporals.format(itemQna.aUpdated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="answer" class="col-sm-2 col-form-label">문의 답변</label>
+                    <div class="col-sm-10">
+                        <textarea rows="3" class="form-control" id="answer" th:text="${itemQna.answer}" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4">
+                <button class="btn btn-success" style="width: 25%;" id="btn-answer">답변 작성 및 수정</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

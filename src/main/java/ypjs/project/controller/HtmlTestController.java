@@ -15,4 +15,9 @@ public class HtmlTestController {
     public String test() {
         return "test";
     }
+
+    @GetMapping("/cart")
+    public String cart() {
+        return "/cart/cartList";
+    }
 }

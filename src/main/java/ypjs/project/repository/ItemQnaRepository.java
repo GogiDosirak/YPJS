@@ -27,32 +27,57 @@ public class ItemQnaRepository {
     }
 
     //==조회==//
-    public ItemQna findOne(Long id) {
-        return em.find(ItemQna.class, id);
+    public ItemQna findOne(Long itemQnaId) {
+        return em.find(ItemQna.class, itemQnaId);
     }
 
     public List<ItemQna> findAllByItemId(Long itemId, Pageable pageable) {
-        //JPQL 쿼리
-        String jpql = "select i from itemQna join fetch i.item where i.itemId = :id order by i.id desc";
-
-        TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
+        return em.createQuery("select i from ItemQna i join fetch i.item where i.item.itemId = :id order by i.itemQnaId desc"
+                        , ItemQna.class)
                 .setParameter("id", itemId)
                 .setFirstResult((int)pageable.getOffset())
-                .setMaxResults(pageable.getPageSize());
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
 
-        return query.getResultList();
     }
 
     public List<ItemQna> findAllByMemberId(Long memberId, Pageable pageable) {
-        //JPQL
-        String jpql = "select i from itemQna join fetch i.member where m.memberId = :id order by i.id desc";
-
-        TypedQuery<ItemQna> query = em.createQuery(jpql, ItemQna.class)
+        return em.createQuery("select i from ItemQna i join fetch i.qMember where i.qMember.memberId = :id order by i.itemQnaId desc"
+                        , ItemQna.class)
                 .setParameter("id", memberId)
                 .setFirstResult((int)pageable.getOffset())
-                .setMaxResults(pageable.getPageSize());
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
 
-        return query.getResultList();
+    }
+
+    public List<ItemQna> findAll(Pageable pageable) {
+        return em.createQuery("select i from ItemQna i order by i.status desc, i.itemQnaId desc"
+                , ItemQna.class)
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+    }
+
+    //==총 개수 조회==//
+    public int countAll() {
+        return em.createQuery("select count(i) from ItemQna i", Long.class)
+                .getSingleResult()
+                .intValue();
+    }
+
+    public int countByItemId(Long itemId) {
+        return em.createQuery("select count(i) from ItemQna i where i.item.itemId = :id", Long.class)
+                .setParameter("id", itemId)
+                .getSingleResult()
+                .intValue();
+    }
+
+    public int countByMemberId(Long memberId) {
+        return em.createQuery("select count(i) from ItemQna i where i.qMember.memberId = :id", Long.class)
+                .setParameter("id", memberId)
+                .getSingleResult()
+                .intValue();
     }
 
     //==삭제==//

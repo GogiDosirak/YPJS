@@ -17,7 +17,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private Long orderId;  //주문번호
 
@@ -36,11 +36,11 @@ public class Order {
     private int price;  //주문금액
 
     @Column(name = "order_created")
-    private LocalDateTime created;  //주문시간
+    private LocalDateTime created;  //주문생성시간
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private OrderStatus status;  //주문상태 [ORDER, CANCEL]
+    private OrderStatus status;  //주문상태
 
 
     //==연관관계 메서드==//
@@ -61,23 +61,34 @@ public class Order {
         order.member = member;
         order.delivery = delivery;
         order.setDeliveryOrder(delivery);
-        for(OrderItem orderItem : orderItems) {
-            order.addOrderItem(orderItem);
-            totalPrice += orderItem.getTotalPrice();
+        for(OrderItem oi : orderItems) {
+            order.addOrderItem(oi);
+            totalPrice += oi.totalPrice();
         }
         order.price = totalPrice;
         order.created = LocalDateTime.now();
-        order.status = OrderStatus.주문완료;  //!!결제완료 시 주문완료 되도록 수정 필요
+        order.status = OrderStatus.결제대기중;  //!!결제완료 시 주문완료 수정 필요
 
         return order;
+    }
+
+    //==상태 변경 메서드==//
+    public Long updateOrderStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
+        return this.orderId;
+    }
+
+    public Long updateOrderCreated(LocalDateTime payDate) {
+        this.created = payDate;
+        return this.orderId;
     }
 
 
     //==취소 메서드==//
     public void cancel() {
-        if(delivery.getStatus() == DeliveryStatus.SHIPPING) {
+        if(delivery.getStatus() == DeliveryStatus.배송중) {
             throw new IllegalStateException("배송중인 상품은 취소가 불가능합니다.");
-        } else if(delivery.getStatus() == DeliveryStatus.DELIVERED) {
+        } else if(delivery.getStatus() == DeliveryStatus.배송완료) {
             throw new IllegalStateException("배송완료된 상품은 취소가 불가능합니다.");
         }
         this.status = OrderStatus.주문취소;
