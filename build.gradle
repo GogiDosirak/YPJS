@@ -53,7 +53,11 @@ dependencies {
 	// Iamport REST Client
 	implementation 'com.github.iamport:iamport-rest-client-java:0.2.23'
 
-	compileOnly("org.springframework.boot:spring-boot-devtools")
+
+	// JSON 관련 //
+	implementation 'org.json:json:20211205'
+
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation 'junit:junit:4.13'
 }
 

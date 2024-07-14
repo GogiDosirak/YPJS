@@ -32,25 +32,27 @@ public class CartRepository {
 
     //==멤버별 개수 조회==//
     public Long count(Long memberId) {
-        String jpql = "select count(c) from Cart c where c.member.memberId = :id";
-
-        TypedQuery<Long> query = em.createQuery(jpql, Long.class)
-                .setParameter("id", memberId);
-
-        return query.getSingleResult();
+        return em.createQuery("select count(c) from Cart c where c.member.memberId = :id"
+                        , Long.class)
+                .setParameter("id", memberId)
+                .getSingleResult();
     }
 
     //==멤버별 전체 조회==//
     public List<Cart> findAllByMemberId(Long memberId) {
-        //JPQL
-        String jpql = "select c from Cart c join fetch c.member m where m.memberId = :id";
+        return em.createQuery("select c from Cart c join fetch c.member m where m.memberId = :id order by c.cartId desc"
+                        , Cart.class)
+                .setMaxResults(100)  //검색 결과 최대 100건
+                .setParameter("id", memberId)
+                .getResultList();
+    }
 
-        TypedQuery<Cart> query = em.createQuery(jpql, Cart.class)
-                .setMaxResults(100);  //검색 결과 최대 100건
-
-        query = query.setParameter("id", memberId);
-
-        return  query.getResultList();
+    //==멤버별 중복 상품 조회==//
+    public List<Long> findItemIdByMemberId(Long memberId) {
+        return em.createQuery("select c.item.itemId from Cart c where c.member.memberId = :id"
+                        , Long.class)
+                .setParameter("id", memberId)
+                .getResultList();
     }
 
     //==삭제==//
