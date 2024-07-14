@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5">
+</div>
+<!-- End Content -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<div class="container mt-3">
+    <a href="/notice"><h2>공지사항</a></h2>
+    <div id="searchForm">
+        <form action="/notice/searchNotice" method="GET" class="form-inline">
+            <input type="text" name="keyword" class="form-control-sm" id="search"
+                   placeholder="제목으로 검색하기">
+            <button class="btn btn-warning bi bi-search" id="searchButton">검색</button>
+        </form>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>조회수</th>
+        </tr>
+        </thead>
+        <tr th:each="notice : ${noticeList}">
+                <td th:text="${notice.noticeId}">
+            <td>
+                <a th:href="@{/ypjs/board/notice/{noticeId}(noticeId=${notice.noticeId})}" th:text="${notice.noticeTitle}"></a>
+            </td>
+                <td>운영자</td>
+                <td th:text="${notice.noticeDate }">
+                <td th:text="${notice.noticeCnt}">
+        </tr>
+        </th:each>
+
+
+    </table>
+</div>
+<br>
+<br>
+</body>
+<footer th:replace="frame/footer :: footer"></footer>
+</html>

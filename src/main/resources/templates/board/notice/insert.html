@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5">
+</div>
+<!-- End Content -->
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Summernote 스타일 및 스크립트 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4.min.js"></script>
+
+
+
+<!-- JS 파일 포함 -->
+<script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/summernote-lite.js"></script>
+<script src="/js/summernote-ko-KR.js"></script>
+<script src="/js/notice.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+
+
+
+
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+        <form>
+            <div class="row">
+                <div class="form-group mb-3">
+                    <label for="noticeTitle">공지사항 제목</label>
+                    <input type="text" class="form-control mt-1" id="noticeTitle" name="noticeTitle" placeholder="제목">
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="noticeContent">공지사항 내용</label>
+                    <textarea class="form-control" id="noticeContent" name="noticeContent" rows="10"></textarea>
+                </div>
+
+                <!-- Summernote 초기화 스크립트 -->
+                <script th:inline="javascript">
+                    $(document).ready(function() {
+                        $("#noticeContent").summernote({
+                            height: 600, // 높이 설정
+                            placeholder: '내용을 입력하세요...', // 플레이스홀더 설정
+                            callbacks: {
+                                onChange: function(contents, $editable) {
+                                    // 내용이 변경될 때 처리할 로직 추가 가능
+                                }
+                            }
+                        });
+                    });
+                </script>
+
+
+
+                <!-- 글 등록 버튼 -->
+                <div class="row">
+                    <div class="col text-end mt-2">
+                        <button type="submit" class="btn btn-success btn-md" id="btn-insert">글 등록</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+<!-- End Contact -->
+
+
+
+</div>
+</div>
+
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>
