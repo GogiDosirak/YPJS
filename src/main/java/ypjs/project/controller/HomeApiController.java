@@ -9,7 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeApiController {
     @GetMapping("/")
     public String index() {
-        return "/";
+        return "/index";
+    }
+
+    @GetMapping("/index")
+    public String home() {
+        return "/index";
     }
 
 
