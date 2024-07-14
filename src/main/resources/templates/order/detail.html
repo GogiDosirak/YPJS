@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/order.js"></script>
+<script src="/js/delivery.js"></script>
+
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+
+            <!-- 주문 상세 내역 시작-->
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">주문 상세 내역</h2>
+            </div>
+
+            <div class="card border-0">
+
+                <ul class="list-group rounded-0"
+                    style="border-top: 1px solid #dee2e6; border-bottom: 1px solid #dee2e6;">
+                    <li class="list-group-item list-group-item-secondary py-4 border-0" style="border-top: 1px solid #000000 !important;">
+                        <span class="h5" th:text="${#temporals.format(order.created, 'yyyy-MM-dd')}"></span>
+                    </li>
+                    <li th:each="item, itemIndex : ${order.orderItems}" class="list-group-item border-0 d-flex flex-row justify-content align-items-center">
+
+                        <input type="hidden" th:value="${item.itemId}" th:id="${'itemId_' + itemIndex.index}">
+
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <div class="card product-wap rounded-0" style="max-width: 50%;">
+                                <div class="card rounded-0">
+                                    <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                        <ul class="list-unstyled">
+                                            <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <span th:text="${item.itemName}" th:id="'itemName_' + ${itemIndex.index}"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <span>수량 : </span>
+                                </li>
+                                <li class="list-inline-item">
+                                    <span class="item-count" th:text="${item.itemCount}" th:id="'itemCount_' + ${itemIndex.index}"></span>
+                                </li>
+                                <li class="list-inline-item">
+                                    <span>개</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="col-md-2">
+                            <div class="d-flex justify-content-center">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item">
+                                        <span th:text="${item.itemTotalPrice}" th:id="'itemTotalPrice_' + ${itemIndex.index}"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- 결제금액 표시 -->
+                    <li class="list-group-item list-group-item-secondary py-4 border-0">
+                        <div class="row justify-content-end text-end">
+                            <div class="col-1">
+                                <h5 class="mb-0">총</h5>
+                            </div>
+                            <div class="col-3 me-2">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item">
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <span class="h5" th:text="${order.itemTotalCount}" th:id="itemTotalCount"></span>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <h5 class="mb-0">개</h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-3 me-4">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item">
+                                        <h5 class="mb-0" th:text="${order.price}" th:id="price_"></h5>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-1 ms-3 me-2"></div>
+                        </div>
+                    </li>
+                </ul>
+                <!--주문 상세 내역 끝-->
+
+                <br>
+                <br>
+
+                <!-- 결제 정보 시작-->
+                <div class="row">
+                    <h2 class="h2 pb-4 fw-bold">결제 정보</h2>
+                </div>
+
+                <ul class="list-group rounded-0" style="border-bottom: 1px solid #dee2e6;">
+                    <li class="list-group-item py-4 border-0" style="border-top: 1px solid #000000 !important;">
+                        <span class="h5">payment</span>
+                    </li>
+                </ul>
+                <!--결제 정보 끝-->
+
+                <br>
+                <br>
+
+                <!-- 배송 정보 시작-->
+                <div class="row">
+                    <h2 class="h2 pb-4 fw-bold">배송 정보</h2>
+                </div>
+
+                <ul class="list-group rounded-0" style="border-bottom: 1px solid #dee2e6;">
+                    <li class="list-group-item py-4 border-0" style="border-top: 1px solid #000000 !important;">
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">배송상태</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="delivery-status" th:text="${order.deliveryResponseDto.status}"></span>
+                            </div>
+                            <div class="col-2 mb-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-success" id="delivery-tracker-modal">배송조회</button>
+                                <input type="hidden" id="delivery-id" th:value="${order.deliveryResponseDto.deliveryId}">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">받으실 분</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="receiver" th:text="${order.deliveryResponseDto.receiver}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">주소</span>
+                            </div>
+                            <div class="col-8">
+                                <ul class="list-inline mb-2">
+                                    <li class="list-inline-item">
+                                        <span class="h5" id="zipcode" th:text="${order.deliveryResponseDto.address.zipcode}"></span>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <span class="h5" id="address" th:text="${order.deliveryResponseDto.address.address}"></span>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <span class="h5" id="addressDetail" th:text="${order.deliveryResponseDto.address.addressDetail}"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">연락처</span>
+                            </div>
+                            <div class="col-8">
+                                <span class="h5" id="phoneNumber" th:text="${order.deliveryResponseDto.phoneNumber}"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!--배송 정보 끝-->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!-- 배송 조회 모달 시작 -->
+<div class="modal fade" id="deliveryTrackerModal" tabindex="-1" aria-labelledby="deliveryTrackerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryTrackerModalLabel">배송조회</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="trackLogData" />
+                <div id="trackLogContent">
+                    <!-- 배송 정보를 여기에 동적으로 채웁니다 -->
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 배송 조회 모달 끝 -->
+
+<style>
+    .timeline {
+        position: relative;
+        margin: 0;
+    }
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 5%;
+        top: 0%;
+        bottom: 7%;
+        width: 2px;
+        background: #74a974;
+    }
+    .timeline-item {
+        position: relative;
+        margin: 10px 0;
+    }
+    .timeline-item .timeline-icon {
+        position: absolute;
+        left: 3.9%;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 3px solid #74a974;
+        border-radius: 50%;
+        z-index: 1;
+    }
+    .timeline-item .timeline-content {
+        position: relative;
+        left: 12%;
+        width: 80%;
+        padding: 10px 20px;
+        border: 1px solid #e9ecef;
+        background: #fff;
+    }
+    .timeline-item .timeline-content .location {
+        font-weight: bold;
+    }
+    .timeline-item .timeline-content .status {
+        color: #007bff;
+    }
+    .timeline-item .timeline-content .time {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+
+</style>
+
+
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>
