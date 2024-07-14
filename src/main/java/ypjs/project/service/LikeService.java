@@ -48,6 +48,7 @@ public class LikeService {
         //좋아요 두번 누른 경우/취소
         if (findLike!=null) {
             likeRepository.delete(findLike);
+
             item.deleteLike(); //해당 아이템 엔티티에서 좋아요-1
             return false;
         } else {
@@ -81,4 +82,5 @@ public class LikeService {
         return Optional.ofNullable(itemRepository.findOne(itemId))
                 .orElseThrow(() -> new IllegalStateException("상품이 존재하지 않습니다."));
     }
+
 }

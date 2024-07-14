@@ -115,9 +115,6 @@ public class Item {
     }
 
 
-
-
-
     //연관관계 메서드
     public void setCategory(Category category) {
         this.category = category;
@@ -142,6 +139,20 @@ public class Item {
     public void addStock(int count) {
         this.itemStock += count;
     }
+
+    //==좋아요 메서드==//
+    public void addLike(){
+        this.likeCount += 1;
+    }
+
+    public void deleteLike(){
+        if (this.likeCount > 0) {
+            this.likeCount -= 1;
+        }
+    }
+
+
+
 
 
     //==좋아요 메서드==//
