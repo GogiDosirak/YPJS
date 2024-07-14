@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 페이지</title>
+    <th:block th:replace="frame/header :: head"></th:block>
+    <!-- 아임포트 -->
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <!-- JavaScript 파일 링크 -->
+    <script th:src="@{/js/payment.js}"></script>
+
+</head>
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">결제상세</h2>
+            </div>
+
+            <div class="card">
+                <!-- 결제 정보 시작 -->
+                <ul class="list-group rounded-0">
+                    <li class="list-group-item py-4 border-0">
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">주문 번호:</span>
+                            </div>
+                            <div class="col-8">
+                                <span id="orderId" th:text="${requestPayDto.orderId}"></span>
+                                <span hidden="hidden" id="orderUid" th:text="${requestPayDto.orderUid}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">구매자 이름:</span>
+                            </div>
+                            <div class="col-8">
+                                <span id="payName" th:text="${requestPayDto.payName}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">전화번호:</span>
+                            </div>
+                            <div class="col-8">
+                                <span id="buyerTel" th:text="${requestPayDto.phoneNumber}"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">주문자 아이디:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.memberId}" id="buyerMemberId"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">상품 이름:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.itemName}" id="itemName"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">구매자 이메일:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.payEmail}" id="payEmail"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">배송 주소:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.deliveryAddress}" id="deliveryAddress"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">우편번호:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.zipcode}" id="buyerPostcode"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!-- 결제 정보 끝 -->
+            </div>
+            <br>
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">포인트 사용</h2>
+            </div>
+            <div class="card">
+                <!-- 포인트사용 표시 -->
+                <div class="card-body mt-2">
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">보유한 포인트: </span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.point}" id="availablePoints"></span>
+                            </div>
+                        </div>
+                        <div class="col-10 mx-auto">
+                            <label class="sr-only" for="usePoint">usePoint</label>
+                            <div class="input-group mb-2">
+                                <input type="number" class="form-control border-dark" id="usePoint"
+                                       placeholder="사용할 금액을 입력하세요">
+                                <button class="input-group-text btn btn-success text-light" type="button" id="btn-usePoint">
+                                    포인트 사용
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 포인트사용 표시 끝-->
+            </div>
+            <br>
+            <div class="card">
+                <!-- 결제 금액 표시 -->
+                <ul class="list-group rounded-0">
+                    <li class="list-group-item py-4 border-0">
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">상품 금액:</span>
+                            </div>
+                            <div class="col-8">
+                                <span th:text="${requestPayDto.orderPrice}" id="orderPrice"></span> 원
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h5">할인 금액:</span>
+                            </div>
+                            <div class="col-8">
+                                <span id="showUsePoint">0 원</span> <!-- 초기값 0 원으로 설정 -->
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2 mb-3">
+                                <span class="h4">총 결제 금액:</span>
+                            </div>
+                            <div class="col-8">
+                                <h3><span id="finalPaymentAmount" th:text="${requestPayDto.orderPrice}"></span> 원</h3>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+        <!-- 결제하기 버튼-->
+        <div class="d-flex justify-content-center mt-5">
+            <button type="button" class="btn btn-success" id="btn-sendPayment">결제하기</button>
+        </div>
+        <!-- 결제하기 버튼 끝-->
+    </div>
+</div>
+<!-- End Content -->
+
+<footer th:replace="frame/footer :: footer"></footer>
+</body>
+</html>

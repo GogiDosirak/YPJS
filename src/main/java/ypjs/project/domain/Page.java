@@ -6,4 +6,6 @@ public class Page {
     public static int totalPages(int TBSize, int pageSize) {
         return TBSize == 0 ? 1 : (int) Math.ceil((double) TBSize / (double) pageSize);
     }
+
 }
+

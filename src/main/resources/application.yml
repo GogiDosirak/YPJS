@@ -19,7 +19,16 @@ spring:
         format_sql: true
         default_batch_fetch_size: 500
 
+  jwt:
+    secret: 31531513dgfodagklagnewjgneqjkfnjkqefnkjqkqkqsjajsdfaaaabbb
 
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
 
 
     devtools:

@@ -1,49 +1,60 @@
 package ypjs.project.service;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
+import ypjs.project.dto.paymentdto.UpdatePointsRequest;
+import ypjs.project.dto.memberdto.MemberDto;
 import ypjs.project.repository.MemberRepository;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
+    // 멤버 가입
     @Transactional
-    public Long join(Member member) {
+    public Member join(MemberDto.CreateMemberRequest request) { // 초기 메소드에만 DTO를 받아줘서 엔티티로 변환해서 반환
+        Member member = CreateMemberRequestToEntity(request);
         validateDuplicateMember(member); //중복 회원 검증
         memberRepository.save(member);
-        return member.getMemberId();
+        return member;
     }
 
+    private Member CreateMemberRequestToEntity(MemberDto.CreateMemberRequest request) {
+        Member member = new Member();
+        member.createMember(request.getUsername(), request.getPassword(), request.getNickname(), request.getName(), request.getBirth(),
+                request.getGender(), request.getAddress(), request.getAddressDetail(), request.getZipcode(), request.getEmail(), request.getPhonenumber());
+        return member;
+    }
+
+    // 중복 검증
     public void validateDuplicateMember(Member member) {
-        List<Member> findMembers = memberRepository.findByAccountId(member.getAccountId());
+        List<Member> findMembers = memberRepository.findByUsernames(member.getUsername());
         if(!findMembers.isEmpty()) {
             throw new IllegalStateException("중복된 회원 아이디입니다.");
         }
     }
 
+    // 멤버 수정
     @Transactional
-    public void update(Long memberId, String accountId, String password, String nickname, String name) {
-        Member member = memberRepository.findOne(memberId);
-        member.updateMember(accountId, password, nickname, name);
+    public Member update(MemberDto.UpdateMemberRequest updateMemberRequest) {
+        Member member = memberRepository.findOne(updateMemberRequest.getMemberId());
+        member.updateMember(updateMemberRequest.getPassword(), updateMemberRequest.getNickname());
+        return member;
     }
 
+    // 멤버 탈퇴
     @Transactional
     public void witrdraw(Long memberId) {
         Member member = memberRepository.findOne(memberId);
@@ -51,8 +62,8 @@ public class MemberService {
     }
 
     // 로그인
-    public Long login(String accountId, String password) {
-        Member member = memberRepository.loginAccountId(accountId)
+    public Long login(String username, String password) {
+        Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalStateException("가입되지 않은 아이디입니다."));
         if(!member.checkPassword(password)) {
             throw  new IllegalStateException("비밀번호가 틀립니다.");
@@ -77,9 +88,34 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    //payment 포인트 업데이트 관련 로직
+    @Transactional
+    public boolean updateMemberPoints(UpdatePointsRequest request) {
 
+            Long memberId = request.getMemberId();
+            int usedPoints = request.getUsedPoints();
+
+            Member member = memberRepository.findOne(memberId);
+            if (member == null) {
+                throw new IllegalArgumentException("회원이 존재하지 않습니다.");
+            }
+            int currentPoints = member.getPoint();
+            int newPoints = currentPoints - usedPoints;
+
+            if (newPoints < 0) {
+                throw new IllegalArgumentException("사용할 포인트가 현재 포인트보다 많습니다.");
+            }
+
+            member.updatePoint(newPoints);
+            memberRepository.save(member);
+
+            return true;
+
+        }
 
     }
+
+
 
 
 
