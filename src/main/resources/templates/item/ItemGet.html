@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<script src="/js/item/itemRatings.js"></script>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+<script src="/js/item/itemRatingsGet.js"></script>
+<script src="/js/item/item.js"></script>
+
+<style>
+    .bg-light {
+        background-color: transparent !important; /* 배경색을 투명하게 설정 */
+    }
+
+    /* 요소의 우선순위를 높여서 Bootstrap의 font-weight-bold 클래스가 적용될 수 있도록 함 */
+    h1.font-weight-bold, span.font-weight-bold {
+        font-weight: bold !important;
+    }
+
+     .custom-mt {
+        margin-top: -20px; /* 원하는 간격 값으로 설정 */
+    }
+<!--    가운데 정렬-->
+
+    .centered-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #itemContent {
+            text-align: center;
+        }
+
+
+     /* #itemContent를 flexbox로 설정하여 가운데 정렬 */
+    #itemContent {
+        display: flex;
+        flex-direction: column; /* 내부 요소들을 세로로 정렬하기 위해 */
+        justify-content: center; /* 수직 가운데 정렬 */
+        align-items: center; /* 수평 가운데 정렬 */
+    }
+
+    /* 썸머노트에서 삽입된 이미지의 스타일 */
+    #itemContent img {
+        max-width: 100%; /* 최대 너비 설정 */
+        height: auto; /* 높이 자동으로 조정 */
+        margin-bottom: 10px; /* 이미지 아래 여백 추가 */
+    }
+
+    /* 썸머노트에서 삽입된 텍스트의 스타일 */
+    #itemContent p {
+        text-align: center; /* 텍스트 가운데 정렬 */
+        margin-bottom: 10px; /* 문단 아래 여백 추가 */
+    }
+
+</style>
+
+
+
+
+
+
+<!-- Open Content -->
+
+
+
+
+
+<div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
+    <div class="row">
+        <div class="col-lg-7 offset-lg-1">
+            <h1 class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
+            <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
+            <span class="font-weight-bold">원</span>
+            <p class="h3 py-2"></p>
+        </div>
+    </div>
+
+    <!-- 별점 및 평점 표시 -->
+    <div class="row mt-3">
+        <div class="col-lg-7 offset-lg-1">
+            <div class="d-flex justify-content-start align-items-center">
+                <ul class="list-unstyled d-flex mb-0 mr-3 text-left" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                    <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="itemRatings"  th:text="${item.itemRatings}"></span> &nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- 리뷰가 있는 경우 -->
+                <div th:if="${reviewCount != null and reviewCount > 0}">
+                    <div>
+                        <!-- 리뷰 링크 표시 -->
+                        <a th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${item.itemId})}">
+                            Reviews  &nbsp;(<span th:text="${reviewCount}"></span>)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 리뷰가 없는 경우 -->
+                <div th:if="${reviewCount == null or reviewCount == 0}">
+                    <p>리뷰가 없습니다.</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 수정하기 및 삭제하기 버튼 -->
+    <div class="row justify-content-end mt-3">
+        <div class="col-auto">
+            <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
+        </div>
+        <div class="col-auto">
+            <input type="hidden" id="itemId" th:value="${item.itemId}">
+            <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
+        </div>
+    </div>
+
+            <div class="row justify-content-end mt-3">
+                <div class="col-auto">
+                    <span class="font-weight-bold"> 조회수 : </span>
+                    <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
+                    <br>
+                    <span class="font-weight-bold">작성일 : </span>
+                    <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
+                </div>
+                <div class="col-auto">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+
+
+
+
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-5 mt-5 text-center">
+                <div id="itemContent" th:utext="${item.itemContent}">
+                    <!-- 썸머노트에서 입력된 내용 (글과 이미지) -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+<div class="row pb-3">
+    <div class="col-lg-6 offset-lg-5"> <!-- offset-lg-6 클래스 추가하여 오른쪽으로 옮김 -->
+        <ul class="list-inline pb-3 text-right"> <!-- text-right 클래스 추가하여 내용 오른쪽 정렬 -->
+            <li class="list-inline-item">
+                수량
+                <input type="hidden" name="product-quanity" id="product-quanity" value="1">
+            </li>
+            <li class="list-inline-item"><span class="btn btn-success" id="btn-minus">-</span></li>
+            <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+            <li class="list-inline-item"><span class="btn btn-success" id="btn-plus">+</span></li>
+        </ul>
+    </div>
+</div>
+
+<div class="row pb-3">
+    <div class="col d-grid">
+        <button type="submit" class="btn btn-success btn-md" name="submit" value="buy">Buy</button>
+    </div>
+    <div class="col d-grid">
+        <button type="submit" class="btn btn-success btn-md" name="submit" value="addtocard">Add To Cart</button>
+    </div>
+</div>
+
+</form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Close Content -->
+
+
+
+
+
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

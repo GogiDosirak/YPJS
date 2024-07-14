@@ -1,9 +1,10 @@
 package ypjs.project.dto.categorydto;
 
+import lombok.Data;
 import lombok.Getter;
 import ypjs.project.domain.Category;
 
-@Getter
+@Data
 public class CategoryRespnseDto {
 
     private Long categoryId;
@@ -18,4 +19,8 @@ public class CategoryRespnseDto {
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;
     }
+
+
+
+
 }

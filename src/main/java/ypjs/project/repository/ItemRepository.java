@@ -1,6 +1,7 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,9 @@ public class ItemRepository {
 
 
 
+
+
+
     //상품 여러개 조회
     public List<Item> findAllItems() {
        return em.createQuery("select i from Item i", Item.class)
@@ -64,44 +68,38 @@ public class ItemRepository {
 
 
 
-    //(카테고리당 아이템 조회)
-//    public List<Item> findAllItem(Long categoryId) {
-//        return em.createQuery("select i from Item i where i.category.categoryId = :categoryId", Item.class)
-//                .setParameter("categoryId", categoryId)
-//                .getResultList();
-//    }
+
+    //카테고리 당 아이템 조회
+    public List<Item> findAllItems(Long categoryId, Pageable pageable, String keyword) {
+        String queryString = "select i from Item i join fetch i.category c where i.category.categoryId = :categoryId";
+
+        // itemName 검색 조건 추가
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " and i.itemName like :itemName";
+        }
+
+        queryString += " order by i.itemId desc";
+
+        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
+                .setParameter("categoryId", categoryId)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        // itemName 파라미터 설정
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("itemName", "%" + keyword + "%");
+        }
+
+        return query.getResultList();
+    }
 
 
 
 
-    //카테고리 당 아이템 조회 기본 최신순 정렬, 후기 많은 순, 좋아요 많은 순 추가 정렬 (영한아저씨 따라한 것)
-//    public List<Item> findAllItemSortBy(Long categoryId, int offset, int limit, String sortBy) {
-//        String queryString = "select distinct i from Item i" +
-//                " join fetch i.category c" +
-//                " where i.category.categoryId = :categoryId" +
-//                " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
-//
-//        // 추가적으로 정렬을 적용하는 경우
-//        if ("itemRatings".equals(sortBy)) {
-//            queryString += ", i.itemRatings desc";
-//        } else if ("likeCount".equals(sortBy)) {
-//            queryString += ", i.itemLike desc";
-//        } else if ("itemId".equals(sortBy)) {
-//            // 이미 최신순으로 정렬되어 있으므로 추가적인 정렬 필요 없음
-//        }
-//
-//        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
-//                .setParameter("categoryId", categoryId)
-//                .setFirstResult(offset)
-//                .setMaxResults(limit);
-//
-//        return query.getResultList();
-//    }
 
 
 
-
-    //카테고리 당 아이템 조회(검색, 정렬, 페이징)
+    //카테고리당 아이템리스트
     public List<Item> findAllItemPagingSortByAndKeyword(Long categoryId, String keyword, Pageable pageable, String sortBy) {
         String queryString = "select distinct i from Item i" +
                 " join fetch i.category c" +
@@ -113,14 +111,19 @@ public class ItemRepository {
             queryString += " and i.itemName like :keyword";
         }
 
-        // 기본 정렬 조건
-        queryString += " order by i.itemId desc"; // 최신순으로 정렬 (itemId가 클수록 최신 데이터)
 
-        // 추가 정렬 조건
-        if ("itemRatings".equals(sortBy)) {
-            queryString += ", i.itemRatings desc";
-        } else if ("likeCount".equals(sortBy)) {
-            queryString += ", i.itemLike desc";
+        queryString += " order by "; // 기본 order by 절을 먼저 추가
+        switch (sortBy) {
+            case "itemRatings":
+                queryString += "i.itemRatings desc, i.itemId desc"; // itemRatings로 정렬, 동일한 rating이면 itemId로 정렬
+                break;
+            case "likeCount":
+                queryString += "i.likeCount desc, i.itemId desc"; // likeCount로 정렬, 동일한 likeCount이면 itemId로 정렬
+                break;
+            case "itemId":
+            default:
+                queryString += "i.itemId desc"; // 기본적으로 itemId로 정렬
+                break;
         }
 
         TypedQuery<Item> query = em.createQuery(queryString, Item.class)
@@ -135,6 +138,85 @@ public class ItemRepository {
 
         return query.getResultList();
     }
+
+
+    //아이템 전체리스트
+    public List<Item> findAllItem(String keyword, Pageable pageable, String sortBy) {
+        // 기본 쿼리
+        String queryString = "select i from Item i";
+
+        // 검색 조건 추가
+        boolean hasKeyword = (keyword != null && !keyword.isEmpty());
+        if (hasKeyword) {
+            queryString += " where i.itemName like :keyword";
+        }
+
+        // 정렬 조건
+        queryString += " order by ";
+        switch (sortBy) {
+            case "itemRatings":
+                queryString += "i.itemRatings desc, i.itemId desc";
+                break;
+            case "likeCount":
+                queryString += "i.likeCount desc, i.itemId desc";
+                break;
+            case "itemId":
+            default:
+                queryString += "i.itemId desc";
+                break;
+        }
+
+        TypedQuery<Item> query = em.createQuery(queryString, Item.class)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        // 검색 키워드 파라미터 설정
+        if (hasKeyword) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+
+        return query.getResultList();
+    }
+
+
+
+    // 아이템 전체 총 개수 조회 (페이징 하기 위해)
+    public int countAll(String keyword) {
+        String queryString = "select count(i) from Item i";
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " where i.itemName like :keyword";
+        }
+        TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+        return query.getSingleResult().intValue();
+    }
+
+
+    //카테고리 별 아이템 총 개수 조회(페이징)
+    public int countAllCategoryItem(String keyword, Long categoryId) {
+        // 기본 쿼리 설정
+        String queryString = "select count(distinct i) from Item i join i.category c where i.category.categoryId = :categoryId";
+
+        // 검색 조건 추가
+        if (keyword != null && !keyword.isEmpty()) {
+            queryString += " and i.itemName like :keyword";
+        }
+
+        // 쿼리 생성
+        TypedQuery<Long> query = em.createQuery(queryString, Long.class);
+        query.setParameter("categoryId", categoryId);
+
+        // 검색 키워드 파라미터 설정
+        if (keyword != null && !keyword.isEmpty()) {
+            query.setParameter("keyword", "%" + keyword + "%");
+        }
+
+        // 결과 반환
+        return query.getSingleResult().intValue();
+    }
+
 
 
 

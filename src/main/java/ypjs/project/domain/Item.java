@@ -2,18 +2,24 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Item {
 
 
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_ID")
     private Long itemId;
 
@@ -23,6 +29,10 @@ public class Item {
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemReview> itemReviews = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
 
     @Column(name = "ITEM_NAME")
@@ -45,28 +55,34 @@ public class Item {
     private String itemFilepath;
 
     @Column(name = "ITEM_CREATEDATE")
+    @CreatedDate
     private LocalDateTime itemCreateDate;
 
+
     @Column(name = "ITEM_CNT")
-    private int itemCnt;
+    private int itemCnt = 0;
 
     @Column(name = "ITEM_RATINGS")
-    private double itemRatings;
+    private Double itemRatings = 0.0;
 
     @Column(name = "LIKE_COUNT")
-    private int likeCount;
+
+    private int likeCount = 0;
+
 
 
     //생성자
 
     public Item() {}
 
-    public Item(Category category, String itemName, String itemContent, int itemPrice, int itemStock) {
+    public Item(Category category, Member member, String itemName, String itemContent, int itemPrice, int itemStock) {
         this.category = category;
+        this.member = member;
         this.itemName = itemName;
         this.itemContent = itemContent;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
+        this.itemCreateDate = LocalDateTime.now();
 
     }
 
@@ -79,10 +95,17 @@ public class Item {
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
 
+
         return this.itemId;
     }
 
 
+    //파일추가 메서드
+    public void addfile(String itemFilename, String itemFilepath) {
+        this.itemFilename = itemFilename;
+        this.itemFilepath = itemFilepath;
+
+    }
 
 
 
@@ -91,7 +114,7 @@ public class Item {
     public void updateItemRatings() {
 
         if (itemReviews == null || itemReviews.isEmpty()) {
-            this.itemRatings = 0;
+            this.itemRatings = 0.0;
         }
 
         double totalScore = 0;
@@ -109,7 +132,7 @@ public class Item {
             // 소숫점 첫째자리까지 반환
             this.itemRatings = Math.round(averageScore * 10.0) / 10.0; //소숫점 첫째자리까지 반환
         } else {
-            this.itemRatings = 0;
+            this.itemRatings = 0.0;
         }
 
     }
@@ -152,6 +175,19 @@ public class Item {
     }
 
 
+
+
+
+    //==좋아요 메서드==//
+    public void addLike(){
+        this.likeCount += 1;
+    }
+
+    public void deleteLike(){
+        if (this.likeCount > 0) {
+            this.likeCount -= 1;
+        }
+    }
 
 
 

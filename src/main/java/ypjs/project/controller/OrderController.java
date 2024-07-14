@@ -81,7 +81,8 @@ public class OrderController {
         System.out.println("**세션 주문상품 삭제 확인-> " + session.getAttribute("cartList"));
         System.out.println("**세션 장바구니ID 목록 확인-> " + session.getAttribute("cardIds"));
 
-        return "order/create";
+        return "order/orderFormTest";
+
     }
 
     //==주문 생성==//

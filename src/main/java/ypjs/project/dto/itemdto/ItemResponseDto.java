@@ -3,6 +3,8 @@ package ypjs.project.dto.itemdto;
 import lombok.Getter;
 import ypjs.project.domain.Item;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -13,11 +15,13 @@ public class ItemResponseDto {
     private String itemContent;
     private int itemPrice;
     private int itemStock;
+    private LocalDateTime itemCreateDate;
 
 
     public ItemResponseDto() {}
 
-    public ItemResponseDto(Long categoryId, Long itemId, String itemName, String itemContent, int itemPrice, int itemStock
+    public ItemResponseDto(Long categoryId, Long itemId, String itemName, String itemContent, int itemPrice, int itemStock,
+                           LocalDateTime itemCreateDate
                            ) {
 
         this.categoryId = categoryId;
@@ -26,6 +30,7 @@ public class ItemResponseDto {
         this.itemContent = itemContent;
         this.itemPrice = itemPrice;
         this.itemStock = itemStock;
+        this.itemCreateDate = itemCreateDate;
 
     }
 

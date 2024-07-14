@@ -5,6 +5,11 @@ spring:
     password:
     driver-class-name: org.h2.Driver
 
+
+
+
+
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -25,8 +30,19 @@ spring:
   thymeleaf:
     cache: false
 
+
+    devtools:
+      livereload:
+        enabled: true
+      restart:
+        enabled: true
+    thymeleaf:
+      cache: false
+
+
+
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
-
