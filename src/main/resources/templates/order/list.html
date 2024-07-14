@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/order.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+            <!-- 검색 폼 시작 -->
+            <div class="card mb-5 text-center border-0">
+                <form class="row align-items-center justify-content-end me-0" method="GET" th:action="@{/ypjs/order/list/admin}">
+                    <div class="col-auto ps-0">
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important; width: 100px;"
+                               name="startDate" id="startDate" aria-placeholder="시작 날짜" placeholder="시작 날짜">
+                    </div>
+                    <div class="col-auto px-0">
+                        <span class="align-middle" style="font-size: 0.75rem !important;">~</span>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" class="form-control form-control-sm" style="font-size: 0.75rem !important; width: 100px;"
+                               name="endDate" id="endDate" placeholder="종료 날짜">
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Small button group">
+                            <input class="btn-check" type="radio" name="duration" id="duration1" value="1" onclick="setDates(1)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration1" style="font-size: 0.75rem !important;">1개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration3" value="3" onclick="setDates(3)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration3" style="font-size: 0.75rem !important;">3개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration6" value="6" onclick="setDates(6)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration6" style="font-size: 0.75rem !important;">6개월</label>
+
+                            <input class="btn-check" type="radio" name="duration" id="duration12" value="12" onclick="setDates(12)">
+                            <label class="btn btn-outline-secondary btn-sm flex-fill" for="duration12" style="font-size: 0.75rem !important;">12개월</label>
+                        </div>
+
+                        <script>
+                            function setDates(months) {
+                                const today = new Date();
+                                const startDate = new Date(today);
+                                startDate.setMonth(today.getMonth() - months);
+
+                                // 날짜 형식을 YYYY-MM-DD로 설정
+                                const formatDate = (date) => {
+                                    const year = date.getFullYear();
+                                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                                    const day = String(date.getDate()).padStart(2, '0');
+                                    return `${year}-${month}-${day}`;
+                                };
+
+                                document.getElementById('startDate').value = formatDate(startDate);
+                                document.getElementById('endDate').value = formatDate(today);
+                            }
+                        </script>
+
+                    </div>
+                    <div class="col-auto">
+
+                        <select class="form-select form-select-sm" style="font-size: 0.75rem !important;" name="searchOrderStatus" id="searchOrderStatus">
+                            <option value="">전체</option>
+                            <option value="결제대기중">결제대기중</option>
+                            <option value="주문완료">주문완료</option>
+                            <option value="배송준비중">배송준비중</option>
+                            <option value="배송중">배송중</option>
+                            <option value="배송완료">배송완료</option>
+                            <option value="주문취소">주문취소</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5 px-0">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="searchOrderId" id="searchOrderId" placeholder="주문번호">
+                            <input type="text" class="form-control form-control-sm" style="font-size: 0.75rem !important;" name="searchOrderItemName" id="searchOrderItemName" placeholder="상품명 입력">
+
+                            <button type="submit" class="btn btn-success btn-sm" style="font-size: 0.75rem !important;" id="btn-search">검색</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- 검색 폼 끝 -->
+
+
+
+            <!-- 주문내역 표시 시작-->
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">주문 내역</h2>
+            </div>
+
+            <div class="card">
+                <!-- orderList가 비어 있는 경우 -->
+                <div th:if="${#lists.isEmpty(orderList)}">
+                    <div class="card-body text-center">
+                        <span>주문 내역이 없습니다</span>
+                    </div>
+                </div>
+
+                <!-- orderList가 있는 경우 -->
+                <div th:unless="${#lists.isEmpty(orderList)}">
+                    <div class="accordion accordion-flush" id="accordionExample">
+                        <!-- Thymeleaf 반복문을 통해 주문 목록을 순회 -->
+                        <div class="accordion-item" th:each="order, orderIndex : ${orderList}">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" th:data-bs-target="'#collapse_' + ${orderIndex.index}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <span class="me-4">주문 일자</span>
+                                    <span th:text="${#temporals.format(order.created, 'yyyy-MM-dd')}"></span>
+                                </button>
+                            </h2>
+                            <div id="collapse_" th:id="'collapse_' + ${orderIndex.index}" class="accordion-collapse collapse">
+                                <div class="accordion-body pb-0">
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <a class="btn btn-outline-success btn-sm" style="font-size: 1rem !important;"
+                                           th:href="@{/ypjs/order/detail(orderId=${order.orderId})}">
+                                            상세보기
+                                        </a>
+                                    </div>
+                                    <!-- 주문 내역 -->
+                                    <ul class="list-group rounded-0">
+                                        <li th:each="item, itemIndex : ${order.orderItems}" class="list-group-item d-flex flex-row justify-content align-items-center">
+
+                                            <input type="hidden" th:value="${item.itemId}" th:id="${'itemId_' + itemIndex.index}">
+
+                                            <div class="col-md-2 d-flex justify-content-center">
+                                                <div class="card product-wap rounded-0" style="max-width: 50%;">
+                                                    <div class="card rounded-0">
+                                                        <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                            <ul class="list-unstyled">
+                                                                <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="row">
+                                                    <span th:text="${item.itemName}" th:id="'itemName_' + ${itemIndex.index}"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item">
+                                                        <span>수량 : </span>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <span class="item-count" th:text="${item.itemCount}" th:id="'itemCount_' + ${itemIndex.index}"></span>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <span>개</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="d-flex justify-content-center">
+                                                    <ul class="list-inline mb-0">
+                                                        <li class="list-inline-item">
+                                                            <span th:text="${item.itemTotalPrice}" th:id="'itemTotalPrice_' + ${itemIndex.index}"></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <!-- 결제금액 표시 -->
+                                    <div class="card-body mt-2 mb-0">
+                                        <div class="row justify-content-end text-end">
+                                                    <div class="col-1">
+                                                        <h5>총</h5>
+                                                    </div>
+                                                    <div class="col-3 me-2">
+                                                        <ul class="list-inline mb-0">
+                                                            <li class="list-inline-item">
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <span class="h5" th:text="${order.itemTotalCount}" th:id="'itemTotalCount_' + ${orderIndex.index}"></span>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <h5>개</h5>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-3 me-4">
+                                                        <ul class="list-inline mb-0">
+                                                            <li class="list-inline-item">
+                                                                <h5 th:text="${order.price}" th:id="'price_' + ${orderIndex.index}"></h5>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-1 ms-3 me-1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--주문내역 표시 끝-->
+
+
+            <!-- 페이지네이션 시작-->
+            <nav th:unless="${#lists.isEmpty(orderList)}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list?page=' + ${page - 1} + '&size=' + ${size}}">이전</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == i} ? 'active'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list?page=' + ${i} + '&size=' + ${size}}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/order/list?page=' + ${page + 1} + '&size=' + ${size}}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--페이지네이션 끝-->
+
+
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>
