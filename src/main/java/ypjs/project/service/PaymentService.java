@@ -8,11 +8,9 @@ import com.siot.IamportRestClient.response.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ypjs.project.domain.Order;
 import ypjs.project.domain.enums.PayStatus;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
 import ypjs.project.repository.MemberRepository;
-import ypjs.project.repository.OrderRepository;
 import ypjs.project.repository.PaymentRepository;
 
 import java.io.IOException;

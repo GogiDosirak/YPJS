@@ -3,7 +3,6 @@ package ypjs.project.repository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ypjs.project.domain.Order;
 import ypjs.project.domain.Payment;
 
 import java.util.Optional;

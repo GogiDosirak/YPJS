@@ -12,7 +12,6 @@ import ypjs.project.dto.itemqnadto.ItemQnaAnswerDto;
 import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
 import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
 import ypjs.project.dto.itemqnadto.ItemQnaUpdateDto;
-import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 

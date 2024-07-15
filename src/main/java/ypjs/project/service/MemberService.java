@@ -1,22 +1,12 @@
 package ypjs.project.service;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
 import ypjs.project.repository.MemberRepository;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

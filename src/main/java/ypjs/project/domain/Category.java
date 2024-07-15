@@ -52,14 +52,6 @@ public class Category {
     }
 
     //카테고리 변경 메서드
-//    public Long changeCategory (Long categoryId, Category categoryParent, String categoryName) {
-//        this.categoryId = categoryId;
-//        this.categoryParent = categoryParent;
-//        this.categoryName = categoryName;
-//
-//        return this.categoryId;
-//    }
-
     public Long changeCategory ( Category categoryParent, String categoryName) {
         this.categoryParent = categoryParent;
         this.categoryName = categoryName;

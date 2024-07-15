@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Category;
 import ypjs.project.domain.Item;
-import ypjs.project.domain.Page;
 import ypjs.project.dto.itemdto.ItemListDto;
 import ypjs.project.dto.itemdto.ItemOneDto;
 import ypjs.project.dto.itemdto.ItemUpdateDto;

@@ -5,12 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.*;
-import ypjs.project.domain.enums.DeliveryStatus;
-import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
-import ypjs.project.repository.OrderRepository;
 
 import java.util.List;
 
