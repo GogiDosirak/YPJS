@@ -5,23 +5,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ypjs.project.domain.Category;
-import ypjs.project.domain.Item;
-import ypjs.project.domain.Page;
 import ypjs.project.dto.itemdto.*;
 import ypjs.project.dto.logindto.LoginDto;
-import ypjs.project.service.CategoryService;
-import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
-
-import java.util.List;
 
 
 @RestController

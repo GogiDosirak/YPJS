@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.enums.ItemQnaStatus;
 import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
 import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
-import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 

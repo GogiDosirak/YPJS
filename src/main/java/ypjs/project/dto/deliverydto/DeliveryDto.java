@@ -2,7 +2,6 @@ package ypjs.project.dto.deliverydto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ypjs.project.domain.Address;
 
 @Data
 @NoArgsConstructor

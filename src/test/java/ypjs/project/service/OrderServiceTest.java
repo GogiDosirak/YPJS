@@ -10,19 +10,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ypjs.project.domain.Address;
-import ypjs.project.domain.Order;
-import ypjs.project.domain.enums.OrderStatus;
 import ypjs.project.dto.deliverydto.DeliveryDto;
-import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderItemDto;
-import ypjs.project.dto.orderdto.OrderResponseDto;
-import ypjs.project.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

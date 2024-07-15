@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import ypjs.project.repository.MemberRepository;
-import ypjs.project.repository.OrderRepository;
 import ypjs.project.service.PaymentService;
 
 @Slf4j

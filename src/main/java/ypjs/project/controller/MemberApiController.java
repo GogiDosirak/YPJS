@@ -1,20 +1,14 @@
 package ypjs.project.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ypjs.project.domain.Address;
 import ypjs.project.domain.Member;
 import ypjs.project.dto.memberdto.MemberDto;
 import ypjs.project.service.MemberService;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

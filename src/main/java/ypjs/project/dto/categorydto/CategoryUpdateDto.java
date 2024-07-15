@@ -9,7 +9,6 @@ import ypjs.project.domain.Category;
 @Data
 public class CategoryUpdateDto {
 
-//    @NotNull(message = "Category ID not be null")
     private Long categoryId;
 
     @NotNull(message = "categoryParent not be null")

@@ -2,7 +2,6 @@ package ypjs.project.dto.orderdto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ypjs.project.domain.enums.OrderStatus;
 
 @Getter
 @NoArgsConstructor
