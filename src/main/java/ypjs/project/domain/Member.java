@@ -1,25 +1,40 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ypjs.project.domain.enums.Role;
 import ypjs.project.domain.enums.Status;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
-public class Member {
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode(of = "id")
+public class Member  {
 
     @Id
     @GeneratedValue
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "member_account_id")
-    private String accountId;
+    @Column(name = "member_username")
+    private String username;
 
     @Column(name = "member_password")
     private String password;
@@ -67,34 +82,33 @@ public class Member {
     private LocalDateTime pointDate;
 
     // 멤버 생성 메소드
-    public Member createMember(String accountId, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber, LocalDateTime joinDate) {
-        Member member = new Member();
-        member.accountId = accountId;
-        member.password = password;
-        member.nickname = nickname;
-        member.name = name;
-        member.birth = birth;
-        member.gender = gender;
-        member.address = new Address(address,addressDetail,zipcode);
-        member.email = email;
-        member.phonenumber = phonenumber;
-        member.joinDate = joinDate;
-        member.status = Status.MEMBER;
-        member.role = Role.CUSTOMER;
-        return member;
-    }
-
-    // 멤버 수정 메소드
-    public void updateMember(String accountId, String password, String nickname, String name) {
-        this.accountId = accountId;
+    public void createMember(String username, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        this.username = username;
+//        this.password = bCryptPasswordEncoder.encode(password); //(JWT 버전 쓸때 다시 살리기)
         this.password = password;
         this.nickname = nickname;
         this.name = name;
+        this.birth = birth;
+        this.gender = gender;
+        this.address = new Address(address,addressDetail,zipcode);
+        this.email = email;
+        this.phonenumber = phonenumber;
+        this.joinDate = LocalDateTime.now();
+        this.status = Status.MEMBER;
+        this.role = Role.ROLE_ADMIN;
+    }
+
+    // 멤버 수정 메소드
+    public void updateMember(String password, String nickname) {
+        this.password = password;
+        this.nickname = nickname;
 
     }
 
     // 멤버 탈퇴 메소드
     public void withdrawMember() {
+        this.outDate = LocalDateTime.now();
         this.status = Status.WITHDRAWAL;
     }
 
@@ -102,6 +116,8 @@ public class Member {
     public boolean checkPassword(String password) {
         return this.password.equals(password);
     }
+
+
 
     // 출석 포인트 적립 메소드
     public void attendancePoint() {
@@ -121,6 +137,10 @@ public class Member {
         }
         this.point = newPoints;
     }
+
+
+
+
 
 
 
