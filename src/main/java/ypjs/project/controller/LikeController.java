@@ -26,10 +26,7 @@ public class LikeController {
     public String likeButtonTest(Model model){
         //todo : 하드코딩된 값 바꿔치기 해야함
         Long itemId = 1L;
-        Long memberId =1L; //하드코딩
-        boolean isLiked = likeService.isLiked(memberId,itemId);
         model.addAttribute("itemId", itemId);
-        model.addAttribute("isLiked", isLiked);
         return "like/likeTest";
     }
 
