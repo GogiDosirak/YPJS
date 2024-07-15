@@ -25,14 +25,6 @@ public class LikeService {
     private final ItemRepository itemRepository;
 
     /**
-     * 좋아요 했는지 확인
-     */
-    @Transactional(readOnly = true)
-    public boolean isLiked(Long memberId, Long itemId){
-        return likeRepository.findByMemberAndItem(memberId,itemId).isPresent();
-    }
-
-    /**
      * 좋아요 추가 및 취소
      */
     @Transactional
@@ -81,4 +73,12 @@ public class LikeService {
         return Optional.ofNullable(itemRepository.findOne(itemId))
                 .orElseThrow(() -> new IllegalStateException("상품이 존재하지 않습니다."));
     }
+
+//    /**
+//     * 좋아요 했는지 확인
+//     */
+//    @Transactional(readOnly = true)
+//    public boolean isLiked(Long memberId, Long itemId){
+//        return likeRepository.findByMemberAndItem(memberId,itemId).isPresent();
+//    }
 }

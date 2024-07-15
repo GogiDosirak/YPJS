@@ -1,15 +1,25 @@
  $(document).ready(function() {
 
-            $('#like-button').click(function() {
-//                var itemId = $(this).data('itemId');
-//                var memberId = $('#memberId').text();
-//todo: 하드코딩된 값 바꿔치기 해줘야함
-                var itemId = 1;
-                var memberId = 1;
+            //새로고침 시 스크롤 위치 복원용.
+            const savedScrollTop = sessionStorage.getItem('scrollTop');
+            if (savedScrollTop) {
+                $(window).scrollTop(savedScrollTop);
+            }
+
+            $('.like-button').click(function(){
+
+                var itemId = $('#itemId').val();
+                var memberId = $('#memberId').val();
+
+                // 값을 콘솔에 출력하여 확인합니다.
+                console.log('itemId:', itemId);  // data-itemId의 값 확인
+                console.log('memberId:', memberId);  // memberId의 값 확인
+
                 var likeRequestDto = {
                     itemId: parseInt(itemId),
                     memberId: parseInt(memberId)
                 };
+
                 $.ajax({
                     type: 'POST',
                     url: '/api/ypjs/like/post',
@@ -17,13 +27,18 @@
                     data: JSON.stringify(likeRequestDto),
                     success: function(response) {
                         if(response){
-                        $('#like-button').removeClass('far').addClass('fas');
+                        alert("찜하기를 했습니다.")
                         }else{
-                        $('#like-button').removeClass('fas').addClass('far');
+                        alert("찜하기를 취소했습니다.")
                         }
+
+                    // 페이지 새로 고침 전 스크롤 위치를 저장
+                    sessionStorage.setItem('scrollTop', $(window).scrollTop());
+
+                    //새로고침 후 좋아요 취소 반영
+                    location.reload()
                     },
                     error: function(xhr, status, error) {
-                        $('#likeStatus').text('좋아요 처리 중 오류 발생');
                         console.error('좋아요 처리 중 오류 발생:', error);
                     }
                 });

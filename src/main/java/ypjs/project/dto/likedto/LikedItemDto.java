@@ -10,12 +10,14 @@ import ypjs.project.domain.Item;
 @NoArgsConstructor
 public class LikedItemDto {
 
+    private Long itemId;
     private String itemName;
     private int itemPrice;
     private String itemFilename;
     private String itemFilepath;
 
     public LikedItemDto(Item item){
+        itemId = item.getItemId();
         itemName = item.getItemName();
         itemPrice = item.getItemPrice();
         itemFilename = item.getItemFilename();

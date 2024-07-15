@@ -32,7 +32,6 @@ public class PaymentController {
         }
 
         //todo : 세션에 저장된 order 와 로그인한 order.member 가 같은지 확인하는 로직 추가 필요
-
         paymentService.createPayment(orderId);
         RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
         model.addAttribute("requestPayDto", requestPayDto);

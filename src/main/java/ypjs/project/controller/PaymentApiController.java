@@ -47,7 +47,7 @@ public class PaymentApiController {
         return new ResponseEntity<>(responseMap, HttpStatus.OK);
     }
 
-    //결제 취소
+    //결제 취소(결제완료o)
     @DeleteMapping("/cancel/{payId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> cancelPayment(@PathVariable(name = "payId") Long payId){
@@ -60,7 +60,7 @@ public class PaymentApiController {
     }
 
 
-    //결제 중단 시 실행하는 메서드(order 랑 payment 삭제)
+    //결제 중단 시(결제완료x) 실행하는 메서드(관련 order 랑 payment DB에서 삭제)
     @PostMapping("/fail-payment")
     public ResponseEntity<String> handlePaymentFailure(@RequestBody PaymentDto.FailPaymentDto failPaymentDTO) {
 
