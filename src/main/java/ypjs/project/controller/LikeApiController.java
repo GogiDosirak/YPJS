@@ -12,9 +12,11 @@ import ypjs.project.service.LikeService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/ypjs/like")
+
 public class LikeApiController {
 
     private final LikeService likeService;
+
 
     //==좋아요와 좋아요취소 메서드==//
     @PostMapping("/post")
@@ -23,3 +25,4 @@ public class LikeApiController {
 
     }
 }
+
