@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/itemQnaAdmin.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+
+            <!-- 주문내역 표시 시작-->
+            <div class="row mb-4">
+                <h2 class="h2 fw-bold text-primary">상품문의 내역(관리자)</h2>
+            </div>
+
+                <!-- itemQnaList가 비어 있는 경우 -->
+                <div th:if="${#lists.isEmpty(itemQnaList)}">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <span>문의 내역이 없습니다.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- itemQnaList가 있는 경우 -->
+                <div th:unless="${#lists.isEmpty(itemQnaList)}">
+                    <table class="table table-hover">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">상품명</th>
+                                <th scope="col">문의작성자</th>
+                                <th scope="col">내용</th>
+                                <th scope="col">작성일</th>
+                                <th scope="col">답변작성자</th>
+                                <th scope="col">답변일</th>
+                                <th scope="col">최종수정일</th>
+                                <th scope="col">처리상태</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr th:each="itemQna, itemQnaIndex : ${itemQnaList}" th:id="${itemQna.itemQnaId}">
+                                <td th:text="${itemQna.itemQnaId}"></td>
+                                <td th:text="${itemQna.itemName}"></td>
+                                <td th:text="${itemQna.qMemberAccountId}"></td>
+                                <td th:text="${itemQna.question}" style="width: 250px;"></td>
+                                <td th:text="${#temporals.format(itemQna.qCreated, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${itemQna.aMemberAccountId}"></td>
+                                <td th:text="${#temporals.format(itemQna.aCreated, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${#temporals.format(itemQna.aUpdated, 'yyyy-MM-dd')}"></td>
+                                <td th:text="${itemQna.status}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <!--주문내역 표시 끝-->
+
+            <!-- 페이지네이션 시작-->
+            <nav th:unless="${#lists.isEmpty(itemQnaList)}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${page - 1} + '&size=' + ${size}}">이전</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == i} ? 'active'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${i} + '&size=' + ${size}}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{'/ypjs/itemqna/list/admin?page=' + ${page + 1} + '&size=' + ${size}}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+            <!--페이지네이션 끝-->
+
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

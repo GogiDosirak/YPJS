@@ -1,11 +1,13 @@
 package ypjs.project.dto.deliverydto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class DeliveryDto {
+@AllArgsConstructor
+public class DeliveryCreateDto {
 
     private String receiver;  //받으실 분
 
@@ -13,9 +15,5 @@ public class DeliveryDto {
 
     private Address address;  //주소
 
-    public DeliveryDto(String receiver, String phoneNumber, Address address) {
-        this.receiver = receiver;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
+
 }
