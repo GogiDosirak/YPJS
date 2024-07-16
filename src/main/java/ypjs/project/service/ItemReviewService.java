@@ -1,6 +1,7 @@
 package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Item;
@@ -27,9 +28,9 @@ public class ItemReviewService {
 
     //리뷰등록
     @Transactional
-    public ItemReview saveItemReview(ItemReviewDto itemReviewDto) {
+    public ItemReview saveItemReview(ItemReviewDto itemReviewDto, Long memberId) {
         Item item = itemRepository.findOne(itemReviewDto.getItemId());
-        Member member = memberRepository.findOne(itemReviewDto.getMemberId());
+        Member member = memberRepository.findOne(memberId);
 
 
         ItemReview itemReview = new ItemReview(
@@ -56,6 +57,8 @@ public class ItemReviewService {
     }
 
 
+
+
     //리뷰조회
     public ItemReview findOneItemReview(Long itemReviewId) {
         return itemReviewRepository.findOneReview(itemReviewId);
@@ -63,9 +66,8 @@ public class ItemReviewService {
 
 
     //아이템 당 리뷰조회
-    public List<ItemReviewListDto> findAllItemReview(Long itemId) {
-        //List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
-        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId);
+    public List<ItemReviewListDto> findAllItemReview(Long itemId, Pageable pageable, String sortBy) {
+        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId, pageable, sortBy);
 
         List<ItemReviewListDto> result = reviews.stream()
                 .map(ItemReviewListDto::new)
@@ -87,30 +89,22 @@ public class ItemReviewService {
             throw new IllegalArgumentException("ItemReview not found with id: " + itemReviewId);
         }
 
-        Item item = itemRepository.findOne(itemReviewDto.getItemId());
-        Member member = memberRepository.findOne(itemReviewDto.getMemberId());
-
-        itemReview.changeItemReview(
-                item,
-                member,
+        Long iRId = itemReview.changeItemReview(
                 itemReviewDto.getItemScore(),
                 itemReviewDto.getItemReviewName(),
                 itemReviewDto.getItemReviewContent()
         );
 
-        // 새로운 리뷰가 추가된 후 아이템의 리뷰 리스트를 업데이트
-        item.getItemReviews().add(itemReview);
 
         //평점 업데이트
-        item.updateItemRatings();
+        itemReview.getItem().updateItemRatings();
 
-        itemRepository.saveItem(item);
     }
 
 
 
-    //리뷰 삭제
-    @Transactional
+   // 리뷰 삭제
+   @Transactional
     public void deleteItemReview(Long itemReviewId) {
         ItemReview itemReview = findOneItemReview(itemReviewId);
         Item item = itemReview.getItem();
@@ -123,8 +117,15 @@ public class ItemReviewService {
 
 
 
-
     }
+
+
+    //아이템리뷰 페이징 개수 조회
+    public int countAllItemReview(Long itemId){
+        return itemReviewRepository.countAllItemReview(itemId);
+    }
+
+
 
 
 
