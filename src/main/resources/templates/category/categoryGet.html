@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5">
+    카테고리 번호 당 아이템 리스트
+</div>
+<!-- End Content -->
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JS 파일 포함 -->
+<script src="/js/item/category.js"></script>
+<script src="/js/item/item.js"></script>
+
+
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+
+        <!-- 폼 요소들 -->
+        <div class="row">
+
+            <style>
+                .category-box {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    max-width: 1000px; /* 최대 너비 설정 */
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .category-label {
+                    font-weight: bold;
+                }
+
+                .item-box {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    max-width: 1000px; /* 최대 너비 설정 */
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .item-info {
+                    /* Optional: Add additional styles for item information */
+                }
+
+                .category-label {
+                    font-weight: bold;
+                }
+
+                 .h3-indent {
+                    margin-left: 100px; /* 왼쪽 여백을 줌으로써 텍스트를 오른쪽으로 이동 */
+                }
+
+
+
+                 /* 썸머노트에서 삽입된 이미지의 스타일 */
+                #itemContent img {
+                    display: block;
+                    margin: 0 auto; /* 가운데 정렬 */
+                    max-width: 40%; /* 이미지 최대 너비 조정 */
+                    height: auto; /* 높이 자동 조정 */
+                    margin-bottom: 1px; /* 이미지 아래 여백을 5px로 설정 */
+                }
+
+                /* 썸머노트에서 삽입된 텍스트의 스타일 */
+                #itemContent p {
+                    text-align: left; /* 텍스트 왼쪽 정렬 */
+                    margin-bottom: 5px; /* 문단 아래 여백을 5px로 설정 */
+                }
+
+
+            </style>
+
+
+            <div class="category-box">
+                <div>
+                    <span class="category-label">카테고리 번호:</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:text="${category.categoryId}"></span>
+                </div>
+                <div>
+                    <span class="category-label">카테고리 부모 번호:</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:text="${category.categoryParent.categoryId}"></span>
+                </div>
+                <div>
+                    <span class="category-label">카테고리 이름:</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span th:text="${category.categoryName}"></span>
+                </div>
+
+                <br>
+
+                <div class="container">
+                    <div class="row justify-content-end">
+                        <div class="col-auto">
+                            <a th:href="@{/ypjs/category/update/{categoryId}(categoryId=${category.categoryId})}" class="btn btn-warning">수정하기</a>
+                        </div>
+                        <input type="hidden" id="categoryId" th:value="${category.categoryId}">
+                        <div class="col-auto">
+                            <button type="button" id="btn-categoryDelete" class="btn btn-danger">삭제하기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="row justify-content-start">
+                        <div class="col-md-6 offset-md-9">
+                            <br><br>
+                            <!-- 검색 폼 -->
+                            <form th:action="@{/ypjs/category/get/{categoryId}(categoryId=${category.categoryId})}" method="get" class="form-inline w-100">
+                                <div class="input-group mb-3">
+                                    <input type="text" id="keyword" name="keyword" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2"
+                                           placeholder="Search by item name" th:value="${keyword}">
+                                    <button type="submit" class="btn btn-link text-dark mb-2 ml-2" id="button-addon2">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${not #lists.isEmpty(items)}">
+                <br><br><br>
+                <h3 class="h3-indent">아이템 목록</h3>
+                <br>
+                <div th:each="item : ${items}" class="item-box">
+                    <div class="item-info">
+                        <div>
+                            <span class="category-label">아이템 이름:</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
+                        </div>
+
+                        <div>
+                            <span class="category-label">아이템 내용&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                            <div id="itemContent">
+                                <span th:utext="${item.itemContent}"></span>
+                            </div>
+                        </div>
+
+                        <style>
+
+                        </style>
+
+
+                        <div>
+                            <span class="category-label">아이템 가격:</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span th:text="${item.itemPrice}"></span>
+                        </div>
+                        <div>
+                            <span class="category-label">아이템 수량:</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp; <span>:</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span th:text="${item.itemStock}"></span>
+                        </div>
+                        <!-- 필요한 다른 아이템 정보들을 추가 -->
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto">
+                                    <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}"
+                                       class="btn btn-warning"
+                                       style="padding: 2px 10px; font-size: 12px; width: 90px; height: 40px; text-align: center; display: inline-block; line-height: 40px;">
+                                        수정하기
+                                    </a>
+                                </div>
+                                &nbsp;
+                                <button type="button"
+                                        class="btn btn-danger btn-sm btn-delete-item"
+                                        th:attr="data-itemId=${item.itemId}"
+                                        style="padding: 2px 10px; font-size: 16px; width: 90px; height: 40px;">
+                                    삭제하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 페이지네이션 시작-->
+<nav th:unless="${#lists.isEmpty(items)}" class="mt-4">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{'/ypjs/category/get/' + ${category.categoryId} + '?page=' + (${page - 1}) + '&size=' + ${size} + '&keyword=' + ${#strings.defaultString(keyword, '')}}">이전</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == i} ? 'active'">
+            <a class="page-link" th:href="@{'/ypjs/category/get/' + ${category.categoryId} + '?page=' + ${i} + '&size=' + ${size} + '&keyword=' + ${#strings.defaultString(keyword, '')}}" th:text="${i + 1}">1</a>
+        </li>
+        <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{'/ypjs/category/get/' + ${category.categoryId} + '?page=' + (${page + 1}) + '&size=' + ${size} + '&keyword=' + ${#strings.defaultString(keyword, '')}}">다음</a>
+        </li>
+    </ul>
+</nav>
+<!-- 페이지네이션 끝-->
+
+
+
+
+
+<!-- End Contact -->
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3">
+            <h1 class="h2 pb-4">Categories</h1>
+            <ul class="list-unstyled templatemo-accordion">
+                <!-- 최상위 부모 카테고리 목록 반복 -->
+                <li th:each="parentCategory : ${parentCategories}" class="pb-3">
+                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                       th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${parentCategory.categoryId})}"
+                       th:text="${parentCategory.categoryName}">
+                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                    </a>
+                    <ul class="collapse show list-unstyled pl-3">
+                        <!-- 하위 자식 카테고리 목록 반복 -->
+                        <li th:each="childCategory : ${parentCategory.categoryChild}">
+                            <a class="text-decoration-none"
+                               th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${childCategory.categoryId})}"
+                               th:text="${childCategory.categoryName}"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

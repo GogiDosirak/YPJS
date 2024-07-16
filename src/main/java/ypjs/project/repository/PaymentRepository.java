@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ypjs.project.domain.Order;
 import ypjs.project.domain.Payment;
 
 import java.util.List;

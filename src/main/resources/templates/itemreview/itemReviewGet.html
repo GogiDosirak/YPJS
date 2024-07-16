@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<script src="/js/item/itemRatingsGet.js"></script>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<style>
+    .category-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .category-label {
+        font-weight: bold;
+    }
+
+    .item-box {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    max-width: 1000px; /* 최대 너비 설정 */
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+.item-info {
+/* Optional: Add additional styles for item information */
+}
+
+.category-label {
+font-weight: bold;
+}
+
+ .h3-indent {
+                    margin-left: 100px; /* 왼쪽 여백을 줌으로써 텍스트를 오른쪽으로 이동 */
+                }
+
+
+
+     .custom-select-wrapper {
+        border: 1px solid #f0f8ff; /* 테두리 두께와 색상 설정 */
+        padding: 3px; /* 선택 영역의 여백 설정 */
+        background-color: #f0f8ff; /* 연한 하늘색 배경색 */
+        display: inline-block; /* 인라인 요소로 표시 */
+        border-radius: 10px; /* 테두리 둥글기 설정 */
+    }
+
+    .form-control {
+        border: 1px solid #f0f8ff; /* 내부 테두리 설정 */
+        border-radius: 8px; /* 안쪽 테두리 둥글기 설정 */
+    }
+
+    /* 썸머노트에서 삽입된 이미지의 스타일 */
+       #itemContent img {
+       display: block;
+       margin: 0 auto; /* 가운데 정렬 */
+        max-width: 40%; /* 이미지 최대 너비 조정 */
+        height: auto; /* 높이 자동 조정 */
+        margin-bottom: 1px; /* 이미지 아래 여백 추가 */
+    }
+
+    /* 썸머노트에서 삽입된 텍스트의 스타일 */
+    #itemContent p {
+        text-align: left; /* 텍스트 왼쪽 정렬 */
+        margin-bottom: 5px; /* 문단 아래 여백 추가 */
+    }
+
+</style>
+
+
+<!-- Start Content -->
+<div class="container py-5">
+    아이템 리뷰
+</div>
+<!-- End Content -->
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="/js/item/itemReview.js"></script>
+
+
+<!-- Start Contact -->
+<!--정렬 추가-->
+<form th:action="@{/ypjs/itemReview/get/{itemId}(itemId=${itemReviews[0]?.itemId})}" method="get" class="row">
+    <div class="offset-sm-9 col-sm-1 mb-2 custom-select-wrapper" style="width: 8%;">
+        <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">
+            <option th:value="itemReviewId" th:selected="${sortBy == 'itemReviewId'}">최신순</option>
+            <option th:value="highScore" th:selected="${sortBy == 'highScore'}">별점 높은 순</option>
+            <option th:value="lowScore" th:selected="${sortBy == 'lowScore'}">별점 낮은 순</option>
+        </select>
+    </div>
+</form>
+
+
+<div class="container py-2">
+    <div class="row py-5">
+        <!-- 폼 요소들 -->
+        <div class="row">
+            <div th:if="${not #lists.isEmpty(itemReviews)}">
+                <h3 class="h3-indent">리뷰 목록</h3>
+                <br>
+                <div th:each="itemReview : ${itemReviews}" class="item-box">
+                    <div class="item-info" style="text-align: right;">
+                        <div>
+                            <span style="font-weight: bold;">작성일 : </span>
+                            <span id="itemReviewCreateDate"
+                                  th:text="${#temporals.format(itemReview.itemReviewCreateDate, 'yyyy-MM-dd')}"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="item-info">
+                        <div>
+                            <span class="category-label">제목&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                            <span th:text="${itemReview.itemReviewName}"></span>
+                        </div>
+
+                        <div class="item-info">
+                            <div>
+                                <span class="category-label">작성자&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                                <span th:text="${itemReview.nickname}"></span>
+                            </div>
+
+                        <!-- 별점 및 평점 표시 -->
+                        <div class="d-flex justify-content-left mb-1 align-items-left">
+                            <span class="category-label">별점&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                            <ul class="list-unstyled d-flex mb-0" id="starRating"
+                                th:attr="data-rating=${itemReview.itemScore}">
+                                <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                            </ul>
+
+                        </div>
+
+
+                        <div>
+                            <span class="category-label">리뷰 내용&nbsp;&nbsp;:&nbsp;&nbsp;</span>
+                            <div id="itemContent">
+                                <span th:utext="${itemReview.itemReviewContent}"></span>
+                            </div>
+                        </div>
+
+
+                            <input type="hidden" id="itemId" th:value="${itemReview.itemId}">
+                        <!-- 수정 및 삭제 버튼 -->
+                        <div class="container">
+                            <div class="row justify-content-end">
+                                <div class="col-auto">
+                                    <a th:href="@{/ypjs/itemReview/update/{itemReviewId}(itemReviewId=${itemReview.itemReviewId})}"
+                                       class="btn btn-warning">수정하기</a>
+                                </div>
+                                <div class="col-auto">
+
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm btn-delete-itemReview"
+                                            th:data-itemReviewId="${itemReview.itemReviewId}"
+                                            style="padding: 2px 10px; font-size: 16px; width: 90px; height: 40px;">
+                                        삭제하기
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 페이지네이션 시작 -->
+            <nav th:unless="${#lists.isEmpty(itemReviews)}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${itemReviews[0].itemId}, page=${(page > 0 ? page - 1 : 0)}, size=${size}, sortBy=${sortBy})}">이전</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${page == i} ? 'active'">
+                        <a class="page-link"
+                           th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${itemReviews[0].itemId}, page=${i}, size=${size}, sortBy=${sortBy})}"
+                           th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/ypjs/itemReview/get/{itemId}(itemId=${itemReviews[0].itemId}, page=${(page < totalPages - 1 ? page + 1 : totalPages - 1)}, size=${size}, sortBy=${sortBy})}">다음</a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <!--페이지네이션 끝-->
+
+
+            <!-- End Contact -->
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

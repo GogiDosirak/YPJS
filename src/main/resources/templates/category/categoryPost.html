@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+
+<body>
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5">
+    카테고리 등록
+</div>
+<!-- End Content -->
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- JS 파일 포함 -->
+<script src="/js/jquery-1.11.0.min.js"></script>
+<script src="/js/summernote-lite.js"></script>
+<script src="/js/summernote-ko-KR.js"></script>
+<script src="/js/item/category.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+
+<!-- Start Contact -->
+<div class="container py-5">
+    <div class="row py-5">
+
+
+
+
+        <!-- 폼 요소들 -->
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryParent">카테고리 부모 번호</label>
+                <select class="form-control mt-1" id="categoryParent" name="categoryParent" style="width: 100%;">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group mb-3" style="display: flex; flex-direction: column; align-items: flex-start; width: 70%;">
+                <label for="categoryName">카테고리 이름</label>
+                <select class="form-control mt-1" id="categoryName" name="categoryName" style="width: 100%;">
+                    <option value="outer">outer</option>
+                    <option value="top">top</option>
+                    <option value="bottom">bottom</option>
+                </select>
+            </div>
+        </div>
+
+
+
+
+        <!-- 글 등록 버튼 -->
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-end mt-2">
+                <button type="button" id="btn-categoryPost" class="btn btn-success btn-lg px-3">카테고리 등록</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- End Contact -->
+
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

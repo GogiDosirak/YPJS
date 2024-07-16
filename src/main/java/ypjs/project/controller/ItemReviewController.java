@@ -1,0 +1,94 @@
+package ypjs.project.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import ypjs.project.domain.Item;
+import ypjs.project.domain.ItemReview;
+import ypjs.project.dto.itemdto.ItemReviewDto;
+import ypjs.project.dto.itemdto.ItemReviewListDto;
+import ypjs.project.service.ItemReviewService;
+import ypjs.project.service.ItemService;
+import ypjs.project.service.MemberService;
+
+import java.util.List;
+
+@Controller
+@RequiredArgsConstructor
+public class ItemReviewController {
+
+    private final ItemReviewService itemReviewService;
+    private final ItemService itemService;
+    private final MemberService memberService;
+
+
+    //리뷰등록 화면
+    @GetMapping("/ypjs/itemReview/post/{itemId}")
+    public String insert(@PathVariable("itemId") Long itemId, Model model) {
+
+        Item findItem = itemService.findOneItem(itemId);
+
+        model.addAttribute("item", findItem);
+
+        return "itemreview/itemReviewPost";}
+
+
+    //아이템 당 리뷰조회
+    @GetMapping("/ypjs/itemReview/get/{itemId}")
+    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model,
+                                   @RequestParam(value = "page",defaultValue = "0") int page,
+                                   @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
+                                   @RequestParam(value = "size",defaultValue = "10") int size) {
+
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        itemService.findOneItem(itemId);
+
+        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable, sortBy);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
+
+        model.addAttribute("itemReviews", itemReviews);
+        model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
+
+
+        return "itemreview/itemReviewGet";
+    }
+
+
+
+
+
+    // 수정보기
+    @GetMapping("/ypjs/itemReview/update/{itemReviewId}")
+    public String updateItemReview(@PathVariable("itemReviewId") Long itemReviewId, Model model) {
+        ItemReview findItemReview = itemReviewService.findOneItemReview(itemReviewId);
+
+        ItemReviewDto itemReview = new ItemReviewDto(
+                findItemReview.getItem().getItemId(),
+                findItemReview.getItemReviewId(),
+                findItemReview.getItemScore(),
+                findItemReview.getItemReviewName(),
+                findItemReview.getItemReviewContent()
+
+        );
+
+
+
+        model.addAttribute("itemReview", itemReview);
+
+        // 반환할 뷰 이름 (템플릿 파일 경로, 예: templates/itemReview/update.html)
+        return "itemReview/itemReviewUpdate";
+    }
+
+}
