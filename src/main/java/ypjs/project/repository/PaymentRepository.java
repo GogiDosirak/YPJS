@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ypjs.project.domain.Order;
 import ypjs.project.domain.Payment;
 
 import java.util.List;
@@ -92,8 +93,8 @@ public class PaymentRepository {
     //==paymentUid 로 Payment 찾기
     public Payment findPaymentByPaymentUid(String paymentUid){
         return em.createQuery(
-                "select p from Payment p" +
-                        " where p.payPaymentUid = :paymentUid", Payment.class)
+                        "select p from Payment p" +
+                                " where p.payPaymentUid = :paymentUid", Payment.class)
                 .setParameter("paymentUid",paymentUid)
                 .getSingleResult();
     }

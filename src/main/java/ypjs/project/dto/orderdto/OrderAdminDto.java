@@ -38,7 +38,7 @@ public class OrderAdminDto {
 
     public OrderAdminDto(Order order) {
         orderId = order.getOrderId();
-        memberAccountId = order.getMember().getAccountId();
+        memberAccountId = order.getMember().getUsername();
         deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
         price = order.getPrice();
         created = order.getCreated();

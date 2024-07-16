@@ -1,30 +1,27 @@
 package ypjs.project.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import ypjs.project.domain.Item;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ypjs.project.dto.likedto.LikeRequestDto;
-import ypjs.project.dto.likedto.LikeResponseDto;
 import ypjs.project.service.LikeService;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/ypjs/like")
+
 public class LikeApiController {
 
     private final LikeService likeService;
 
 
     //==좋아요와 좋아요취소 메서드==//
-    @PostMapping("/ypjs/like")
-    public LikeResponseDto toggleLike(@RequestBody @Valid LikeRequestDto likeRequestDTO) {
-        likeService.toggleLike(likeRequestDTO);
-        return LikeResponseDto.success("좋아요를 처리했습니다!");
-    }
+    @PostMapping("/post")
+    public boolean toggleLike(@RequestBody @Valid LikeRequestDto likeRequestDTO) {
+        return likeService.toggleLike(likeRequestDTO.getMemberId(), likeRequestDTO.getItemId());
 
+    }
 }

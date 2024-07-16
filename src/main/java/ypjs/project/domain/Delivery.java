@@ -62,7 +62,7 @@ public class Delivery {
         this.address = address;
         this.carrierId = carrierId;
         this.trackId = trackId;
-        this.status = updateStatus();  // 상태 업데이트
+        this.status = updateStatus(DeliveryStatus.배송완료);  // 상태 업데이트
     }
 
     public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
@@ -85,7 +85,7 @@ public class Delivery {
     }
 
 
-    public DeliveryStatus updateStatus() {
+    public DeliveryStatus updateStatus(DeliveryStatus 배송완료) {
         System.out.println("**배송상태 업데이트 요청됨");
         if(StringUtils.hasText(this.trackId)) {
             System.out.println("운송장번호 확인");
@@ -108,13 +108,13 @@ public class Delivery {
     @PostPersist  // 영속화 후 상태 업데이트
     @PostUpdate
     private void updateStatusAfterPersist() {
-        this.status = updateStatus();
+        this.status = updateStatus(DeliveryStatus.배송완료);
     }
 
 
     @PostLoad  // 엔티티 로드 후 상태 업데이트
     private void updateStatusAfterLoad() {
-        this.status = updateStatus();
+        this.status = updateStatus(DeliveryStatus.배송완료);
     }
 
 

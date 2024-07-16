@@ -2,6 +2,7 @@ package ypjs.project.dto.orderdto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ypjs.project.domain.enums.OrderStatus;
 
 import java.time.LocalDate;
 

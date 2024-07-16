@@ -10,6 +10,7 @@ import ypjs.project.domain.enums.OrderStatus;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -53,37 +54,6 @@ public class Order {
         orderItem.setOrder(this);
     }
 
-
-    //==생성 메서드==//
-    public static Order create(Member member, Delivery delivery, List<OrderItem> orderItems) {
-        int totalPrice = 0;
-        Order order = new Order();
-        order.member = member;
-        order.delivery = delivery;
-        order.setDeliveryOrder(delivery);
-        for(OrderItem oi : orderItems) {
-            order.addOrderItem(oi);
-            totalPrice += oi.totalPrice();
-        }
-        order.price = totalPrice;
-        order.created = LocalDateTime.now();
-        order.status = OrderStatus.결제대기중;  //!!결제완료 시 주문완료 수정 필요
-
-        return order;
-    }
-
-    //==상태 변경 메서드==//
-    public Long updateOrderStatus(OrderStatus orderStatus) {
-        this.status = orderStatus;
-        return this.orderId;
-    }
-
-    public Long updateOrderCreated(LocalDateTime payDate) {
-        this.created = payDate;
-        return this.orderId;
-    }
-
-
     //==취소 메서드==//
     public void cancel() {
         if(delivery.getStatus() == DeliveryStatus.배송중) {
@@ -102,4 +72,58 @@ public class Order {
     @JsonIgnore
     @OneToOne(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Payment payment;
+
+
+    @Column(name = "order_uid")
+    private String orderUid;
+
+
+    //==생성 메서드==//
+    public static Order create(Member member, Delivery delivery, List<OrderItem> orderItems) {
+        int totalPrice = 0;
+        Order order = new Order();
+        order.member = member;
+        order.delivery = delivery;
+        order.setDeliveryOrder(delivery);
+        for(OrderItem oi : orderItems) {
+            order.addOrderItem(oi);
+            totalPrice += oi.totalPrice();
+        }
+        order.price = totalPrice;
+        order.created = LocalDateTime.now();
+        order.status = OrderStatus.결제대기중;
+
+        order.orderUid = UUID.randomUUID().toString();
+
+        return order;
+    }
+
+//==payment 연관 메서드==//
+
+    //==상태 변경 메서드==//
+    public Long updateOrderStatus(OrderStatus orderStatus) {
+        this.status = orderStatus;
+        return this.orderId;
+    }
+
+    public Long updateOrderCreated(LocalDateTime payDate) {
+        this.created = payDate;
+        return this.orderId;
+    }
+
+
+    //== 주문 아이템 이름 정보 메서드 ==//
+    public String getOrderItemsNameInfo() {
+        if (orderItems.isEmpty()) {
+            return "주문 상품이 없습니다.";
+        }
+
+        OrderItem firstOrderItem = orderItems.get(0);
+        String firstItemName = firstOrderItem.getItem().getItemName();
+        int remainingItemCount = orderItems.size() - 1;
+
+        return firstItemName + " 외 " + remainingItemCount + "개";
+    }
+
+//==payment 연관 메서드 끝==//
 }
