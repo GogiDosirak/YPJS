@@ -33,6 +33,81 @@ $(document).ready(function() {
     }
 
 
+    // 상품목록에서 장바구니 버튼 클릭 시
+    $('#btn-addCartFromItemList').click(function() {
+        var itemId = $(this).attr('id'); // 버튼의 ID에서 cartId 추출
+        var itemCount = 1;
+
+        var cartAddDto = {
+            itemId: itemId,
+            itemCount: itemCount
+        }
+
+        addCart(cartAddDto);
+
+    });
+
+    //상품상세에서 장바구니 버튼 클릭 시
+    $('#btn-addCartFromItemDetail').click(function() {
+        var itemId = $('#itemId').val();
+        var itemCount = $('#product-quanity').val();
+
+        var cartAddDto = {
+            itemId: itemId,
+            itemCount: itemCount
+        }
+
+        addCart(cartAddDto);
+
+    });
+
+
+    function addCart(cartAddDto) {
+        $.ajax({
+            type: 'POST',
+            url: '/api/ypjs/cart/add',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(cartAddDto),
+        }).done(function(response, textStatus, xhr) {
+            console.log("AJAX 성공:", xhr.status, response);
+            Swal.fire({
+                title: '장바구니 추가 완료',
+                text: "장바구니를 확인하시겠습니까?",
+                showCancelButton: true,
+                confirmButtonColor: '#007bff',
+                confirmButtonText: '장바구니 확인하기',
+                cancelButtonText: '쇼핑 계속하기'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location = "/ypjs/cart/list";
+                } else {
+                    location.reload();
+                }
+            });
+        }).fail(function(error) {
+            console.log("AJAX 실패:", error.status, error.responseText);
+            if (error.status === 400) {
+                Swal.fire({
+                    text: error.responseText,
+                    showCancelButton: true,
+                    confirmButtonColor: '#007bff',
+                    confirmButtonText: '장바구니 확인하기',
+                    cancelButtonText: '쇼핑 계속하기'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location = "/ypjs/cart/list";
+                    } else {
+                       location.reload();
+                    }
+                });
+            } else {
+                console.log("기타 오류:", error);
+            }
+        });
+    }
+
+
+
     // 삭제 버튼 클릭 시
     $('button.custom-link').click(function(event) {
         var cartId = $(this).attr('id'); // 버튼의 ID에서 cartId 추출
@@ -48,7 +123,7 @@ $(document).ready(function() {
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteCartItem(cartId);
+                deleteCart(cartId);
             } else {
                 location.reload();
             }
@@ -56,10 +131,10 @@ $(document).ready(function() {
     });
 
     // 상품 삭제 함수
-    function deleteCartItem(cartId) {
+    function deleteCart(cartId) {
         $.ajax({
             type: 'DELETE',
-            url: '/ypjs/cart/delete?cartId=' + cartId, // URL 수정
+            url: '/api/ypjs/cart/delete?cartId=' + cartId, // URL 수정
             contentType: 'application/json;charset=UTF-8',
         }).done(function(response) {
             Swal.fire({
@@ -102,12 +177,12 @@ $(document).ready(function() {
         if (cartListDtos.length > 0) {
             $.ajax({
                 type: 'POST',
-                url: '/ypjs/cart/order', // 주문하기 컨트롤러 URL
+                url: '/api/ypjs/cart/order', // 주문하기 컨트롤러 URL
                 contentType: 'application/json;charset=UTF-8',
                 data: JSON.stringify(cartListDtos),
                 success: function(response) {
                     console.log(response);
-                    location = "/ypjs/order/create";
+                    location = "/ypjs/order/createFromCart";
                 },
                 error: function(error) {
                     console.log(error);

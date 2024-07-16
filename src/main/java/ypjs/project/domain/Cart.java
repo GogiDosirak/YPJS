@@ -2,10 +2,12 @@ package ypjs.project.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "cart")
 @Getter
+@NoArgsConstructor
 public class Cart {
 
     @Id
@@ -30,20 +32,6 @@ public class Cart {
         this.itemCount = itemCount;
     }
 
-    //테스트용 생성자 3개
-    public Cart() {
-    }
-
-    public Cart(Long cartId) {
-        this.cartId = cartId;
-    }
-
-    public Cart(Long cartId, Member member, Item item, int itemCount) {
-        this.cartId = cartId;
-        this.member = member;
-        this.item = item;
-        this.itemCount = itemCount;
-    }
 
     public void updateItemCount(int itemCount) {
         this.itemCount = itemCount;

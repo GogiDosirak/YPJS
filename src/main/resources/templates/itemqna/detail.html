@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+</head>
+<body>
+
+<script src="/js/itemQna.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+
+            <!--링크-->
+            <div class="row">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-chevron-right me-1" style="font-size: 0.65rem !important; color: #bfbfbf;"></i>
+                    <a href="/ypjs/itemqna/list/my" class="custom-link fw-bold" style="font-size: 0.75rem !important; color: #bfbfbf !important;"> 상품문의 내역</a>
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">상품문의 상세</h2>
+
+                <input type="hidden" id="itemQnaId" th:value="${itemQnaId}">
+
+                <div class="mb-3 row">
+                    <label for="status" class="col-sm-2 col-form-label">처리상태</label>
+                    <div class="col-sm-10 pt-1">
+                        <span class="btn btn-success" id="status" th:text="${itemQna.status}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="itemId" class="col-sm-2 col-form-label">상품명</label>
+                    <div class="col-sm-10 pt-2">
+                        <a href="#" class="custom-link fw-bold" id="itemId" th:text="${itemQna.itemName}"></a>
+                    </div>
+                </div>
+
+                <div class="mb-3 row align-items-center">
+                    <div class="col-sm-2">
+                        <label for="qCreated" class="col-form-label">작성일</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="qCreated" th:value="${#temporals.format(itemQna.qCreated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label for="question" class="col-sm-2 col-form-label">문의 내용</label>
+                    <div class="col-sm-10">
+                        <textarea rows="3" class="form-control" id="question" th:text="${itemQna.question}" readonly></textarea>
+                    </div>
+                </div>
+
+                <div th:if="${itemQna.answer != null}">
+                    <div class="mb-3 row align-items-center">
+                        <div class="col-sm-2">
+                            <label for="qCreated" class="col-form-label">답변일</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="aCreated" th:value="${#temporals.format(itemQna.aCreated, 'yyyy-MM-dd  |  hh:mm')}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="answer" class="col-sm-2 col-form-label">문의 답변</label>
+                        <div class="col-sm-10">
+                            <textarea rows="3" class="form-control" id="answer" th:text="${itemQna.answer}" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            </div>
+        </div>
+    </div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

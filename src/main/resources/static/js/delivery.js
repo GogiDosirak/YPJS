@@ -44,24 +44,24 @@ $(document).ready(function() {
                     </div>
                     <div class="progress-icons d-flex align-content-center justify-content-between p-5">
                         <div class="text-center">
-                            <i class="fas fa-box fa-2x" style="color: ${trackLog.status === '집화처리' ? '#74a974' : ''};"></i>
-                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '집화처리' ? '#74a974' : ''};">상품인수</p>
+                            <i class="fas fa-box fa-2x" style="color: ${trackLog.status === 'at_pickup' ? '#74a974' : ''};"></i>
+                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === 'at_pickup' ? '#74a974' : ''};">상품인수</p>
                         </div>
                         <div class="text-center">
-                            <i class="fas fa-truck-moving fa-2x" style="color: ${trackLog.status === '간선상차' ? '#74a974' : ''};"></i>
-                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '간선상차' ? '#74a974' : ''};">상품이동중</p>
+                            <i class="fas fa-truck-moving fa-2x" style="color: ${trackLog.status === 'in_transit' ? '#74a974' : ''};"></i>
+                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === 'in_transit' ? '#74a974' : ''};">상품이동중</p>
                         </div>
                         <div class="text-center">
-                            <i class="fas fa-warehouse fa-2x" style="color: ${trackLog.status === '간선하차' ? '#74a974' : ''};"></i>
-                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '간선하차' ? '#74a974' : ''};">배송지도착</p>
+                            <i class="fas fa-warehouse fa-2x" style="color: ${trackLog.status === '-' ? '#74a974' : ''};"></i>
+                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '-' ? '#74a974' : ''};">배송지도착</p>
                         </div>
                         <div class="text-center">
-                            <i class="fas fa-shipping-fast fa-2x" style="color: ${trackLog.status === '배송출발' ? '#74a974' : ''};"></i>
-                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '배송출발' ? '#74a974' : ''};">배송출발</p>
+                            <i class="fas fa-shipping-fast fa-2x" style="color: ${trackLog.status === 'out_for_delivery' ? '#74a974' : ''};"></i>
+                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === 'out_for_delivery' ? '#74a974' : ''};">배송출발</p>
                         </div>
                         <div class="text-center">
-                            <i class="fas fa-check-circle fa-2x" style="color: ${trackLog.status === '배송완료' ? '#74a974' : ''};"></i>
-                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === '배송완료' ? '#74a974' : ''};">배송완료</p>
+                            <i class="fas fa-check-circle fa-2x" style="color: ${trackLog.status === 'delivered' ? '#74a974' : ''};"></i>
+                            <p class="mt-2 mb-0 fw-bold" style="color: ${trackLog.status === 'delivered' ? '#74a974' : ''};">배송완료</p>
                         </div>
                     </div>
                     <div class="timeline">`;
