@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="frame/header :: head">
+</head>
+<body>
+<script src="/js/cart.js"></script>
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+            <div class="row">
+                <h1 class="h2 pb-4 fw-bold">장바구니</h1>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+                <div>
+                    <button type="button" class="btn btn-sm btn-primary me-2" id="selectAllCheck">전체 선택</button>
+                    <button type="button" class="btn btn-sm btn-secondary" id="deselectAllCheck">전체 해제</button>
+                </div>
+            </div>
+
+            <ul class="list-group rounded-0">
+                <li th:each="cart, iterStat : ${cartList}" class="list-group-item d-flex flex-row justify-content-between align-items-center">
+
+                    <input type="hidden" th:value="${cart.cartId}" th:id="${'cartId_' + iterStat.index}">
+
+                    <div class="d-flex align-items-center justify-content-center ms-2">
+                        <input class="form-check-input" type="checkbox" th:value="${cart.itemId}" th:id="${'itemId_' + iterStat.index}">
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-center">
+                        <div class="card product-wap rounded-0" style="max-width: 80%;">
+                            <div class="card rounded-0">
+                                <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                    <ul class="list-unstyled">
+                                        <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                            <h3 th:text="${cart.itemName}" th:id="'itemName_' + ${iterStat.index}"></h3>
+                            <p th:text="${cart.itemContent}" th:id="'itemContent_' + ${iterStat.index}"></p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <label class="me-4">수량</label>
+                            <input type="number" class="form-control form-control-sm item-count" style="width: 40%;"
+                                   th:id="'itemCount_' + ${iterStat.index}" th:value="${cart.itemCount}" min="1">
+                            <input type="hidden" th:value="${cart.itemPrice}" th:id="${'itemPrice_' + iterStat.index}">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="d-flex justify-content-center">
+                            <span th:text="${cart.itemCount * cart.itemPrice}" th:id="'itemTotalPrice_' + ${iterStat.index}"
+                                  class="total-price"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="d-flex justify-content-center">
+                            <a class="custom-link" th:id="${cart.cartId}">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <br>
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-success btn-lg" id="btn-order">주문하기</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+<!--Thymeleaf에서 변수를 JavaScript로 전달할 때 사용하는 문법-->
+<script th:inline="javascript">
+    var cartSize = /*[[${cartList.size()}]]*/ 0;
+</script>
+
+</body>
+</html>

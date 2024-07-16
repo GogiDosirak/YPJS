@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:replace="frame/header :: head">
+    <title>Zay Shop - Product Listing Page</title>
+</head>
+<body>
+
+<script src="/js/order.js"></script>
+<!-- 주소찾기api -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="/js/addressapi.js"></script>
+
+
+<!--header-->
+<header th:replace="frame/header :: header"></header>
+
+<!-- Start Content -->
+<div class="container py-5 px-5 mx-auto">
+    <div class="row align-items-center justify-content-center">
+        <div class="col-lg-10">
+            <div class="row">
+                <h2 class="h2 pb-4 fw-bold">주문</h2>
+            </div>
+
+            <div class="card">
+
+                <!-- 배송 정보 표시 -->
+                <div class="card-body mt-2">
+                    <h4>배송지 정보</h4>
+                    <br>
+
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <h6>받으실 분 :</h6>
+                        </li>
+                        <li class="list-inline-item me-5">
+                            <p class="text" id="receiver" th:text="${delivery.receiver}"></p>
+                        </li>
+
+                        <li class="list-inline-item">
+                            <h6>연락처 :</h6>
+                        </li>
+                        <li class="list-inline-item">
+                            <p class="text" id="phoneNumber" th:text="${delivery.phoneNumber}"></p>
+                        </li>
+                    </ul>
+
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <h6>주소 :</h6>
+                        </li>
+                        <li class="list-inline-item">
+                            <p class="text" id="zipcode" th:text="${delivery.address.zipcode}"></p>
+                        </li>
+                        <li class="list-inline-item">
+                            <p class="text" id="address" th:text="${delivery.address.address}"></p>
+                        </li>
+                        <li class="list-inline-item me-5">
+                            <p class="text" id="addressDetail" th:text="${delivery.address.addressDetail}"></p>
+                        </li>
+                        <li class="list-inline-item">
+                            <button type="button" id="openDeliveryModal" class="btn btn-success btn-sm">배송지 입력</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <hr style="margin: 0;">
+
+                <!-- 주문상품 표시 시작-->
+                <div class="accordion accordion-flush">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                    <h4 class="mb-0">주문상품</h4>
+                                    <div class="col-md-5"></div>
+                                    <div th:if="${#lists.size(cartList) > 1}">
+                                        <ul class="list-inline mb-0">
+                                                <li class="list-inline-item">
+                                                    <span th:text="${accSummary}" th:id="accSummary"></span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <span>외</span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <span th:text="${accCount}" th:id="accCount"></span>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <span>개</span>
+                                                </li>
+                                            </ul>
+                                    </div>
+                                    <div th:if="${#lists.size(cartList) == 1}">
+                                        <ul class="list-inline mb-0">
+                                            <li class="list-inline-item">
+                                                <span th:text="${accSummary}" th:id="accSummary"></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <ul class="list-group rounded-0">
+                                    <li th:each="cart, iterStat : ${cartList}" class="list-group-item d-flex flex-row justify-content align-items-center">
+
+                                        <input type="hidden" th:value="${cart.itemId}" th:id="${'itemId_' + iterStat.index}">
+
+                                        <div class="col-md-2 d-flex justify-content-center">
+                                            <div class="card product-wap rounded-0" style="max-width: 80%;">
+                                                <div class="card rounded-0">
+                                                    <img class="card-img rounded-0 img-fluid" th:src="@{/img/shop_01.jpg}" id="itemFilepath">
+                                                    <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                                        <ul class="list-unstyled">
+                                                            <li><a class="btn btn-success text-white mt-2" th:href="@{/shop-single.html}" id="viewButton"><i class="far fa-eye"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="row">
+                                                    <span th:text="${cart.itemName}" th:id="'itemName_' + ${iterStat.index}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item">
+                                                        <span>수량</span>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <span class="item-count" th:text="${cart.itemCount}" th:id="'itemCount_' + ${iterStat.index}"></span>
+                                                    </li>
+                                                </ul>
+                                        </div>
+
+                                        <input type="hidden" th:value="${cart.itemPrice}" th:id="${'itemPrice_' + iterStat.index}">
+
+                                        <div class="col-md-2">
+                                            <div class="d-flex justify-content-center">
+                                                <ul class="list-inline mb-0">
+                                                    <li class="list-inline-item">
+                                                        <span th:text="${cart.itemCount * cart.itemPrice}" th:id="'itemTotalPrice_' + ${iterStat.index}"></span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 주문상품 표시 끝-->
+
+                <!-- 결제금액 표시 -->
+                <div class="card-body mt-2">
+                    <div class="row">
+                        <div class="col-8">
+                            <h4>총 주문금액</h4>
+                        </div>
+                        <div class="col-4">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item ms-5">
+                                    <h4 th:text="${totalOrderPrice}" th:id="totalOrderPrice"></h4>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center mt-5">
+                <button type="button" class="btn btn-success btn-lg" id="btn-create">결제하기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Content -->
+
+<!-- 배송 모달 시작 -->
+<div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deliveryModalLabel">배송지 입력</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group mb-3">
+                        <label for="modalReceiver">받으실 분:</label>
+                        <input type="text" class="form-control" id="modalReceiver">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="modalPhoneNumber">연락처:</label>
+                        <input type="text" class="form-control" id="modalPhoneNumber">
+                    </div>
+                    <fieldset>
+                        <div class="form-group row">
+                            <label for="modalZipcode">주소:</label>
+                            <div class="col-sm-8 mb-3 mb-sm-0">
+                                <input type="text" class="form-control form-control-user" id="modalZipcode" name="modalZipcode"
+                                       placeholder="우편번호" readonly="readonly">
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-secondary btn-user btn-block" onclick="execPostCode();">
+                                    <i class="fa fa-search"></i>주소찾기
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-user" id="modalAddress" name="modalAddress"
+                                   placeholder="도로명 주소" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control form-control-user" id="modalAddressDetail"
+                                   placeholder="상세 주소">
+
+                            <small id="modalAddressDetailError" class="text-danger"></small>
+                            <script>
+                                const modalAddressDetailInput = document.getElementById('modalAddressDetail');
+                                const modalAddressDetailError = document.getElementById('modalAddressDetailError');
+
+                                modalAddressDetailInput.addEventListener('input', function(event) {
+                                    // 정규표현식을 사용하여 휴대전화번호 유효성 검사
+                                    const modalAddressDetailRegex = /^\S.*$/; // 1글자 이상, 공백 허용, 공백만 입력은 불가
+
+                                    if (!modalAddressDetailRegex
+                                            .test(modalAddressDetailInput.value)) {
+                                        modalAddressDetailError.textContent = '상세주소를 입력해주세요.';
+                                    } else {
+                                        modalAddressDetailError.textContent = ''; // 에러 메시지 초기화
+                                    }
+                                });
+                            </script>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-success" id="btn-saveDelivery">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 배송 모달 끝 -->
+
+<!--footer-->
+<footer th:replace="frame/footer :: footer"></footer>
+
+</body>
+
+</html>

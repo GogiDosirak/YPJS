@@ -12,7 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.enums.ItemQnaStatus;
 import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
-import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
+import ypjs.project.dto.itemqnadto.ItemQnaDetailDto;
+import ypjs.project.dto.itemqnadto.ItemQnaSimpleDto;
+import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
 
@@ -47,7 +49,7 @@ public class ItemQnaServiceTest {
 
         System.out.println("***itemQnaId: " + itemQnaId);
 
-        ItemQnaResponseDto findI = itemQnaService.finById(itemQnaId);
+        ItemQnaDetailDto findI = itemQnaService.findOne(itemQnaId);
 
         /*Then*/
         //실패시
@@ -68,9 +70,9 @@ public class ItemQnaServiceTest {
     public void  상품문의내역조회() throws Exception {
         Pageable pageable = PageRequest.of(1, 5);
 
-        List<ItemQnaResponseDto> iQs = itemQnaService.findAllByItemId(1L,pageable);
+        List<ItemQnaSimpleDto> iQs = itemQnaService.findAllByItemId(1L,pageable);
 
-        for(ItemQnaResponseDto iQ : iQs) {
+        for(ItemQnaSimpleDto iQ : iQs) {
             System.out.println(iQ);
         }
     }

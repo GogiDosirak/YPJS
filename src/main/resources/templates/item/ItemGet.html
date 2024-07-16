@@ -6,6 +6,9 @@
 </head>
 
 <script src="/js/item/itemRatings.js"></script>
+<script src="/js/cart.js"></script>
+<script src="/js/order.js"></script>
+
 
 <body>
 <!--header-->
@@ -76,7 +79,7 @@
 <div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
     <div class="row">
         <div class="col-lg-7 offset-lg-1">
-            <h1 class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
+            <h1 id="itemName" class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
             <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
             <span class="font-weight-bold">원</span>
             <p class="h3 py-2"></p>
@@ -177,14 +180,13 @@
 
 <div class="row pb-3">
     <div class="col d-grid">
-        <button type="submit" class="btn btn-success btn-md" name="submit" value="buy">Buy</button>
+        <button class="btn btn-success btn-sm" id="btn-orderItem">구매하기</button>
     </div>
     <div class="col d-grid">
-        <button type="submit" class="btn btn-success btn-md" name="submit" value="addtocard">Add To Cart</button>
+        <button class="btn btn-success btn-sm" id="btn-addCartFromItemDetail">장바구니</button>
     </div>
 </div>
 
-</form>
 
 
                     </div>

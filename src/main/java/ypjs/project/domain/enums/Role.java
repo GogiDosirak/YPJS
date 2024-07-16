@@ -1,5 +1,5 @@
 package ypjs.project.domain.enums;
 
 public enum Role {
-    ADMINISTER, CUSTOMER
+    ROLE_ADMIN, ROLE_CUSTOMER
 }

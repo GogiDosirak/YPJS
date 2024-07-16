@@ -10,11 +10,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ypjs.project.dto.deliverydto.DeliveryDto;
-import ypjs.project.dto.orderdto.OrderItemDto;
+import ypjs.project.domain.Address;
+import ypjs.project.domain.Order;
+import ypjs.project.domain.enums.OrderStatus;
+import ypjs.project.dto.deliverydto.DeliveryCreateDto;
+import ypjs.project.dto.orderdto.OrderCreateDto;
+import ypjs.project.dto.orderdto.OrderItemRequestDto;
+import ypjs.project.dto.orderdto.OrderResponseDto;
+import ypjs.project.dto.orderdto.OrderSearchDto;
+import ypjs.project.repository.OrderRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -35,17 +44,17 @@ public class OrderServiceTest {
 
         //배송정보
         Address address = new Address("주소", "상세", "12345");
-        DeliveryDto d = new DeliveryDto("A", "01012345678", address);
+        DeliveryCreateDto d = new DeliveryCreateDto("A", "01012345678", address);
 
         //주문상품리스트
-        List<OrderItemDto> orderItems = new ArrayList<>();
-        orderItems.add(new OrderItemDto(1L, 1));
+        List<OrderItemRequestDto> orderItems = new ArrayList<>();
+        orderItems.add(new OrderItemRequestDto(1L, 1, 1000));
 
         //주문DTO생성
-        OrderCreateDto o = new OrderCreateDto(memberId, d, orderItems);
+        OrderCreateDto o = new OrderCreateDto(d, orderItems);
 
         /*When*/
-        Long orderId = orderService.create(o);
+        Long orderId = orderService.create(1L, o);
 
         /*Then*/
         Order findOrder = orderRepository.findOne(orderId);
@@ -64,7 +73,7 @@ public class OrderServiceTest {
     public void  주문내역조회() throws Exception {
         Pageable pageable = PageRequest.of(1,5);
 
-        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L, pageable, "");
+        List<OrderResponseDto> orders = orderService.findAllByMemberId(1L, pageable, new OrderSearchDto());
 
         for(OrderResponseDto o : orders) {
             System.out.println(o);

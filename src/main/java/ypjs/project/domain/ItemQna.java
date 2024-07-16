@@ -1,7 +1,9 @@
 package ypjs.project.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.enums.ItemQnaStatus;
 
 import java.time.LocalDateTime;
@@ -9,10 +11,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "item_qna")
 @Getter
+@NoArgsConstructor
 public class ItemQna {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_qna_id")
     private Long itemQnaId;  //상품문의번호
 
@@ -46,26 +49,30 @@ public class ItemQna {
     @Column(name = "item_qna_a_updated")
     private LocalDateTime aUpdated;  //상품문의답변수정일시
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_qna_status")
     private ItemQnaStatus status;  //상품문의상태
 
 
     //==생성자==//
-    public ItemQna(Item item, Member qMember, String q) {
+    public ItemQna(Item item, Member qMember, String question) {
         this.item = item;
         this.qMember = qMember;
-        this.q = q;
+        this.q = question;
         this.qCreated = LocalDateTime.now();
         this.status = ItemQnaStatus.PENDING;
     }
 
     //==메서드==//
-    //답변 작성
+    //답변 작성 및 수정
     public void answer(Member aMember, String a) {
         this.aMember = aMember;
         this.a = a;
-        this.aCreated = LocalDateTime.now();
+        if(aCreated == null) {
+            this.aCreated = LocalDateTime.now();
+        } else {
+            this.aUpdated = LocalDateTime.now();
+        }
         this.status = ItemQnaStatus.ANSWERED;
     }
 
@@ -75,10 +82,5 @@ public class ItemQna {
         this.qUpdated = LocalDateTime.now();
         this.status = ItemQnaStatus.PENDING;
     }
-    //답변 수정
-    public void updateA(String a) {
-        this.a = a;
-        this.aUpdated = LocalDateTime.now();
-        this.status = ItemQnaStatus.ANSWERED;
-    }
+
 }
