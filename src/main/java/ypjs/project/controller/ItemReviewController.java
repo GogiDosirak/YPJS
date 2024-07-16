@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemReview;
+import ypjs.project.domain.Page;
 import ypjs.project.dto.itemdto.ItemReviewDto;
 import ypjs.project.dto.itemdto.ItemReviewListDto;
 import ypjs.project.service.ItemReviewService;

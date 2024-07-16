@@ -41,12 +41,12 @@ public class ItemQnaDetailDto {
         itemQnaId = itemQna.getItemQnaId();
         itemId = itemQna.getItem().getItemId();
         itemName = itemQna.getItem().getItemName();
-        qMemberAccountId = itemQna.getQMember().getAccountId();
+        qMemberAccountId = itemQna.getQMember().getUsername();
         question = itemQna.getQ();
         qCreated = itemQna.getQCreated();
         qUpdated = itemQna.getQUpdated();
         if(itemQna.getAMember() != null) {
-            aMemberAccountId = itemQna.getAMember().getAccountId();
+            aMemberAccountId = itemQna.getAMember().getUsername();
         }
         answer = itemQna.getA();
         aCreated = itemQna.getACreated();

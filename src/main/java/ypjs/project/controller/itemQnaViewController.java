@@ -124,7 +124,7 @@ public class itemQnaViewController {
         ItemQnaDetailDto itemQna = itemQnaService.findOne(itemQnaId);
         model.addAttribute("itemQna", itemQna);
         Member m = memberService.findOne(1L);  //임시
-        model.addAttribute("aMemberAccountId",m.getAccountId());
+        model.addAttribute("aMemberAccountId",m.getUsername());
         model.addAttribute("aMemberId", m.getMemberId());
         return "itemqna/answer";
     }

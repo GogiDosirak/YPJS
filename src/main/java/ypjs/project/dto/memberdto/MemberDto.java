@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import ypjs.project.domain.Address;
 import ypjs.project.domain.enums.Role;
 
 import java.sql.Date;
