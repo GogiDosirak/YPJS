@@ -8,10 +8,7 @@ import org.springframework.util.StringUtils;
 import ypjs.project.domain.Item;
 import ypjs.project.domain.ItemQna;
 import ypjs.project.domain.Member;
-import ypjs.project.dto.itemqnadto.ItemQnaAnswerDto;
-import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
-import ypjs.project.dto.itemqnadto.ItemQnaResponseDto;
-import ypjs.project.dto.itemqnadto.ItemQnaUpdateDto;
+import ypjs.project.dto.itemqnadto.*;
 import ypjs.project.repository.ItemQnaRepository;
 import ypjs.project.repository.ItemRepository;
 import ypjs.project.repository.MemberRepository;
@@ -48,31 +45,53 @@ public class ItemQnaService {
 
         itemQnaRepository.save(itemQna);
 
-        return itemQna.getItemQnaId();
+        return itemQna.getItem().getItemId();
 
     }
 
     //==조회==//
-    public ItemQnaResponseDto findOne(Long id) {
-        ItemQna itemQna = itemQnaRepository.findOne(id);
-        return new ItemQnaResponseDto(itemQna);
+    public ItemQnaDetailDto findOne(Long itemId) {
+        ItemQna itemQna = itemQnaRepository.findOne(itemId);
+        return new ItemQnaDetailDto(itemQna);
     }
 
-    public List<ItemQnaResponseDto> findAllByItemId(Long itemId, Pageable pageable) {
+    public List<ItemQnaSimpleDto> findAllByItemId(Long itemId, Pageable pageable) {
         List<ItemQna> itemQnas = itemQnaRepository.findAllByItemId(itemId, pageable);
 
         return itemQnas.stream()
-                .map(iQ -> new ItemQnaResponseDto(iQ))
+                .map(iQ -> new ItemQnaSimpleDto(iQ))
                 .collect(toList());
     }
 
-    public List<ItemQnaResponseDto> findAllByMemberId(Long memberId, Pageable pageable) {
+    public List<ItemQnaSimpleDto> findAllByMemberId(Long memberId, Pageable pageable) {
         List<ItemQna> itemQnas = itemQnaRepository.findAllByMemberId(memberId, pageable);
 
         return itemQnas
                 .stream()
-                .map(ItemQnaResponseDto::new)
+                .map(ItemQnaSimpleDto::new)
                 .collect(toList());
+    }
+
+    public List<ItemQnaDetailDto> findAll(Pageable pageable) {
+        List<ItemQna> itemQnas = itemQnaRepository.findAll(pageable);
+
+        return itemQnas
+                .stream()
+                .map(ItemQnaDetailDto::new)
+                .collect(toList());
+    }
+
+    //==개수 조회==//
+    public int countAll() {
+        return itemQnaRepository.countAll();
+    }
+
+    public int countByItemId(Long itemId) {
+        return itemQnaRepository.countByItemId(itemId);
+    }
+
+    public int countByMemberId(Long memberId) {
+        return itemQnaRepository.countByMemberId(memberId);
     }
 
     //==답변 작성==//
@@ -85,23 +104,6 @@ public class ItemQnaService {
         Member member = memberRepository.findOne(itemQnaAnswerDto.getMemberId());
 
         itemQna.answer(member, itemQnaAnswerDto.getAnswer());
-
-    }
-
-
-    //==문의 내용 수정==//
-    @Transactional
-    public void update(ItemQnaUpdateDto itemQnaUpdateDto) {
-        //상품문의정보 조회
-        ItemQna itemQna = itemQnaRepository.findOne(itemQnaUpdateDto.getItemQnaId());
-
-        if(StringUtils.hasText(itemQnaUpdateDto.getQuestion()) && !StringUtils.hasText(itemQnaUpdateDto.getAnswer())) {
-            //질문 수정
-            itemQna.updateQ(itemQnaUpdateDto.getQuestion());
-        } else if(!StringUtils.hasText(itemQnaUpdateDto.getQuestion()) && StringUtils.hasText(itemQnaUpdateDto.getAnswer())) {
-            //답변 수정
-            itemQna.updateA(itemQnaUpdateDto.getAnswer());
-        }
 
     }
 
