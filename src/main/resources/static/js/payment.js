@@ -64,7 +64,7 @@ $(document).ready(function() {
     // 결제 취소 눌렀을 때 처리 로직
     $('.cancel-button').click(function(event) {
         event.preventDefault();
-        var payId = $(this).siblings('input[type=hidden]').data('pay-id');
+        var payId = $('#payId').val();
         $.ajax({
             url: '/api/ypjs/payment/cancel/' + payId,
             type: 'DELETE',
