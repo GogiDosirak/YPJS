@@ -58,11 +58,14 @@ let memberObject = {
 
         console.log("Sending login request with:", loginForm);
 
+        // loginForm 객체를 URL-encoded 문자열로 변환
+        var formData = $.param(loginForm);
+
         $.ajax({
             type: "POST",
-            url: "/api/ypjs/member/login",
-            data: JSON.stringify(loginForm),
-            contentType: "application/json; charset=utf-8"
+            url: "/login",
+            data: formData, // URL-encoded 데이터
+            contentType: "application/x-www-form-urlencoded; charset=utf-8" // 컨텐츠 타입을 변경
         }).done(function(response) {
             console.log("Login successful:", response);
             location.href = "/";
