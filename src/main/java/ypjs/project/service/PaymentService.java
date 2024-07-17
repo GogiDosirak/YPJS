@@ -210,5 +210,13 @@ public class PaymentService {
         }
     }
 
+    //OrderDetail 용 결제 내역 찾는 메서드
+    @Transactional
+    public PaymentDto.PaymentForOrderDetailDto PaymentForOrderDetail (Long orderId){
+
+        ypjs.project.domain.Payment payment = paymentRepository.findByOrderId(orderId);
+
+        return new PaymentDto.PaymentForOrderDetailDto(payment);
+    }
 
 }

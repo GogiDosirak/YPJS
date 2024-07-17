@@ -54,7 +54,7 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <!-- 주문 상태가 'OK' 일때만 버튼 표시 -->
-                                    <input type="hidden" th:value="${payment.payId}" th:data-pay-id="${payment.payId}">
+                                    <input type="hidden" id="payId" th:value="${payment.payId}">
                                     <button class="btn btn-danger cancel-button" th:if="${payment.payStatus.name() == 'OK'}">주문 취소</button>
                                 </div>
                             </div>
