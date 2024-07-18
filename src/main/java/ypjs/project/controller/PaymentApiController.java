@@ -27,7 +27,6 @@ public class PaymentApiController {
     private final PaymentService paymentService;
     private final MemberService memberService;
 
-
     //결제응답//결제요청은 OrderController create-> order.js
     //응답 엔티티
     @PostMapping("/payment")
@@ -64,9 +63,10 @@ public class PaymentApiController {
     @PostMapping("/fail-payment")
     public ResponseEntity<String> handlePaymentFailure(@RequestBody PaymentDto.FailPaymentDto failPaymentDTO) {
 
-        String errorMessage = paymentService.deleteOrderAndPayment(failPaymentDTO);
+        //payment 삭제
+        paymentService.deletePayment(failPaymentDTO);
 
-        System.out.println(errorMessage);
+        System.out.println(failPaymentDTO.getErrorMessage());
 
         return ResponseEntity.ok("중단된 결제 관련 정보를 삭제했습니다.");
     }
