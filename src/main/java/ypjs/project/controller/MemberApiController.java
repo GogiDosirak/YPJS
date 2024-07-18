@@ -33,7 +33,7 @@ public class MemberApiController {
     public MemberDto.UpdateMemberResponse updateMember (@PathVariable("memberId") Long memberId,
                                                         @RequestBody @Valid MemberDto.UpdateMemberRequest request,
                                                         HttpSession session)  {
-        Member member = memberService.update(request);
+        Member member = memberService.update(request, memberId);
         session.setAttribute("member",member); // 수정할 시 session에 정보 업데이트
         return new MemberDto.UpdateMemberResponse(member.getMemberId(), member.getUsername());
     }
@@ -52,7 +52,7 @@ public class MemberApiController {
     // 회원탈퇴
     @PutMapping("/api/ypjs/member/withdrawal/{memberId}")
     public MemberDto.WithdrawalMemberResponse withdraw(@PathVariable("memberId") Long memberId) {
-        memberService.witrdraw(memberId);
+        memberService.withdraw(memberId);
         return new MemberDto.WithdrawalMemberResponse(memberId);
     }
 
