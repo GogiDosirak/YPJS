@@ -48,15 +48,15 @@ public class MemberService {
 
     // 멤버 수정
     @Transactional
-    public Member update(MemberDto.UpdateMemberRequest updateMemberRequest) {
-        Member member = memberRepository.findOne(updateMemberRequest.getMemberId());
+    public Member update(MemberDto.UpdateMemberRequest updateMemberRequest, Long memberId) {
+        Member member = memberRepository.findOne(memberId);
         member.updateMember(updateMemberRequest.getPassword(), updateMemberRequest.getNickname());
         return member;
     }
 
     // 멤버 탈퇴
     @Transactional
-    public void witrdraw(Long memberId) {
+    public void withdraw(Long memberId) {
         Member member = memberRepository.findOne(memberId);
         member.withdrawMember();
     }

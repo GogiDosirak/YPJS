@@ -63,7 +63,6 @@ public class MemberDto {
 
     @Data
     public static class UpdateMemberRequest {
-        private Long memberId;
         private String password;
         private String nickname;
     }
