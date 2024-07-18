@@ -1,5 +1,6 @@
 package ypjs.project.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import ypjs.project.domain.ItemReview;
 import ypjs.project.domain.Page;
 import ypjs.project.dto.itemdto.ItemReviewDto;
 import ypjs.project.dto.itemdto.ItemReviewListDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
 import ypjs.project.service.MemberService;
@@ -41,7 +43,7 @@ public class ItemReviewController {
 
     //아이템 당 리뷰조회
     @GetMapping("/ypjs/itemReview/get/{itemId}")
-    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model,
+    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model, HttpSession session,
                                    @RequestParam(value = "page",defaultValue = "0") int page,
                                    @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
                                    @RequestParam(value = "size",defaultValue = "10") int size) {
@@ -51,11 +53,14 @@ public class ItemReviewController {
 
         itemService.findOneItem(itemId);
 
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+
         List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable, sortBy);
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
+        model.addAttribute("loginMemberId", responseLogin.getMemberId());
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
