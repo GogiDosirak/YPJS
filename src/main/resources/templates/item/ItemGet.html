@@ -8,6 +8,7 @@
 <script src="/js/item/itemRatings.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/order.js"></script>
+<script th:src="@{/js/like.js}"></script>
 
 
 <body>
@@ -79,7 +80,26 @@
 <div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
     <div class="row">
         <div class="col-lg-7 offset-lg-1">
-            <h1 id="itemName" class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
+<!--            <h1 id="itemName" class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>-->
+<!--            &lt;!&ndash; 좋아요 버튼 시작 &ndash;&gt;-->
+<!--            &lt;!&ndash; 맴버아이디 하드코딩 &ndash;&gt;-->
+<!--            <input type="hidden" id="memberId" th:value="1">-->
+<!--            <button class="like-button btn btn-success text-white">-->
+<!--                <i class="fas fa-heart"></i>-->
+<!--            </button>-->
+<!--            &lt;!&ndash; 좋아요 버튼 끝 &ndash;&gt;-->
+            <div style="display: flex; align-items: center;">
+                <h1 id="itemName" class="h2 font-weight-bold" th:text="${item.itemName}" style="margin-bottom: 0; margin-right: 10px; line-height: 1.2;"></h1>
+                <!-- 좋아요 버튼 시작 -->
+                <!-- 맴버아이디 하드코딩 -->
+                <input type="hidden" id="memberId" th:value="${memberId}">
+                <button class="like-button btn btn-success text-white">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <!-- 좋아요 버튼 끝 -->
+            </div>
+
+            <br>
             <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
             <span class="font-weight-bold">원</span>
             <p class="h3 py-2"></p>
