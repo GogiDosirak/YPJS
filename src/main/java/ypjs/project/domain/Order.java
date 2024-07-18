@@ -43,6 +43,13 @@ public class Order {
     @Column(name = "order_status")
     private OrderStatus status;  //주문상태
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Payment payment;
+
+    @Column(name = "order_uid")
+    private String orderUid;
+
 
     //==연관관계 메서드==//
     private void setDeliveryOrder(Delivery delivery) {
@@ -66,16 +73,6 @@ public class Order {
             orderItem.cancel();
         }
     }
-
-
-    //연관관계 메서드
-    @JsonIgnore
-    @OneToOne(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Payment payment;
-
-
-    @Column(name = "order_uid")
-    private String orderUid;
 
 
     //==생성 메서드==//
