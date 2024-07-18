@@ -61,6 +61,7 @@ public class ItemReviewController {
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
         model.addAttribute("loginMemberId", responseLogin.getMemberId());
+        model.addAttribute("loginMemberRole", responseLogin.getRole());
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
