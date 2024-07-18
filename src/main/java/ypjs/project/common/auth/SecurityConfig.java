@@ -58,6 +58,7 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/**").permitAll()  //todo: 테스트용 추후 삭제
                         .requestMatchers("/login","/index","/","/api/**","/ypjs/**","/reissue").permitAll()
                         .requestMatchers("/css/**", "/img/**", "/js/**", "/webfonts/**").permitAll()
                         .requestMatchers("/admin").hasAnyRole("ADMIN")
