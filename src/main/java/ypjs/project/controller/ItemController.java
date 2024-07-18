@@ -55,6 +55,10 @@ public class ItemController {
         int reviewCount = itemReviewService.countAllItemReview(itemId);
         model.addAttribute("reviewCount", reviewCount);
 
+        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+        Long memberId = 1L;
+        model.addAttribute("memberId", memberId);
+
         return "item/itemGet";
 
     }
@@ -99,6 +103,10 @@ public class ItemController {
         List<Category> parentCategories = categoryService.findParentCategories();
         model.addAttribute("parentCategories", parentCategories);
 
+        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+        Long memberId = 1L;
+        model.addAttribute("memberId", memberId);
+
         model.addAttribute("items",items);
         model.addAttribute("category", category);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
@@ -138,12 +146,17 @@ public class ItemController {
         List<Category> parentCategories = categoryService.findParentCategories();
         model.addAttribute("parentCategories", parentCategories);
 
+        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+        Long memberId = 1L;
+        model.addAttribute("memberId", memberId);
+
         model.addAttribute("items", items);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("keyword", keyword); //검색조건 유지
         model.addAttribute("page",page); //페이징
         model.addAttribute("size",size); //페이징
         model.addAttribute("totalPages", totalPages); //총 페이지 수
+
 
 
         return "item/itemList";

@@ -122,11 +122,16 @@
                                             상세보기
                                         </a>
                                     </div>
+
+
+
+
                                     <!-- 주문 내역 -->
                                     <ul class="list-group rounded-0">
                                         <li th:each="item, itemIndex : ${order.orderItems}" class="list-group-item d-flex flex-row justify-content align-items-center">
 
                                             <input type="hidden" th:value="${item.itemId}" th:id="${'itemId_' + itemIndex.index}">
+
 
                                             <div class="col-md-2 d-flex justify-content-center">
                                                 <div class="card product-wap rounded-0" style="max-width: 50%;">
@@ -160,6 +165,7 @@
                                                 </ul>
                                             </div>
 
+
                                             <div class="col-md-2">
                                                 <div class="d-flex justify-content-center">
                                                     <ul class="list-inline mb-0">
@@ -169,8 +175,15 @@
                                                     </ul>
                                                 </div>
                                             </div>
+                                            <div class="d-flex justify-content-end mb-3">
+                                                <a class="btn btn-outline-success btn-sm" style="font-size: 1rem !important;"
+                                                   th:href="@{/ypjs/itemReview/post/{itemId}(itemId=${item.itemId})}">
+                                                    리뷰쓰기
+                                                </a>
+                                            </div>
                                         </li>
                                     </ul>
+
 
                                     <!-- 결제금액 표시 -->
                                     <div class="card-body mt-2 mb-0">

@@ -58,7 +58,7 @@ public class SecurityConfig {
         // 경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login","/index","/","/api/**","/ypjs/**","/reissue").permitAll()
+                        .requestMatchers("/**","/login","/index","/","/api/**","/ypjs/**","/reissue").permitAll()
                         .requestMatchers("/css/**", "/img/**", "/js/**", "/webfonts/**").permitAll()
                         .requestMatchers("/admin").hasAnyRole("ADMIN")
                         .anyRequest().authenticated());
@@ -82,4 +82,7 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
+
 }

@@ -17,7 +17,7 @@
 <!--header-->
 <header th:replace="frame/header :: header"></header>
 <script src="/js/item/itemRatingsGet.js"></script>
-
+<script th:src="@{/js/like.js}"></script>
 
 
 <div class="container py-5">
@@ -80,18 +80,24 @@
             <!-- 상품 목록 -->
             <div class="container-fluid mt-3">
                 <div class="row">
+                    <!-- items 리스트의 각 항목을 반복 -->
                     <div th:each="item : ${items}" class="col-md-4">
                         <div class="card mb-4 product-wap rounded-0">
-                            <!-- 제품 이미지 -->
                             <div class="card rounded-0">
+                                <!-- 제품 이미지 -->
                                 <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
                                     <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                        <!-- 추가적인 콘텐츠가 필요하다면 여기에 추가할 수 있습니다 -->
                                         <ul class="list-unstyled">
-                                            <!-- 리스트의 다른 요소들 -->
+                                            <input type="hidden" id="memberId" th:value="${memberId}">
+                                            <input type="hidden" id="itemId" th:value="${item.itemId}">
+                                            <button class="like-button btn btn-success text-white">
+                                                <i class="fas fa-heart"></i>
+                                            </button>
+
                                         </ul>
                                     </div>
+
                                 </a>
                             </div>
                             <!-- 제품 정보 -->
