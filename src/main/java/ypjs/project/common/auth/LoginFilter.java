@@ -104,8 +104,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(401);
     }
 
-    @Override
-    public void setFilterProcessesUrl(String filterProcessesUrl) {
-        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/ypjs/member/login"));
-    }
+//    @Override
+//    public void setFilterProcessesUrl(String filterProcessesUrl) {
+//        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/ypjs/member/login"));
+//    }
 }

@@ -19,22 +19,22 @@ import java.util.List;
 public class LoginApiController {
     private final MemberService memberService;
 
-//    // 세션버전 로그인
-//    @PostMapping("/api/ypjs/member/login")
-//    public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
-//        Long memberId = memberService.login(loginForm.getUsername(), loginForm.getPassword());
-//        Member member = memberService.findOne(memberId);
-//        LoginDto.ResponseLogin responseLogin = new LoginDto.ResponseLogin(member.getMemberId(),member.getUsername(), member.getNickname());
-//        HttpSession session = request.getSession();
-//        session.setAttribute("member", responseLogin);
-//        return "redirect:/";
-//    }
-
+    // 세션버전 로그인
     @PostMapping("/api/ypjs/member/login")
-    public String login(@RequestBody LoginForm loginForm) {
-        // 로그인 처리 로직
-        return "Login successful";
+    public String login(@RequestBody LoginForm loginForm, HttpServletRequest request) {
+        Long memberId = memberService.login(loginForm.getUsername(), loginForm.getPassword());
+        Member member = memberService.findOne(memberId);
+        LoginDto.ResponseLogin responseLogin = new LoginDto.ResponseLogin(member.getMemberId(),member.getUsername(), member.getNickname(), member.getRole());
+        HttpSession session = request.getSession();
+        session.setAttribute("member", responseLogin);
+        return "redirect:/";
     }
+
+//    @PostMapping("/api/ypjs/member/login")
+//    public String login(@RequestBody LoginForm loginForm) {
+//        // 로그인 처리 로직
+//        return "Login successful";
+//    }
 
 }
 
