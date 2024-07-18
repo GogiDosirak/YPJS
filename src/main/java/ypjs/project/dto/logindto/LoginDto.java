@@ -28,6 +28,7 @@ public class LoginDto {
         private Long memberId;
         private String username;
         private String nickname;
+        private Role role;
     }
 
 
