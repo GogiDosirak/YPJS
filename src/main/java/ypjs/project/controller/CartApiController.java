@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.cartdto.CartAddDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.cartdto.CartUpdateDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.CartService;
 
 import java.util.List;
@@ -27,8 +28,9 @@ public class CartApiController {
     public ResponseEntity add(@RequestBody @Valid CartAddDto cartAddDto, HttpServletRequest request) {
         System.out.println("**장바구니 추가 요청됨");
 
-        //임시 멤버 todo: **로그인 멤버 정보로 바꿔야 함
-        Long memberId = 1L;
+        HttpSession session = request.getSession();
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+        Long memberId = loginMember.getMemberId();
 
         for(Long itemId : cartService.findItemIdByMemberId(memberId)) {
             if(cartAddDto.getItemId().equals(itemId)) {

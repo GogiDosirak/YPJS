@@ -175,6 +175,17 @@ public class OrderRepository {
             jpql += " o.status = :orderStatus";
         }
 
+        //배송 상태 검색
+        if(orderSearchDto.getSearchDeliveryStatus() != null) {
+            if (isFirstCondition) {
+                jpql += " where";
+                isFirstCondition = false;
+            } else {
+                jpql += " and";
+            }
+            jpql += " o.delivery.status = :deliveryStatus";
+        }
+
         //주문 번호 검색
         if(orderSearchDto.getSearchOrderId() != null) {
             if (isFirstCondition) {
@@ -187,14 +198,14 @@ public class OrderRepository {
         }
 
         //주문 고객ID 검색
-        if(StringUtils.hasText(orderSearchDto.getSearchMemberAccountId())) {
+        if(StringUtils.hasText(orderSearchDto.getSearchMemberUserName())) {
             if (isFirstCondition) {
                 jpql += " where";
                 isFirstCondition = false;
             } else {
                 jpql += " and";
             }
-            jpql += " m.accountId like :accountId";
+            jpql += " m.username like :username";
         }
 
         //주문 상품명 검색
@@ -225,11 +236,14 @@ public class OrderRepository {
         if (orderSearchDto.getSearchOrderStatus() != null) {
             query.setParameter("orderStatus", orderSearchDto.getSearchOrderStatus());
         }
+        if (orderSearchDto.getSearchDeliveryStatus() != null) {
+            query.setParameter("deliveryStatus", orderSearchDto.getSearchDeliveryStatus());
+        }
         if (orderSearchDto.getSearchOrderId() != null) {
             query.setParameter("orderId", orderSearchDto.getSearchOrderId());
         }
-        if (StringUtils.hasText(orderSearchDto.getSearchMemberAccountId())) {
-            query.setParameter("accountId", "%" + orderSearchDto.getSearchMemberAccountId() + "%");
+        if (StringUtils.hasText(orderSearchDto.getSearchMemberUserName())) {
+            query.setParameter("username", "%" + orderSearchDto.getSearchMemberUserName() + "%");
         }
         if (StringUtils.hasText(orderSearchDto.getSearchOrderItemName())) {
             query.setParameter("itemName", "%" +  orderSearchDto.getSearchOrderItemName() + "%");

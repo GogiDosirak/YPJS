@@ -19,6 +19,7 @@ public class ItemOneDto {
     private double itemRatings;
     private LocalDateTime itemCreateDate;
     private int itemCnt;
+    private String itemFilePath;
 
     private List<ItemReviewListDto> itemReviews;
 
@@ -31,6 +32,8 @@ public class ItemOneDto {
         this.itemRatings = item.getItemRatings();
         this.itemCreateDate = item.getItemCreateDate();
         this.itemCnt = item.getItemCnt();
+        itemFilePath = item.getItemFilepath();
+
 
         this.itemReviews = item.getItemReviews().stream()
                 .map(ItemReviewListDto::new)

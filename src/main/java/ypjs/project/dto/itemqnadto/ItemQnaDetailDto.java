@@ -17,7 +17,7 @@ public class ItemQnaDetailDto {
 
     private String itemName;
 
-    private String qMemberAccountId;
+    private String qMemberUserName;
 
     private String question;
 
@@ -25,7 +25,7 @@ public class ItemQnaDetailDto {
 
     private LocalDateTime qUpdated;
 
-    private String aMemberAccountId;
+    private String aMemberUserName;
 
     private String answer;
 
@@ -41,12 +41,12 @@ public class ItemQnaDetailDto {
         itemQnaId = itemQna.getItemQnaId();
         itemId = itemQna.getItem().getItemId();
         itemName = itemQna.getItem().getItemName();
-        qMemberAccountId = itemQna.getQMember().getUsername();
+        qMemberUserName = itemQna.getQMember().getUsername();
         question = itemQna.getQ();
         qCreated = itemQna.getQCreated();
         qUpdated = itemQna.getQUpdated();
         if(itemQna.getAMember() != null) {
-            aMemberAccountId = itemQna.getAMember().getUsername();
+            aMemberUserName = itemQna.getAMember().getUsername();
         }
         answer = itemQna.getA();
         aCreated = itemQna.getACreated();
