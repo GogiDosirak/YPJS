@@ -27,6 +27,7 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="list-inline shop-top-menu pb-3 pt-1">
+                <div th:if="${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">
                 <li class="list-inline-item">
                     <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/post}">상품 등록</a>
                 </li>
@@ -36,6 +37,7 @@
                 <li class="list-inline-item">
                     <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/category/get}">카테고리 보기</a>
                 </li>
+                </div>
 
             </ul>
         </div>
@@ -110,11 +112,12 @@
                                 <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
                                 <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                     <ul class="list-unstyled">
+                                        <!-- 좋아요 버튼 시작 -->
                                         <input type="hidden" id="memberId" th:value="${memberId}">
-                                        <input type="hidden" id="itemId" th:value="${item.itemId}">
-                                        <button class="like-button btn btn-success text-white">
+                                        <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
                                             <i class="fas fa-heart"></i>
                                         </button>
+                                        <!-- 좋아요 버튼 끝 -->
 
                                     </ul>
                                 </div>
@@ -172,106 +175,7 @@
 
 <!-- End Content -->
 
-<!-- Start Brands -->
-<section class="bg-light py-5">
-    <div class="container my-4">
-        <div class="row text-center py-3">
-            <div class="col-lg-6 m-auto">
-                <h1 class="h1">Our Brands</h1>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    Lorem ipsum dolor sit amet.
-                </p>
-            </div>
-            <div class="col-lg-9 m-auto tempaltemo-carousel">
-                <div class="row d-flex flex-row">
-                    <!--Controls-->
-                    <div class="col-1 align-self-center">
-                        <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
-                            <i class="text-light fas fa-chevron-left"></i>
-                        </a>
-                    </div>
-                    <!--End Controls-->
 
-                    <!--Carousel Wrapper-->
-                    <div class="col">
-                        <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
-                            <!--Slides-->
-                            <div class="carousel-inner product-links-wap" role="listbox">
-                                <!--First slide-->
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_01.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_02.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_03.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_04.png" alt="Brand Logo"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End First slide-->
-                                <!--Second slide-->
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_01.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_02.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_03.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_04.png" alt="Brand Logo"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End Second slide-->
-                                <!--Third slide-->
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_01.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_02.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_03.png" alt="Brand Logo"></a>
-                                        </div>
-                                        <div class="col-3 p-md-5">
-                                            <a href="#"><img class="img-fluid brand-img" src="/img/brand_04.png" alt="Brand Logo"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--End Third slide-->
-                            </div>
-                            <!--End Slides-->
-                        </div>
-                    </div>
-                    <!--End Carousel Wrapper-->
-
-                    <!--Controls-->
-                    <div class="col-1 align-self-center">
-                        <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
-                            <i class="text-light fas fa-chevron-right"></i>
-                        </a>
-                    </div>
-                    <!--End Controls-->
-                </div>
-            </div>
-        </div>
-    </div>
-
-</section>
-<!--End Brands-->
 
 <!-- Start Footer -->
 <footer th:replace="frame/footer :: footer"></footer>

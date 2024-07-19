@@ -30,6 +30,14 @@ public class Item {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<ItemReview> itemReviews = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = false)
+    private List<Cart> carts = new ArrayList<>();
+
+
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
@@ -153,6 +161,8 @@ public class Item {
     public void removeItemReview(ItemReview itemReview) {
         itemReviews.remove(itemReview);
     }
+
+
 
     //==재고 제거 메서드==//
     public void removeStock(int count) {
