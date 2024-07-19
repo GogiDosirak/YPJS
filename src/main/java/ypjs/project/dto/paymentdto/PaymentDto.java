@@ -41,5 +41,13 @@ public class PaymentDto {
         }
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class checkLoginMemberOrderMemberDto {
+        private boolean check;
+        private String message;
+    }
+
 
 }

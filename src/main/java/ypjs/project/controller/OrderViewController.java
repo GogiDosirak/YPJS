@@ -2,22 +2,22 @@ package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Page;
+import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryCreateDto;
 import ypjs.project.dto.orderdto.OrderAdminDto;
-import ypjs.project.dto.orderdto.OrderCreateDto;
-import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.dto.orderdto.OrderSearchDto;
 import ypjs.project.service.DeliveryService;
@@ -98,7 +98,7 @@ public class OrderViewController {
             cartIds.add(c.getCartId());
         }
 
-        session.setAttribute("cardIds", cartIds);
+        session.setAttribute("cartIds", cartIds);
 
         //멤버정보 -> 배송정보 생성
         //Long memberId = (Long) session.getAttribute("loginMemberId");
@@ -112,7 +112,7 @@ public class OrderViewController {
         session.removeAttribute("cartList");
 
         System.out.println("**세션 주문상품 삭제 확인-> " + session.getAttribute("cartList"));
-        System.out.println("**세션 장바구니ID 목록 확인-> " + session.getAttribute("cardIds"));
+        System.out.println("**세션 장바구니ID 목록 확인-> " + session.getAttribute("cartIds"));
 
         return "order/create";
     }
