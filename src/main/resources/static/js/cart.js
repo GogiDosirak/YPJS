@@ -109,7 +109,7 @@ $(document).ready(function() {
 
 
     // 삭제 버튼 클릭 시
-    $('button.custom-link').click(function(event) {
+    $('.custom-link').click(function(event) {
         var cartId = $(this).attr('id'); // 버튼의 ID에서 cartId 추출
 
         event.preventDefault(); // 기본 동작 방지
