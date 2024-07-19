@@ -1,6 +1,7 @@
 package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -10,10 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ypjs.project.domain.Item;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Page;
+import ypjs.project.domain.enums.Role;
 import ypjs.project.dto.itemqnadto.*;
 import ypjs.project.dto.ResponseDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.ItemQnaService;
 import ypjs.project.service.ItemService;
 import ypjs.project.service.MemberService;
@@ -30,24 +34,25 @@ public class itemQnaViewController {
     private final ItemService itemService;
 
     @GetMapping("/create")
-    public String create(/*@RequestParam Long itemId, */Model model) {
+    public String create(
+            @RequestParam(name = "itemId") @Valid Long itemId, Model model) {
         System.out.println("**상품문의 등록 페이지 요청됨");
-        //Item i = itemService.findOneItem(itemId);
+        Item i = itemService.findOneItem(itemId);
 
-        model.addAttribute("itemId", 1/*itemId*/);
-        model.addAttribute("itemName", "임시상품명"/*i.getItemName*/);
+        model.addAttribute("itemId", itemId);
+        model.addAttribute("itemName", i.getItemName());
         return "itemqna/create";
     }
 
 
-    @GetMapping("/list")
+    @GetMapping("/list/{itemId}")
     public String listByItemId(
-            /*@RequestParam(name = "itemId") @Valid Long itemId, */Model model,
-        @RequestParam(name="page", defaultValue = "0") int page,
-        @RequestParam(name="size", defaultValue = "10") int size) {
+            @PathVariable(name = "itemId") @Valid Long itemId,
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size,
+            Model model) {
         System.out.println("**상품문의 내역 페이지 요청됨");
         Pageable pageable = PageRequest.of(page, size);
-        Long itemId = 1L;  //임시
         List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByItemId(itemId, pageable);
 
         //총 페이지 수 계산
@@ -62,16 +67,19 @@ public class itemQnaViewController {
 
     @GetMapping("/list/my")
     public String listByMemberId(
-            /*@RequestParam(name = "memberId") @Valid Long memberId, */Model model,
-        @RequestParam(name="page", defaultValue = "0") int page,
-        @RequestParam(name="size", defaultValue = "10") int size) {
+            HttpServletRequest request, Model model,
+            @RequestParam(name="page", defaultValue = "0") int page,
+            @RequestParam(name="size", defaultValue = "10") int size) {
         System.out.println("**마이 상품문의 내역 페이지 요청됨");
+
+        HttpSession session = request.getSession();
+        LoginDto.ResponseLogin member = (LoginDto.ResponseLogin) session.getAttribute("member");
+
         Pageable pageable = PageRequest.of(page, size);
-        Long memberId = 1L;  //임시
-        List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByMemberId(memberId, pageable);
+        List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByMemberId(member.getMemberId(), pageable);
 
         //총 페이지 수 계산
-        int totalPages = Page.totalPages(itemQnaService.countByMemberId(memberId), size);
+        int totalPages = Page.totalPages(itemQnaService.countByMemberId(member.getMemberId()), size);
 
         model.addAttribute("itemQnaList", itemQnaList);
         model.addAttribute("page", page);
@@ -82,10 +90,23 @@ public class itemQnaViewController {
 
     @GetMapping("/list/admin")
     public String list(
-            Model model,
+            HttpServletRequest request, Model model,
             @RequestParam(name="page", defaultValue = "0") int page,
             @RequestParam(name="size", defaultValue = "10") int size) {
-        System.out.println("**마이 상품문의 내역 페이지 요청됨");
+        System.out.println("**관리자 상품문의 내역 페이지 요청됨");
+
+        HttpSession session = request.getSession();
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+        
+        Member member = memberService.findOne(loginMember.getMemberId());
+
+        /*로그인 멤버가 관리자가 아닌 경우*/
+        if(member.getRole() != Role.ROLE_ADMIN) {
+            request.setAttribute("msg", "잘못된 접근입니다.");
+            request.setAttribute("url", "/index");
+            return "alert";
+        }
+
         Pageable pageable = PageRequest.of(page, size);
         List<ItemQnaDetailDto> itemQnaList = itemQnaService.findAll(pageable);
 
@@ -121,12 +142,20 @@ public class itemQnaViewController {
     @GetMapping("/answer")
     public String answer(@RequestParam(name = "itemQnaId") Long itemQnaId, Model model, HttpServletRequest request) {
         System.out.println("**상품문의 답변 작성 페이지 요청됨");
+
         ItemQnaDetailDto itemQna = itemQnaService.findOne(itemQnaId);
         model.addAttribute("itemQna", itemQna);
-        Member m = memberService.findOne(1L);  //임시
-        model.addAttribute("aMemberAccountId",m.getUsername());
+
+        HttpSession session = request.getSession();
+        LoginDto.ResponseLogin member = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+        Member m = memberService.findOne(member.getMemberId());
+
+        model.addAttribute("aMemberUserName",m.getUsername());
         model.addAttribute("aMemberId", m.getMemberId());
+
         return "itemqna/answer";
+
     }
 
 

@@ -20,6 +20,7 @@ public class DeliveryApiController {
     @PostMapping("/addTracker")
     public ResponseEntity addTracker(@RequestBody DeliveryTrackerDto deliveryTrackerDto) {
         System.out.println("**배송정보 등록 요청됨");
+        System.out.println(deliveryTrackerDto);
         deliveryService.addTracker(deliveryTrackerDto);
         return ResponseEntity.ok().build();
     }

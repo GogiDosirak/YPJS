@@ -10,6 +10,8 @@ import ypjs.project.dto.deliverydto.DeliveryResponseDto;
 import ypjs.project.dto.deliverydto.DeliveryTrackerDto;
 import ypjs.project.repository.DeliveryRepository;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -25,26 +27,18 @@ public class DeliveryService {
     @Transactional
     public Long addTracker (DeliveryTrackerDto deliveryTrackerDto) {
         Delivery d = deliveryRepository.findOne(deliveryTrackerDto.getDeliveryId());
-        d.addTrackInfo(d.getCarrierId(), d.getTrackId());
+        d.addTrackInfo(deliveryTrackerDto.getCarrierId(), deliveryTrackerDto.getTrackId());
 
         return  d.getDeliveryId();
     }
 
     @Transactional
-    public void updateStatus (Long deliveryId) {
-        Delivery d = deliveryRepository.findOne(deliveryId);
-
-        if(d.getTrackId() != null && d.getTrackId().isEmpty()) {
-            JSONObject trackLog = Delivery.Tracker.trackLog(d.getCarrierId(),d.getTrackId());
-
-            String status = trackLog.getString("status");
-
-            if(status.equals("배송완료")){
-                d.updateStatus(DeliveryStatus.배송완료);
-            } else {
-                d.updateStatus(DeliveryStatus.배송중);
-            }
+    public void updateStatus() {
+        List<Delivery> deliveries = deliveryRepository.findAll();
+        for(Delivery d : deliveries) {
+            d.updateStatus();
         }
-
     }
+
+
 }

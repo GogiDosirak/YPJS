@@ -68,6 +68,12 @@ public class Item {
     @Column(name = "LIKE_COUNT")
     private int likeCount = 0;
 
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<Cart> carts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    private List<ItemQna> itemQnas = new ArrayList<>();
+
 
     //생성자
 

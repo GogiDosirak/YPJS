@@ -64,6 +64,11 @@ public class ItemQna {
     }
 
     //==메서드==//
+    //연관관계 메서드
+    public void changeItem(Item item) {
+        this.item = item;
+    }
+
     //답변 작성 및 수정
     public void answer(Member aMember, String a) {
         this.aMember = aMember;
