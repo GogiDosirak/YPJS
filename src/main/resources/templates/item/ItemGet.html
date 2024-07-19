@@ -8,6 +8,7 @@
 <script src="/js/item/itemRatings.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/order.js"></script>
+<script th:src="@{/js/like.js}"></script>
 
 
 <body>
@@ -79,7 +80,16 @@
 <div class="card-body pt-4 mt-3"> <!-- pt-4를 mt-3으로 변경 -->
     <div class="row">
         <div class="col-lg-7 offset-lg-1">
-            <h1 id="itemName" class="h2 mb-3 font-weight-bold" th:text="${item.itemName}"></h1>
+            <div style="display: flex; align-items: center;">
+                <h1 id="itemName" class="h2 font-weight-bold" th:text="${item.itemName}" style="margin-bottom: 0; margin-right: 10px; line-height: 1.2;"></h1>
+                <!-- 좋아요 버튼 시작 -->
+                <input type="hidden" id="memberId" th:value="${memberId}">
+                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <!-- 좋아요 버튼 끝 -->
+            </div>
+            <br>
             <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
             <span class="font-weight-bold">원</span>
             <p class="h3 py-2"></p>
@@ -127,20 +137,20 @@
         </div>
     </div>
 
-            <div class="row justify-content-end mt-3">
-                <div class="col-auto">
-                    <span class="font-weight-bold"> 조회수 : </span>
-                    <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
-                    <br>
-                    <span class="font-weight-bold">작성일 : </span>
-                    <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
-                </div>
-                <div class="col-auto">
+    <div class="row justify-content-end mt-3">
+        <div class="col-auto">
+            <span class="font-weight-bold"> 조회수 : </span>
+            <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
+            <br>
+            <span class="font-weight-bold">작성일 : </span>
+            <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
+        </div>
+        <div class="col-auto">
 
-                </div>
-            </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 
 <hr>
@@ -189,11 +199,11 @@
 
 
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 <!-- Close Content -->
 

@@ -218,4 +218,24 @@ public class PaymentService {
         return new PaymentDto.PaymentForOrderDetailDto(payment);
     }
 
+    //로그인한 사람이랑 order 를 쓰는 사람이랑 같은지 확인하는 로직
+    @Transactional
+    public PaymentDto.checkLoginMemberOrderMemberDto checkLoginMemberAndOrderMember(Long memberId, Long orderId){
+        PaymentDto.checkLoginMemberOrderMemberDto dto = new PaymentDto.checkLoginMemberOrderMemberDto();
+
+        Order order = orderRepository.findOne(orderId);
+
+        boolean check = order.getMember().getMemberId().equals(memberId);
+
+        dto.setCheck(check);
+        if(check){
+            dto.setMessage("payment/payment");
+        }else {
+            dto.setMessage("redirect:/index");
+        }
+
+        return dto;
+
+    }
+
 }
