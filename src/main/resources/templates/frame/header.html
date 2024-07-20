@@ -82,9 +82,12 @@ https://templatemo.com/tm-559-zay-shop
                             <li class="nav-item">
                                 <a class="nav-link" href="/shop">Shop</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/contact">Contact</a>
-                            </li>
+                            <!-- Admin Link -->
+                            <div th:if="${session.member != null}">
+                                <li class="nav-item" th:if="${session.member.role == 'ROLE_ADMIN'}">
+                                    <a class="nav-link" href="/ypjs/order/list/admin">Admin</a>
+                                </li>
+                            </div>
                         </ul>
                     </div>
                     <div class="navbar align-self-center d-flex">
@@ -104,9 +107,8 @@ https://templatemo.com/tm-559-zay-shop
                             <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"
                                   th:text="${session.memberCartSize}"></span>
                         </a>
-                        <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <a class="nav-icon position-relative text-decoration-none" href="/ypjs/order/list">
                             <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
                         </a>
                         <!-- 세션에 member가 없을 경우 (로그인되지 않은 상태) -->
                         <div th:if="${session.member == null}">

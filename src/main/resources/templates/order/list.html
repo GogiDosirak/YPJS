@@ -12,8 +12,37 @@
 
 <!-- Start Content -->
 <div class="container py-5 px-5 mx-auto">
-    <div class="row align-items-center justify-content-center">
-        <div class="col-lg-10">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+                <!-- Sidebar - Brand -->
+                <h2 class="h2 pb-4 fw-bold">MY PAGE</h2>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/ypjs/order/list">
+                        <span>주문 내역</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/ypjs/itemqna/list/my">
+                        <span>상품문의 내역</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+            </ul>
+        </div>
+        <!-- End of Sidebar -->
+
+        <div class="col-lg-10 ps-4 pe-0">
 
             <!-- 검색 폼 시작 -->
             <div class="card mb-5 text-center border-0">
@@ -70,9 +99,6 @@
                             <option value="">전체</option>
                             <option value="결제대기중">결제대기중</option>
                             <option value="주문완료">주문완료</option>
-                            <option value="배송준비중">배송준비중</option>
-                            <option value="배송중">배송중</option>
-                            <option value="배송완료">배송완료</option>
                             <option value="주문취소">주문취소</option>
                         </select>
                     </div>
