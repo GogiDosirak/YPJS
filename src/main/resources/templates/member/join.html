@@ -96,6 +96,10 @@
         <p class="label-txt">아이디</p>
         <input type="text" class="input" id="username" name="username">
         <span class="error-message" id="error-username"></span>
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <button class="btn btn-outline-primary" type="button" id="btn-checkUsername">아이디 중복확인</button>
     </label>
     <label>
         <p class="label-txt">비밀번호</p>
@@ -129,7 +133,7 @@
     </label>
     <label>
         <p class="label-txt">우편번호</p>
-        <input type="text" class="input" id="zipcode" name="zipcode">
+        <input type="text" readonly class="input" id="zipcode" name="zipcode">
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
@@ -214,7 +218,7 @@
                 url: "/login/mailConfirm",
                 data: { email: email },
                 success: function(data) {
-                    alert("해당 이메일로 인증번호 발송이 완료되었습니다. \n 확인부탁드립니다.");
+                    alert("해당 이메일로 인증번호 발송이 완료되었습니다. \n확인 부탁드립니다.");
                     console.log("발송된 인증번호: " + data); // 인증번호를 확인하기 위해 콘솔에 출력
                     chkEmailConfirm(data);
                 }
