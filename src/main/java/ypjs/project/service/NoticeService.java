@@ -44,8 +44,8 @@ public class NoticeService {
     }
 
     @Transactional
-    public Notice updateNotice(NoticeDto.UpdateNoticeRequest request) {
-        Notice notice = noticeRepository.findOne(request.getNoticeId());
+    public Notice updateNotice(NoticeDto.UpdateNoticeRequest request, Long noticeId) {
+        Notice notice = noticeRepository.findOne(noticeId);
         notice.updateNotice(request.getNoticeTitle(), request.getNoticeContent());
         return notice;
     }
