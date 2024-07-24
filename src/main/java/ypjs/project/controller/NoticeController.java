@@ -41,11 +41,27 @@ public class NoticeController {
 
     // 공지사항 단건 조회
     @GetMapping("/ypjs/board/notice/{noticeId}")
-    public String findOne(@PathVariable("noticeId") Long noticeId, Model model) {
+    public String findOne(@PathVariable("noticeId") Long noticeId, Model model, HttpSession session) {
+        Notice notice = noticeService.findOne(noticeId);
+        NoticeDto.NoticeApiDto result = new NoticeDto.NoticeApiDto(notice.getNoticeId(),notice.getNoticeTitle(),notice.getNoticeContent(),
+                notice.getNoticeCnt(),notice.getNoticeDate(),notice.getMember().getName());
+        LoginDto.ResponseLogin member = (LoginDto.ResponseLogin)session.getAttribute("member");
+        if (member != null) {
+            System.out.println("Member Role: " + member.getRole()); // 콘솔 로그 확인
+        }
+        model.addAttribute("notice",result);
+        model.addAttribute("member",member);
+        return "/board/notice/detail";
+    }
+
+    @GetMapping("/ypjs/board/notice/update/{noticeId}")
+    public String update(@PathVariable("noticeId") Long noticeId, Model model) {
         Notice notice = noticeService.findOne(noticeId);
         NoticeDto.NoticeApiDto result = new NoticeDto.NoticeApiDto(notice.getNoticeId(),notice.getNoticeTitle(),notice.getNoticeContent(),
                 notice.getNoticeCnt(),notice.getNoticeDate(),notice.getMember().getName());
         model.addAttribute("notice",result);
-        return "/board/notice/detail";
+        return "/board/notice/update";
     }
+
+
 }

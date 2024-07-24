@@ -15,16 +15,15 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
+<center><h1> 공지사항 </h1> </center>
 <div class="container mt-3">
-    <a href="/notice"><h2>공지사항</a></h2>
-    <div id="searchForm">
-        <form action="/notice/searchNotice" method="GET" class="form-inline">
-            <input type="text" name="keyword" class="form-control-sm" id="search"
-                   placeholder="제목으로 검색하기">
-            <button class="btn btn-warning bi bi-search" id="searchButton">검색</button>
-        </form>
-    </div>
+<!--    <div id="searchForm">-->
+<!--        <form action="/notice/searchNotice" method="GET" class="form-inline">-->
+<!--            <input type="text" name="keyword" class="form-control-sm" id="search"-->
+<!--                   placeholder="제목으로 검색하기">-->
+<!--            <button class="btn btn-warning bi bi-search" id="searchButton">검색</button>-->
+<!--        </form>-->
+<!--    </div>-->
     <table class="table">
         <thead>
         <tr>
@@ -48,6 +47,12 @@
 
 
     </table>
+</div>
+<!-- 글 등록 버튼 -->
+<div class="row">
+    <div class="col text-center mt-2">
+        <a href="/ypjs/board/notice/insert" class="btn btn-success btn-md" id="btn-insert">글 등록</a>
+    </div>
 </div>
 <br>
 <br>
