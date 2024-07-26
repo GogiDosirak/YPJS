@@ -39,114 +39,116 @@
                 </li>
                 </div>
 
-            </ul>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 
 
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-3">
-            <h1 class="h2 pb-4">Categories</h1>
-            <ul class="list-unstyled templatemo-accordion">
-                <!-- 최상위 부모 카테고리 목록 반복 -->
-                <li th:each="parentCategory : ${parentCategories}" class="pb-3">
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
-                       th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${parentCategory.categoryId})}"
-                       th:text="${parentCategory.categoryName}">
-                        <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
-                    </a>
-                    <ul class="collapse show list-unstyled pl-3">
-                        <!-- 하위 자식 카테고리 목록 반복 -->
-                        <li th:each="childCategory : ${parentCategory.categoryChild}">
-                            <a class="text-decoration-none"
-                               th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${childCategory.categoryId})}"
-                               th:text="${childCategory.categoryName}"></a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-lg-9"> <!-- //수정된 부분// -->
-            <div class="row">
-                <div class="col-md-6">
-                    <ul class="list-inline shop-top-menu pb-3 pt-1">
-                        <li class="list-inline-item">
-                            <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/get}">All Items</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-6">
-                    <!-- 검색 폼 및 정렬 폼 통합 -->
-                    <form th:action="@{/ypjs/item/get}" method="get" class="input-group">
-                        <input type="text" id="keyword" name="keyword" class="form-control"
-                               placeholder="Search by item name" th:value="${keyword}">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-link text-dark">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <div class="col-auto">
-                            <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">
-                                <option value="itemId" th:selected="${sortBy == 'itemId'}">최신순</option>
-                                <option value="itemRatings" th:selected="${sortBy == 'itemRatings'}">별점 높은 순</option>
-                                <option value="likeCount" th:selected="${sortBy == 'likeCount'}">찜많은순</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <h1 class="h2 pb-4">Categories</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    <!-- 최상위 부모 카테고리 목록 반복 -->
+                    <li th:each="parentCategory : ${parentCategories}" class="pb-3">
+                        <a class="collapsed d-flex justify-content-between h3 text-decoration-none"
+                           th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${parentCategory.categoryId})}"
+                           th:text="${parentCategory.categoryName}">
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul class="collapse show list-unstyled pl-3">
+                            <!-- 하위 자식 카테고리 목록 반복 -->
+                            <li th:each="childCategory : ${parentCategory.categoryChild}">
+                                <a class="text-decoration-none"
+                                   th:href="@{/ypjs/categoryItem/get/{categoryId}(categoryId=${childCategory.categoryId})}"
+                                   th:text="${childCategory.categoryName}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
 
-            <div class="container-fluid mt-3">
+            <div class="col-lg-9"> <!-- //수정된 부분// -->
                 <div class="row">
-                    <!-- items 리스트의 각 항목을 반복 -->
-                    <div th:each="item : ${items}" class="col-md-4">
-                        <div class="card mb-4 product-wap rounded-0">
-                            <div class="card rounded-0">
-                            <!-- 제품 이미지 -->
-                            <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
-                                <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
-                                <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
-                                    <ul class="list-unstyled">
-                                        <!-- 좋아요 버튼 시작 -->
-                                        <input type="hidden" id="memberId" th:value="${memberId}">
-                                        <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
-                                            <i class="fas fa-heart"></i>
-                                        </button>
-                                        <!-- 좋아요 버튼 끝 -->
 
-                                    </ul>
-                                </div>
+                    <div class="col-md-6">
+                        <ul class="list-inline shop-top-menu pb-3 pt-1">
+                            <li class="list-inline-item">
+                                <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/get}">All Items</a>
+                            </li>
+                        </ul>
+                    </div>
 
-                            </a>
+                    <div class="col-lg-6">
+                        <!-- 검색 폼 및 정렬 폼 통합 -->
+                        <form th:action="@{/ypjs/item/get}" method="get" class="input-group">
+                            <input type="text" id="keyword" name="keyword" class="form-control"
+                                   placeholder="Search by item name" th:value="${keyword}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-link text-dark">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="col-auto">
+                                <select class="form-control" name="sortBy" id="sortBy" onchange="this.form.submit()">
+                                    <option value="itemId" th:selected="${sortBy == 'itemId'}">최신순</option>
+                                    <option value="itemRatings" th:selected="${sortBy == 'itemRatings'}">별점 높은 순</option>
+                                    <option value="likeCount" th:selected="${sortBy == 'likeCount'}">찜많은순</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container-fluid mt-3">
+                    <div class="row">
+                        <!-- items 리스트의 각 항목을 반복 -->
+                        <div th:each="item : ${items}" class="col-md-4">
+                            <div class="card mb-4 product-wap rounded-0">
+                                <div class="card rounded-0">
+                                    <!-- 제품 이미지 -->
+                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
+                                        <img class="card-img rounded-0 img-fluid fixed-size-img" th:src="${item.itemFilePath}" alt="product-item">
+                                        <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                                            <ul class="list-unstyled">
+                                                <!-- 좋아요 버튼 시작 -->
+                                                <input type="hidden" id="memberId" th:value="${memberId}">
+                                                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
+                                                    <i class="fas fa-heart"></i>
+                                                </button>
+                                                <!-- 좋아요 버튼 끝 -->
+                                            </ul>
+                                        </div>
 
 
-
-
-                            <!-- 제품 정보 -->
-                            <div class="card-body">
-                                <!-- 제품 링크 및 좋아요 버튼을 같은 줄에 배치 -->
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
+                                    </a>
                                 </div>
 
 
-                                <!-- 별점 및 평점 표시 -->
-                                <div class="d-flex justify-content-center mb-1 align-items-center">
-                                    <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
-                                        <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
-                                    </ul> &nbsp;&nbsp;&nbsp;&nbsp;
-                                    <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
-                                </div>
 
-                                <!-- 가격 표시 -->
-                                <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
-                                <span class="font-weight-bold">원</span>
+
+                                <!-- 제품 정보 -->
+                                <div class="card-body">
+                                    <!-- 제품 링크 및 좋아요 버튼을 같은 줄에 배치 -->
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" id="itemName" class="font-weight-bold" th:text="${item.itemName}"></a>
+                                    </div>
+
+
+                                    <!-- 별점 및 평점 표시 -->
+                                    <div class="d-flex justify-content-center mb-1 align-items-center">
+                                        <ul class="list-unstyled d-flex mb-0" id="starRating" th:attr="data-rating=${item.itemRatings}">
+                                            <!-- 별 아이콘은 JavaScript로 생성됩니다 -->
+                                        </ul> &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span id="itemRatings" class="font-weight-bold ml-2" th:text="${item.itemRatings}"></span>
+                                    </div>
+
+                                    <!-- 가격 표시 -->
+                                    <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
+                                    <span class="font-weight-bold">원</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -154,7 +156,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <!-- 페이지네이션 시작-->

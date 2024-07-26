@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.dto.paymentdto.PaymentDto;
 import ypjs.project.dto.paymentdto.RequestPayDto;
 import ypjs.project.service.PaymentService;
@@ -24,19 +25,25 @@ public class PaymentController {
 
     //결제 창으로 연결하는 메서드
     @GetMapping("/payment/{orderId}")
-    public String paymentPage(@PathVariable(name = "orderId") Long orderId , Model model) {
+    public String paymentPage(@PathVariable(name = "orderId") Long orderId , Model model, HttpSession session) {
 
-        //todo : 오류났을 떄 넘길 페이지로 연결
+        //오더 아이디가 없을 시 메인 페이지로 넘기기 //오류페이지
         if (orderId == null) {
-            return "/";
+            return "redirect:/index";
         }
 
-        //todo : 세션에 저장된 order 와 로그인한 order.member 가 같은지 확인하는 로직 추가 필요
-        paymentService.createPayment(orderId);
-        RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
-        model.addAttribute("requestPayDto", requestPayDto);
+        //로그인 한 유저 정보 받아오기 //다른 사람이면 메이 페이지로 넘기기 // 오류페이지
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+        PaymentDto.checkLoginMemberOrderMemberDto dto = paymentService.checkLoginMemberAndOrderMember(responseLogin.getMemberId(), orderId);
+        if(dto.isCheck()){
+            paymentService.createPayment(orderId);
+            RequestPayDto requestPayDto = paymentService.makeRequestPayDto(orderId);
+            model.addAttribute("requestPayDto", requestPayDto);
 
-        return "payment/payment";
+            return dto.getMessage();
+        }
+        return dto.getMessage();
+
     }
 
     // 결제 성공 페이지로 이동

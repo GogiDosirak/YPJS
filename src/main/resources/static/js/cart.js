@@ -85,7 +85,7 @@ $(document).ready(function() {
                 }
             });
         }).fail(function(error) {
-            console.log("AJAX 실패:", error.status, error.responseText);
+            console.log("에러:", error.status, error.responseText);
             if (error.status === 400) {
                 Swal.fire({
                     text: error.responseText,

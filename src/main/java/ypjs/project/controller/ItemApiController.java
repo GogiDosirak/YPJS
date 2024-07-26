@@ -30,6 +30,7 @@ public class ItemApiController {
                            @Valid @ModelAttribute  ItemRequestDto requestDto,
                            @Valid @ModelAttribute  ItemFileDto itemFileDto,
                            HttpSession session, HttpServletResponse response) throws Exception {
+
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
@@ -51,9 +52,9 @@ public class ItemApiController {
     //수정등록
     @PostMapping("/api/ypjs/item/update/{itemId}")
     public void updateItem(@PathVariable("itemId") Long itemId,
-                                    @RequestParam("file") MultipartFile file,
-                                    @Valid @ModelAttribute  ItemUpdateDto itemUpdateDto,
-                                    @Valid @ModelAttribute  ItemFileDto itemFileDto, Model model,
+                           @RequestParam("file") MultipartFile file,
+                           @Valid @ModelAttribute  ItemUpdateDto itemUpdateDto,
+                           @Valid @ModelAttribute  ItemFileDto itemFileDto, Model model,
                            HttpSession session, HttpServletResponse response) throws Exception {
 
         //멤버정보 찾기

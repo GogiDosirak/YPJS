@@ -50,7 +50,29 @@ $(document).ready(function() {
         location = '/ypjs/itemqna/detail?itemQnaId=' + itemQnaId;
     });
 
+/** itemGet.html **/
 
+//문의 없는 경우 문의 li 클릭시
+    $('#btn-itemQna').click(function() {
+        var itemId = $('#itemId').val();
+        console.log(itemId);
+
+        Swal.fire({
+            title: '등록된 문의가 없습니다.',
+            text: '문의를 작성하시겠습니까?',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            confirmButtonText: '작성하기',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location = "/ypjs/itemqna/create?itemId=" + itemId;
+            } else {
+                location.reload();
+            }
+        });
+
+    });
 
 
 });
