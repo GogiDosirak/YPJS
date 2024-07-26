@@ -33,7 +33,8 @@ public class Member  {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "member_username")
+
+    @Column(name = "member_username", unique = true)
     private String username;
 
     @Column(name = "member_password")
@@ -54,7 +55,7 @@ public class Member  {
     @Embedded
     private Address address;
 
-    @Column(name = "member_email")
+    @Column(name = "member_email", unique = true)
     private String email;
 
     @Column(name = "member_phonenumber")

@@ -45,6 +45,11 @@ $(document).ready(function() {
         memberObject.login();
     });
 
+    $("#btn-checkUsername").on("click", function(event) {
+        event.preventDefault();
+        memberObject.duplication();
+    });
+
     $("#btn-update").on("click", function(event) {
         event.preventDefault();
         memberObject.update();
@@ -98,6 +103,25 @@ let memberObject = {
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.error("Error occurred:", textStatus, errorThrown);
             alert("에러 발생: " + jqXHR.responseText);
+        });
+    },
+
+    duplication: function() {
+        let username = $("#username").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/api/ypjs/member/validateDuplication",
+            data: username,  // 문자열로 직접 전달
+            contentType: "text/plain; charset=utf-8"
+        }).done(function(response) {
+            alert("사용할 수 있는 아이디입니다.");
+            console.log("Available username:", response);
+            $("#btn-join").prop("disabled", false); // Enable join button
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            console.error("Error occurred:", textStatus, errorThrown);
+            alert("중복된 아이디입니다.");
+            $("#btn-join").prop("disabled", true); // Disable join button
         });
     },
 
