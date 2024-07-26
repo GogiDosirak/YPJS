@@ -22,7 +22,9 @@
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/templatemo.js"></script>
     <script src="/js/custom.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- End Script -->
 
 <!--
@@ -82,9 +84,20 @@ https://templatemo.com/tm-559-zay-shop
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/ypjs/item/get}">Shop</a>
                             </li>
+
+                            <!-- Admin Link -->
+                            <div th:if="${session.member != null}">
+                                <li class="nav-item" th:if="${session.member.role == 'ROLE_ADMIN'}">
+                                    <a class="nav-link" href="/ypjs/order/list/admin">Admin</a>
+                                </li>
+                            </div>
                             <li class="nav-item">
                                 <a class="nav-link" href="/contact">Contact</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/ypjs/board/notice/notices">Notice</a>
+                            </li>
+
                         </ul>
                     </div>
                     <div class="navbar align-self-center d-flex">
@@ -99,13 +112,13 @@ https://templatemo.com/tm-559-zay-shop
                         <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                             <i class="fa fa-fw fa-search text-dark mr-2"></i>
                         </a>
-                        <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <a class="nav-icon position-relative text-decoration-none" href="/ypjs/cart/list">
                             <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
+                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"
+                                  th:text="${session.memberCartSize}"></span>
                         </a>
-                        <a class="nav-icon position-relative text-decoration-none" href="#">
+                        <a class="nav-icon position-relative text-decoration-none" href="/ypjs/order/list">
                             <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                            <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
                         </a>
                         <!-- 세션에 member가 없을 경우 (로그인되지 않은 상태) -->
                         <div th:if="${session.member == null}">
@@ -118,23 +131,10 @@ https://templatemo.com/tm-559-zay-shop
                             &nbsp;&nbsp;&nbsp;<a href="/ypjs/member/logout">로그아웃</a>
                         </div>
                     </div>
-                    </div>
-                <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                    <i class="fa fa-fw fa-search text-dark mr-2"></i>
-                </a>
-                <a class="nav-icon position-relative text-decoration-none" href="#">
-                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">7</span>
-                </a>
-                <a class="nav-icon position-relative text-decoration-none" href="#">
-                    <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                    <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">+99</span>
-                </a>
-            </div>
-            </div>
                 </div>
 
             </div>
+
         </nav>
         <!-- Close Header -->
 

@@ -117,14 +117,13 @@ public class PaymentService {
 
     //결제 중단 시 오더랑 페이먼트 삭제 메서드
     @Transactional
-    public String deleteOrderAndPayment(PaymentDto.FailPaymentDto failPaymentDTO){
+    public void deletePayment(PaymentDto.FailPaymentDto failPaymentDTO){
         Order order = paymentRepository.findOrderAndPayment(failPaymentDTO.getOrderUid())
                 .orElseThrow(()->new IllegalArgumentException("주문 내역이 없습니다."));
 
-        orderRepository.delete(order);
+        //cascade 로 연관된 order 도 같이 지워짐
         paymentRepository.delete(order.getPayment());
 
-        return failPaymentDTO.getErrorMessage();
     }
 
     //결제 끝나고 아임포트 결제 취소, 결제 상태 취소로 업데이트 메서드
@@ -210,5 +209,33 @@ public class PaymentService {
         }
     }
 
+    //OrderDetail 용 결제 내역 찾는 메서드
+    @Transactional
+    public PaymentDto.PaymentForOrderDetailDto PaymentForOrderDetail (Long orderId){
+
+        ypjs.project.domain.Payment payment = paymentRepository.findByOrderId(orderId);
+
+        return new PaymentDto.PaymentForOrderDetailDto(payment);
+    }
+
+    //로그인한 사람이랑 order 를 쓰는 사람이랑 같은지 확인하는 로직
+    @Transactional
+    public PaymentDto.checkLoginMemberOrderMemberDto checkLoginMemberAndOrderMember(Long memberId, Long orderId){
+        PaymentDto.checkLoginMemberOrderMemberDto dto = new PaymentDto.checkLoginMemberOrderMemberDto();
+
+        Order order = orderRepository.findOne(orderId);
+
+        boolean check = order.getMember().getMemberId().equals(memberId);
+
+        dto.setCheck(check);
+        if(check){
+            dto.setMessage("payment/payment");
+        }else {
+            dto.setMessage("redirect:/index");
+        }
+
+        return dto;
+
+    }
 
 }

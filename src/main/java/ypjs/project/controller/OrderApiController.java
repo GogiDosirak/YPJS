@@ -16,6 +16,7 @@ import ypjs.project.domain.Page;
 import ypjs.project.dto.ResponseDto;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryCreateDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.dto.orderdto.OrderAdminDto;
 import ypjs.project.dto.orderdto.OrderCreateDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
@@ -56,14 +57,15 @@ public class OrderApiController {
     @PostMapping("/create")
     public ResponseEntity<Long> create(@RequestBody @Valid OrderCreateDto orderCreateDto, HttpServletRequest request) {
         System.out.println("**주문 생성 로직 요청됨");
-        //Long memberId = (Long) request.getSession().getAttribute("loginMemberId");
+
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) request.getSession().getAttribute("member");
 
         System.out.println(orderCreateDto.getDeliveryCreateDto());
         System.out.println(orderCreateDto.getOrderItemRequestDtos());
 
-        Long orderId = orderService.create(1L, orderCreateDto);
+        Long orderId = orderService.create(loginMember.getMemberId(), orderCreateDto);
 
-        System.out.println("**세션 장바구니ID 목록 전달 확인_> " + request.getSession().getAttribute("cardIds"));
+        System.out.println("**세션 장바구니ID 목록 전달 확인_> " + request.getSession().getAttribute("cartIds"));
 
         return ResponseEntity.ok().body(orderId);
 

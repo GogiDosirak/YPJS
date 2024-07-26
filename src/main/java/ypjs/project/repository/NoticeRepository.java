@@ -2,6 +2,7 @@ package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ypjs.project.domain.Notice;
 
@@ -26,10 +27,18 @@ public class NoticeRepository {
 //                .getResultList();
 //    }
 
-    public List<Notice> findAll() {
+    public List<Notice> findAll(Pageable pageable) {
         return em.createQuery(
-                        "select n from Notice n", Notice.class)
+                        "select n from Notice n order by n.noticeId desc", Notice.class)
+                .setFirstResult((int)pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
                 .getResultList();
+    }
+
+    public int countAll() {
+        return em.createQuery("select count(n) from Notice n", Long.class)
+                .getSingleResult()
+                .intValue();
     }
 
     // 공지사항 등록

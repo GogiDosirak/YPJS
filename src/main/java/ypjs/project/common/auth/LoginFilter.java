@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ypjs.project.domain.RefreshEntity;
 import ypjs.project.dto.memberdto.CustomUserDetails;
 import ypjs.project.repository.RefreshRepository;
@@ -103,5 +104,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(401);
     }
 
-
+//    @Override
+//    public void setFilterProcessesUrl(String filterProcessesUrl) {
+//        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/ypjs/member/login"));
+//    }
 }

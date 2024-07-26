@@ -140,9 +140,10 @@
                                 <span class="h5" id="delivery-status" th:text="${order.deliveryResponseDto.status}"></span>
                             </div>
                             <div class="col-2 mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-success" id="delivery-tracker-modal">배송조회</button>
-                                <input type="hidden" id="delivery-id" th:value="${order.deliveryResponseDto.deliveryId}">
-
+                                <div th:if="${order.deliveryResponseDto.trackId != null}">
+                                    <button type="button" class="btn btn-outline-success" id="delivery-tracker-modal">배송조회</button>
+                                    <input type="hidden" id="delivery-id" th:value="${order.deliveryResponseDto.deliveryId}">
+                                </div>
                             </div>
                         </div>
                         <div class="row">

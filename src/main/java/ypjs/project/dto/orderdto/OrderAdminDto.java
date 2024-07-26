@@ -17,7 +17,7 @@ public class OrderAdminDto {
     @NotNull(message = "")
     private Long orderId;  //주문번호
 
-    private String memberAccountId;
+    private String memberUserName;
 
     @NotNull
     private DeliveryResponseDto deliveryResponseDto;  //배송정보
@@ -38,7 +38,7 @@ public class OrderAdminDto {
 
     public OrderAdminDto(Order order) {
         orderId = order.getOrderId();
-        memberAccountId = order.getMember().getUsername();
+        memberUserName = order.getMember().getUsername();
         deliveryResponseDto = new DeliveryResponseDto(order.getDelivery());
         price = order.getPrice();
         created = order.getCreated();

@@ -36,16 +36,17 @@
 <div class="container py-5">
     <div class="row py-5">
         <form>
+            <input type="hidden" id="noticeId" name="noticeId" th:value="${notice.noticeId}">
             <div class="row">
                 <div class="form-group mb-3">
                     <label for="noticeTitle">공지사항 제목</label>
-                    <input type="text" class="form-control mt-1" id="noticeTitle" name="noticeTitle" placeholder="제목">
+                    <input type="text" class="form-control mt-1" id="noticeTitle" name="noticeTitle" placeholder="제목" th:value="${notice.noticeTitle}">
                 </div>
 
 
                 <div class="mb-3">
                     <label for="noticeContent">공지사항 내용</label>
-                    <textarea class="form-control" id="noticeContent" name="noticeContent" rows="10"></textarea>
+                    <textarea class="form-control" id="noticeContent" name="noticeContent" rows="10" th:text="${notice.noticeContent}"></textarea>
                 </div>
 
                 <!-- Summernote 초기화 스크립트 -->
@@ -65,10 +66,10 @@
 
 
 
-                <!-- 글 등록 버튼 -->
+                <!-- 글 수정 버튼 -->
                 <div class="row">
                     <div class="col text-center mt-2">
-                        <button type="submit" class="btn btn-success btn-md" id="btn-insert">글 등록</button>
+                        <button type="submit" class="btn btn-success btn-md" id="btn-update">글 수정</button>
                     </div>
                 </div>
         </form>
