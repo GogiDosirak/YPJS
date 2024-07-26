@@ -88,9 +88,140 @@
             margin-top: 5px;
             display: block;
         }
+.profile-section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.customize-button, .settings-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e7e7e7;
+    cursor: pointer;
+}
+
+.points-section {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.npay-points {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.total-points {
+    color: green;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.monthly-points {
+    margin-top: 5px;
+    color: #777;
+}
+
+.links-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.link-item {
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    flex-grow: 1;
+    margin: 0 5px;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+.link-text {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.link-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3a3a3a;
+    margin-top: 5px;
+}
     </style>
 </head>
 <body>
+<div class="profile-section">
+    <div class="profile-info">
+        <div class="profile-name" th:text="${mypage.nickname+ '님'}"></div>
+    </div>
+    <div class="points-section">
+        <div class="npay-points">포인트</div>
+        <div class="total-points" th:text="${mypage.point+'원'}"></div>
+    </div>
+    <div class="links-section">
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">📦</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">주문배송</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">🛒</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">장바구니</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">❤️</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">찜목록</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">💬</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">리뷰보기</div>
+            </a>
+        </div>
+    </div>
+</div>
 <form id="request">
     <label>
         <input type="hidden" id="memberId" name="memberId" th:value="${mypage.memberId}">
