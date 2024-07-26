@@ -1,6 +1,7 @@
 package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +52,16 @@ public class ItemController {
         ItemOneDto item = new ItemOneDto(findItem);
         model.addAttribute("item", item);
 
+
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+        model.addAttribute("loginMemberRole", responseLogin.getRole());
+        model.addAttribute("memberId", responseLogin.getMemberId());
+
+//        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+//        Long memberId = 1L;
+//        model.addAttribute("memberId", memberId);
+
+
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
         model.addAttribute("loginMemberRole", responseLogin.getRole());
         model.addAttribute("memberId", responseLogin.getMemberId());
@@ -63,9 +74,11 @@ public class ItemController {
         model.addAttribute("reviewCount", reviewCount);
 
 
+
         //문의 개수
         int qnaCount = itemQnaService.countByItemId(itemId);
         model.addAttribute("qnaCount", qnaCount);
+
 
         return "item/itemGet";
 
@@ -111,10 +124,18 @@ public class ItemController {
         List<Category> parentCategories = categoryService.findParentCategories();
         model.addAttribute("parentCategories", parentCategories);
 
+
+        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+//        Long memberId = 1L;
+//        model.addAttribute("memberId", memberId);
+
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
+
+
         model.addAttribute("memberId", responseLogin.getMemberId());
 
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+        model.addAttribute("loginMemberRole", responseLogin.getRole());
         model.addAttribute("items",items);
         model.addAttribute("category", category);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
@@ -154,9 +175,15 @@ public class ItemController {
         List<Category> parentCategories = categoryService.findParentCategories();
         model.addAttribute("parentCategories", parentCategories);
 
+        //임시 맴버아이디//하드코딩//바꿔치기 해야함
+//        Long memberId = 1L;
+//        model.addAttribute("memberId", memberId);
+
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
+
+
         model.addAttribute("memberId", responseLogin.getMemberId());
+        model.addAttribute("loginMemberRole", responseLogin.getRole());
 
         model.addAttribute("items", items);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
