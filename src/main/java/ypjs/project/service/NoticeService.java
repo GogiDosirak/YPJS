@@ -2,6 +2,7 @@ package ypjs.project.service;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,13 @@ public class NoticeService {
 //        return noticeRepository.findAll(offset,limit);
 //    }
 
-    public List<Notice> findAll() {
-        return noticeRepository.findAll();
+    public List<Notice> findAll(Pageable pageable) {
+        List<Notice> noticeList = noticeRepository.findAll(pageable);
+        return noticeList;
+    }
+
+    public int countAll() {
+        return noticeRepository.countAll();
     }
 
     @Transactional
@@ -44,8 +50,8 @@ public class NoticeService {
     }
 
     @Transactional
-    public Notice updateNotice(NoticeDto.UpdateNoticeRequest request) {
-        Notice notice = noticeRepository.findOne(request.getNoticeId());
+    public Notice updateNotice(NoticeDto.UpdateNoticeRequest request, Long noticeId) {
+        Notice notice = noticeRepository.findOne(noticeId);
         notice.updateNotice(request.getNoticeTitle(), request.getNoticeContent());
         return notice;
     }
@@ -53,6 +59,12 @@ public class NoticeService {
     @Transactional
     public void deleteNotice(Long noticeId) {
         noticeRepository.deleteOne(noticeId);
+    }
+
+    @Transactional
+    public void cntUp(Long noticeId) {
+        Notice notice = noticeRepository.findOne(noticeId);
+        notice.cntUp(notice);
     }
 
 

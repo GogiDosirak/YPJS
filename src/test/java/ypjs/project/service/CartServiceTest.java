@@ -14,7 +14,8 @@ import ypjs.project.repository.CartRepository;
 public class CartServiceTest {
 
     @Autowired CartService cartService;
-    @Autowired CartRepository cartRepository;
+    @Autowired
+    CartRepository cartRepository;
 
     @Test
     public void 장바구니개수조회() throws Exception {
