@@ -85,7 +85,7 @@ $(document).ready(function() {
                 }
             });
         }).fail(function(error) {
-            console.log("AJAX 실패:", error.status, error.responseText);
+            console.log("에러:", error.status, error.responseText);
             if (error.status === 400) {
                 Swal.fire({
                     text: error.responseText,
@@ -109,7 +109,7 @@ $(document).ready(function() {
 
 
     // 삭제 버튼 클릭 시
-    $('button.custom-link').click(function(event) {
+    $('.custom-link').click(function(event) {
         var cartId = $(this).attr('id'); // 버튼의 ID에서 cartId 추출
 
         event.preventDefault(); // 기본 동작 방지

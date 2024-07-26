@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import ypjs.project.dto.paymentdto.PaymentCallbackRequest;
 import ypjs.project.dto.paymentdto.PaymentDto;
 import ypjs.project.dto.paymentdto.UpdatePointsRequest;
+import ypjs.project.service.CartService;
 import ypjs.project.service.MemberService;
 import ypjs.project.service.PaymentService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,9 +28,10 @@ public class PaymentApiController {
 
     private final PaymentService paymentService;
     private final MemberService memberService;
+    private final CartService cartService;
 
 
-    //결제응답//결제요청은 OrderController create-> order.js
+    //결제성공//결제요청은 OrderController create-> order.js
     //응답 엔티티
     @PostMapping("/payment")
     public ResponseEntity<Map<String, Object>> validationPayment(@RequestBody PaymentCallbackRequest paymentCallbackRequest, HttpServletRequest request) throws Exception {
@@ -39,6 +42,27 @@ public class PaymentApiController {
         HttpSession session = request.getSession();
         // 결제 성공 시 세션에 paymentUid 저장
         session.setAttribute("paymentUid", paymentCallbackRequest.getPaymentUid());
+
+        // 결제 성공 시 세션에 cart가 있는지 확인 후 삭제
+        // 세션에서 cartIds 가져오기
+        Object cartIdsObj = session.getAttribute("cartIds");
+
+        // cartIds가 List<Long> 형태인지 확인하고 처리하기
+        if (cartIdsObj instanceof List<?>) {
+            @SuppressWarnings("unchecked")
+            List<Long> cartIds = (List<Long>) cartIdsObj;
+
+            // 각 cartId를 순회하며 삭제
+            for (Long cartId : cartIds) {
+                if (cartId != null) {
+                    cartService.delete(cartId);
+                }
+            }
+
+            // cartIds를 세션에서 삭제하거나 빈 리스트로 초기화할 수 있습니다.
+            session.removeAttribute("cartIds");
+        }
+        // 결제 성공 시 세션에 cart가 있는지 확인 후 삭제 끝
 
         // 응답 객체에 redirectUrl을 포함시킵니다.
         Map<String, Object> responseMap = new HashMap<>();
