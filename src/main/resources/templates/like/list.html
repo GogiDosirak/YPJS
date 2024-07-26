@@ -70,11 +70,16 @@
 
                             <!-- 좌측 목록 -->
                             <div class="col-md-3">
-                                <img th:src="@{/files/dog2.jpeg}" class="card-img-top" style="max-width: 100%;" alt="Item Image">
+                                <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}">
+                                    <img th:src="@{${item.itemFilepath}}" class="card-img-top" alt="Item Image">
+                                </a>
                             </div>
+
                             <!-- 우측 목록 -->
                             <div class="col-md-9 mt-3">
-                                <h5 class="card-title" th:text="${item.itemName}">Item Name</h5>
+                                <h5 class="card-title">
+                                    <a th:href="@{/ypjs/item/get/{itemId}(itemId=${item.itemId})}" th:text="${item.itemName}" style="color: black;"></a>
+                                </h5>
                                 <p class="card-text" th:text="${#numbers.formatInteger(item.itemPrice, 0)} + '원'">Item Price</p>
                                 <p class="card-text">
                                     <!-- 좋아요 버튼 시작 -->

@@ -21,7 +21,7 @@ public class LikedItemDto {
         itemName = item.getItemName();
         itemPrice = item.getItemPrice();
         itemFilename = item.getItemFilename();
-        itemFilepath = getItemFilepath();
+        itemFilepath = item.getItemFilepath();
     }
 
 }

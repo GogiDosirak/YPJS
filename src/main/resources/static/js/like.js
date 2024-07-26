@@ -6,9 +6,11 @@
                 $(window).scrollTop(savedScrollTop);
             }
 
-            $('.like-button').click(function(){
+            $('.like-button').click(function(event) {
 
-                var itemId = $('#itemId').val();
+                event.preventDefault();
+
+                var itemId = $(this).data('item-id');
                 var memberId = $('#memberId').val();
 
                 // 값을 콘솔에 출력하여 확인합니다.
