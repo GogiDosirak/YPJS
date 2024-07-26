@@ -1,10 +1,10 @@
 package ypjs.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,7 +23,8 @@ public class Notice {
     private String noticeContent;
 
     @Column(name = "notice_date")
-    private LocalDateTime noticeDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate noticeDate;
 
     @Column(name = "notice_cnt")
     private int noticeCnt;
@@ -32,6 +33,10 @@ public class Notice {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
+    public void cntUp(Notice notice) {
+        notice.noticeCnt++;
+    }
 
 
     public void updateNotice(String noticeTitle, String noticeContent) {
@@ -45,7 +50,7 @@ public class Notice {
         notice.member = member;
         notice.noticeTitle = noticeTitle;
         notice.noticeContent = noticeContent;
-        notice.noticeDate = LocalDateTime.now();
+        notice.noticeDate = LocalDate.now();
         return notice;
     }
 

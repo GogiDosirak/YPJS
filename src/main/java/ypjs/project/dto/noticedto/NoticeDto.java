@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class NoticeDto {
@@ -61,7 +62,7 @@ public class NoticeDto {
         private String noticeTitle;
         private String noticeContent;
         private int noticeCnt;
-        private LocalDateTime noticeDate;
+        private LocalDate noticeDate;
         private String noticeWriter;
     }
 }
