@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ypjs.project.domain.Item;
 import ypjs.project.dto.itemdto.*;
 import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.ItemService;
@@ -25,17 +26,19 @@ public class ItemApiController {
 
     //item등록
     @PostMapping("/api/ypjs/item/post")
-    public void saveItem(@RequestParam("file") MultipartFile file,
-                         @Valid @ModelAttribute  ItemRequestDto requestDto,
-                         @Valid @ModelAttribute  ItemFileDto itemFileDto,
-                         HttpSession session, HttpServletResponse response) throws Exception {
+    public void saveItem(@RequestParam("file") MultipartFile file, Model model,
+                           @Valid @ModelAttribute  ItemRequestDto requestDto,
+                           @Valid @ModelAttribute  ItemFileDto itemFileDto,
+                           HttpSession session, HttpServletResponse response) throws Exception {
+
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-//        itemService.saveItem(requestDto, responseLogin.getMemberId(), itemFileDto, file);
+       Item memberId = itemService.saveItem(requestDto, responseLogin.getMemberId(), itemFileDto, file);
+       model.addAttribute("memberId", memberId);
 
         //멤버 임시로 넣어 놈
-        itemService.saveItem(requestDto, 1L, itemFileDto, file);
+       // itemService.saveItem(requestDto, 1L, itemFileDto, file);
 
         response.sendRedirect("/ypjs/item/get");
 

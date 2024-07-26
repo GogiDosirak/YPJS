@@ -68,6 +68,7 @@ public class ItemReviewService {
     //아이템 당 리뷰조회
     public List<ItemReviewListDto> findAllItemReview(Long itemId, Pageable pageable, String sortBy) {
         List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId, pageable, sortBy);
+        //Member member = memberRepository.findOne(memberId);
 
         List<ItemReviewListDto> result = reviews.stream()
                 .map(ItemReviewListDto::new)

@@ -7,6 +7,7 @@
 <script src="/js/item/itemRatings.js"></script>
 <script src="/js/cart.js"></script>
 <script src="/js/order.js"></script>
+<script th:src="@{/js/like.js}"></script>
 
 <script src="/js/itemQna.js"></script>
 
@@ -192,6 +193,7 @@
                 </button>
                 <!-- 좋아요 버튼 끝 -->
             </div>
+
             <br>
             <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
             <span class="font-weight-bold">원</span>
@@ -228,7 +230,7 @@
 
 
 
-
+    <div th:if="${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">
     <!-- 수정하기 및 삭제하기 버튼 -->
     <div class="row justify-content-end mt-3">
         <div class="col-auto">
@@ -238,6 +240,7 @@
             <input type="hidden" id="itemId" th:value="${item.itemId}">
             <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
         </div>
+    </div>
     </div>
 
     <div class="row justify-content-end mt-3">

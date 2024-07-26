@@ -28,7 +28,7 @@ public class ItemReviewDto {
     public ItemReviewDto() {}
 
 
-    public ItemReviewDto(Long itemId, Long itemReviewId, int itemScore, String itemReviewName, String itemReviewContent) {
+    public ItemReviewDto(Long itemId, Long itemReviewId,int itemScore, String itemReviewName, String itemReviewContent) {
         this.itemId = itemId;
         this.itemReviewId = itemReviewId;
         this.itemScore = itemScore;
