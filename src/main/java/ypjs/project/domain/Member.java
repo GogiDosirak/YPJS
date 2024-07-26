@@ -33,7 +33,8 @@ public class Member  {
     @Column(name = "member_id")
     private Long memberId;
 
-    @Column(name = "member_username")
+
+    @Column(name = "member_username", unique = true)
     private String username;
 
     @Column(name = "member_password")
@@ -54,7 +55,7 @@ public class Member  {
     @Embedded
     private Address address;
 
-    @Column(name = "member_email")
+    @Column(name = "member_email", unique = true)
     private String email;
 
     @Column(name = "member_phonenumber")
@@ -83,7 +84,7 @@ public class Member  {
 
     // 멤버 생성 메소드
     public void createMember(String username, String password, String nickname, String name, Date birth, String gender, String address, String addressDetail, String zipcode, String email, String phonenumber) {
-//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//       BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         this.username = username;
 //        this.password = bCryptPasswordEncoder.encode(password); //(JWT 버전 쓸때 다시 살리기)
         this.password = password;

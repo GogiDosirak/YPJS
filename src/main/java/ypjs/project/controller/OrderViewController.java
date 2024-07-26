@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.domain.Member;
 import ypjs.project.domain.Page;
 import ypjs.project.dto.ResponseDto;
+import ypjs.project.domain.enums.Role;
 import ypjs.project.dto.cartdto.CartListDto;
 import ypjs.project.dto.deliverydto.DeliveryCreateDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.dto.orderdto.OrderAdminDto;
 import ypjs.project.dto.orderdto.OrderResponseDto;
 import ypjs.project.dto.orderdto.OrderSearchDto;
@@ -56,9 +58,8 @@ public class OrderViewController {
         }
 
         //멤버정보 -> 배송정보 생성
-        //Long memberId = (Long) session.getAttribute("loginMemberId");
-        //Member m = memberService.findById(memberId);
-        Member m = memberService.findOne(1L);
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+        Member m = memberService.findOne(loginMember.getMemberId());
 
         model.addAttribute("delivery", new DeliveryCreateDto(m.getName(), m.getPhonenumber(), m.getAddress()));
         model.addAttribute("cartList", cartListDtos);
@@ -101,9 +102,8 @@ public class OrderViewController {
         session.setAttribute("cartIds", cartIds);
 
         //멤버정보 -> 배송정보 생성
-        //Long memberId = (Long) session.getAttribute("loginMemberId");
-        //Member m = memberService.findById(memberId);
-        Member m = memberService.findOne(1L);
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+        Member m = memberService.findOne(loginMember.getMemberId());
 
         model.addAttribute("delivery", new DeliveryCreateDto(m.getName(), m.getPhonenumber(), m.getAddress()));
         model.addAttribute("cartList", cartListDtos);
@@ -121,11 +121,28 @@ public class OrderViewController {
     //==주문 전체 조회(관리자)==//
     @GetMapping("/list/admin")
     public String listAdmin(
-            HttpSession session, Model model,
+            HttpServletRequest request, Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @ModelAttribute OrderSearchDto orderSearchDto) {
         System.out.println("**주문 전체 조회(관리자) 요청됨");
+
+        //todo: 주석 해제
+/*
+        HttpSession session = request.getSession();
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+        Member member = memberService.findOne(loginMember.getMemberId());
+
+        //로그인 멤버가 관리자가 아닌 경우
+        if(member.getRole() != Role.ROLE_ADMIN) {
+            request.setAttribute("msg", "잘못된 접근입니다.");
+            request.setAttribute("url", "/index");
+            return "alert";
+        }
+*/
+
+        deliveryService.updateStatus();
 
         Pageable pageable = PageRequest.of(page, size);
         List<OrderAdminDto> o = orderService.findAll(pageable, orderSearchDto);
@@ -145,13 +162,15 @@ public class OrderViewController {
     //==멤버별 주문 전체 조회==//
     @GetMapping("/list")
     public String list(
-            HttpSession session, Model model,
+            HttpServletRequest request, Model model,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size,
             @ModelAttribute OrderSearchDto orderSearchDto) {
         System.out.println("**멤버별 주문 전체 조회 요청됨");
-        //Long memberId = (Long) session.getAttribute("loginMemberId");
-        Long memberId = 1L;
+
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) request.getSession().getAttribute("member");
+        Long memberId = loginMember.getMemberId();
+
         Pageable pageable = PageRequest.of(page, size);
         List<OrderResponseDto> o = orderService.findAllByMemberId(memberId, pageable, orderSearchDto);
 

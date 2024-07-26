@@ -63,7 +63,6 @@ public class MemberDto {
 
     @Data
     public static class UpdateMemberRequest {
-        private Long memberId;
         private String password;
         private String nickname;
     }
@@ -92,6 +91,7 @@ public class MemberDto {
         private String password;
         private String nickname;
         private String name;
+        private int point;
         private Date birth;
         private String gender;
         private String email;

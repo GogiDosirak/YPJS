@@ -50,10 +50,10 @@
                             <tr th:each="itemQna, itemQnaIndex : ${itemQnaList}" th:id="${itemQna.itemQnaId}">
                                 <td th:text="${itemQna.itemQnaId}"></td>
                                 <td th:text="${itemQna.itemName}"></td>
-                                <td th:text="${itemQna.qMemberAccountId}"></td>
+                                <td th:text="${itemQna.qMemberUserName}"></td>
                                 <td th:text="${itemQna.question}" style="width: 250px;"></td>
                                 <td th:text="${#temporals.format(itemQna.qCreated, 'yyyy-MM-dd')}"></td>
-                                <td th:text="${itemQna.aMemberAccountId}"></td>
+                                <td th:text="${itemQna.aMemberUserName}"></td>
                                 <td th:text="${#temporals.format(itemQna.aCreated, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${#temporals.format(itemQna.aUpdated, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${itemQna.status}"></td>

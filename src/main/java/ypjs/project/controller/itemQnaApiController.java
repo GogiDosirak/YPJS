@@ -17,6 +17,7 @@ import ypjs.project.dto.itemqnadto.ItemQnaAnswerDto;
 import ypjs.project.dto.itemqnadto.ItemQnaCreateDto;
 import ypjs.project.dto.itemqnadto.ItemQnaDetailDto;
 import ypjs.project.dto.itemqnadto.ItemQnaSimpleDto;
+import ypjs.project.dto.logindto.LoginDto;
 import ypjs.project.service.ItemQnaService;
 import ypjs.project.service.ItemService;
 import ypjs.project.service.MemberService;
@@ -36,11 +37,10 @@ public class itemQnaApiController {
     @PostMapping("/create")
     public ResponseEntity create(@RequestBody @Valid ItemQnaCreateDto itemQnaCreateDto, HttpServletRequest request) {
         System.out.println("**상품문의 등록 요청됨");
-        //HttpSession session = request.getSession();
-        //Long memberId = (Long) session.getAttribute("memberId");
-        //itemQnaCreateDto.setMemberId(memberId);
 
-        itemQnaCreateDto.setMemberId(1L);
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) request.getSession().getAttribute("member");
+
+        itemQnaCreateDto.setMemberId(loginMember.getMemberId());
         Long itemId = itemQnaService.create(itemQnaCreateDto);
         return ResponseEntity.ok().body(itemId);
     }

@@ -1,5 +1,7 @@
 package ypjs.project.dto.itemqnadto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ItemQnaCreateDto {
 
+    @NotNull
     private Long itemId;
 
+    @NotNull
     private Long memberId;
 
+    @NotBlank(message = "내용을 입력해주세요.")
     private String question;
 
 }

@@ -62,6 +62,8 @@ $(document).ready(function() {
             trackId: trackId
         };
 
+        console.log(deliveryTrackerDto);
+
         // AJAX request to save tracker info
         $.ajax({
             type: 'POST',

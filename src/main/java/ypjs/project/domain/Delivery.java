@@ -60,9 +60,9 @@ public class Delivery {
         this.receiver = receiver;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.status = status;
         this.carrierId = carrierId;
         this.trackId = trackId;
-        this.status = updateStatus(DeliveryStatus.배송완료);  // 상태 업데이트
     }
 
     public Delivery(String receiver, String phoneNumber, Address address, DeliveryStatus deliveryStatus) {
@@ -85,36 +85,31 @@ public class Delivery {
     }
 
 
-    public DeliveryStatus updateStatus(DeliveryStatus 배송완료) {
+    public void updateStatus() {
         System.out.println("**배송상태 업데이트 요청됨");
         if(StringUtils.hasText(this.trackId)) {
-            System.out.println("운송장번호 확인");
+            System.out.println("**운송장번호 확인");
             JSONObject trackLog = Tracker.trackLog(this.carrierId, this.trackId);
-            System.out.println("배송정보 조회");
+            System.out.println("**배송정보 조회");
 
             String status = trackLog.getString("status");
             System.out.println(status);
 
             if(status.equals("delivered")) {
-                return DeliveryStatus.배송완료;
+                this.status = DeliveryStatus.배송완료;
             } else {
-                return DeliveryStatus.배송중;
+                this.status = DeliveryStatus.배송중;
             }
         }
-        return this.status;
+
     }
 
 
     @PostPersist  // 영속화 후 상태 업데이트
     @PostUpdate
-    private void updateStatusAfterPersist() {
-        this.status = updateStatus(DeliveryStatus.배송완료);
-    }
-
-
     @PostLoad  // 엔티티 로드 후 상태 업데이트
-    private void updateStatusAfterLoad() {
-        this.status = updateStatus(DeliveryStatus.배송완료);
+    private void updateStatusAfterPersistAndLoad() {
+        updateStatus();
     }
 
 
