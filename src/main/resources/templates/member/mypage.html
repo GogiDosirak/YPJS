@@ -51,6 +51,22 @@
             border-color: #8BC34A;
             outline: none;
         }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #8BC34A;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #7CB342;
+        }
         button {
             display: inline-block;
             padding: 15px 30px;
@@ -72,60 +88,236 @@
             margin-top: 5px;
             display: block;
         }
+.profile-section {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.customize-button, .settings-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e7e7e7;
+    cursor: pointer;
+}
+
+.points-section {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.npay-points {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.total-points {
+    color: green;
+    font-size: 20px;
+    margin-top: 5px;
+}
+
+.monthly-points {
+    margin-top: 5px;
+    color: #777;
+}
+
+.links-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.link-item {
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f8f8;
+    flex-grow: 1;
+    margin: 0 5px;
+}
+
+.icon {
+    font-size: 24px;
+}
+
+.link-text {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.link-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3a3a3a;
+    margin-top: 5px;
+}
     </style>
 </head>
 <body>
-<form>
-    <input type="hidden" id="memberId" name="memberId" th:value="${mypage.memberId}">
+<div class="profile-section">
+    <div class="profile-info">
+        <div class="profile-name" th:text="${mypage.nickname+ '님'}"></div>
+    </div>
+    <div class="points-section">
+        <div class="npay-points">포인트</div>
+        <div class="total-points" th:text="${mypage.point+'원'}"></div>
+    </div>
+    <div class="links-section">
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">📦</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">주문배송</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">🛒</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">장바구니</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">❤️</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">찜목록</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/}">
+            <div class="icon">💬</div>
+            </a>
+            <a th:href="@{/}">
+            <div class="link-text">리뷰보기</div>
+            </a>
+        </div>
+    </div>
+</div>
+<form id="request">
     <label>
+        <input type="hidden" id="memberId" name="memberId" th:value="${mypage.memberId}">
         <p class="label-txt">아이디</p>
-        <input type="text" readonly class="input" th:value="${mypage.username}">
+        <input type="text" readonly class="input" id="username" name="username" th:value="${mypage.username}">
     </label>
     <label>
-        <p class="label-txt">비밀번호 (변경 가능)</p>
+        <p class="label-txt">비밀번호(변경 가능)</p>
         <input type="password" class="input" id="password" name="password" th:value="${mypage.password}">
         <span class="error-message" id="error-password"></span>
     </label>
     <label>
-        <p class="label-txt">이름</p>
-        <input type="text" readonly class="input"th:value="${mypage.name}">
+        <p class="label-txt">비밀번호 확인</p>
+        <input type="password" class="input" id="passwordConfirm" name="passwordConfirm" th:value="${mypage.password}">
+        <span class="error-message" id="error-password-confirm"></span>
     </label>
     <label>
-        <p class="label-txt">닉네임 (변경 가능)</p>
+        <p class="label-txt">이름</p>
+        <input type="text" readonly class="input" id="name" name="name" th:value="${mypage.name}">
+    </label>
+    <label>
+        <p class="label-txt">닉네임(변경 가능)</p>
         <input type="text" class="input" id="nickname" name="nickname" th:value="${mypage.nickname}">
         <span class="error-message" id="error-nickname"></span>
     </label>
     <label>
         <p class="label-txt">생년월일</p>
-        <input type="text" readonly class="input" th:value="${mypage.birth}">
+        <input type="text" readonly class="input" id="birth" name="birth" th:value="${mypage.birth}">
     </label>
     <label>
         <p class="label-txt">성별</p>
-        <input type="text" readonly class="input" th:value="${mypage.gender}">
-    </label>
-    <label>
-        <p class="label-txt">주소</p>
-        <input type="text" readonly class="input" th:value="${mypage.address.address}">
-    </label>
-    <label>
-        <p class="label-txt">주소 상세</p>
-        <input type="text" readonly class="input" th:value="${mypage.address.addressDetail}">
+        <input type="text" readonly class="input" id="gender" name="gender"th:value="${mypage.gender}">
     </label>
     <label>
         <p class="label-txt">우편번호</p>
-        <input type="text" readonly class="input" th:value="${mypage.address.zipcode}">
+        <input type="text" readonly class="input" id="zipcode" name="zipcode" th:value="${mypage.address.zipcode}">
+    </label>
+    <label>
+        <p class="label-txt">주소</p>
+        <input type="text" readonly class="input" id="address" name="address" th:value="${mypage.address.address}">
+    </label>
+    <label>
+        <p class="label-txt">주소 상세</p>
+        <input type="text" readonly class="input" id="addressDetail" name="addressDetail" th:value="${mypage.address.addressDetail}">
     </label>
     <label>
         <p class="label-txt">이메일</p>
-        <input type="text" readonly class="input" th:value="${mypage.email}">
+        <input type="text" readonly class="input" id="email" name="email" th:value="${mypage.email}">
     </label>
     <label>
         <p class="label-txt">핸드폰번호</p>
-        <input type="text" readonly class="input" th:value="${mypage.phonenumber}">
+        <input type="text" readonly class="input" id="phonenumber" name="phonenumber" th:value="${mypage.phonenumber}">
     </label>
-    <button type="submit" id="btn-update">정보수정</button>
+    <button type="submit" id="btn-update" disabled>정보수정</button>
 </form>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script src="/js/member.js"></script>
+<script>
+    $(document).ready(function() {
+        var passwordValid = false; // 비밀번호 확인 상태를 저장하는 변수
+
+        $('#password, #passwordConfirm').on('keyup', function() {
+            validatePasswordMatch();
+        });
+
+        function validatePasswordMatch() {
+            var password = $('#password').val();
+            var passwordConfirm = $('#passwordConfirm').val();
+            if (password !== passwordConfirm) {
+                $('#error-password-confirm').text("비밀번호가 일치하지 않습니다").css({
+                    "color": "#FA3E3E",
+                    "font-weight": "bold",
+                    "font-size": "10px"
+                });
+                passwordValid = false;
+            } else {
+                $('#error-password-confirm').text("비밀번호 일치").css({
+                    "color": "#0D6EFD",
+                    "font-weight": "bold",
+                    "font-size": "10px"
+                });
+                passwordValid = true;
+            }
+            toggleJoinButton();
+        }
+
+        function toggleJoinButton() {
+            console.log("비밀번호 일치: " + passwordValid); // 비밀번호 일치 상태를 확인하기 위해 콘솔에 출력
+
+            if (passwordValid) {
+                $('#btn-update').prop('disabled', false); // 비밀번호 확인이 맞으면 버튼 활성화
+            } else {
+                $('#btn-update').prop('disabled', true); // 비밀번호 확인이 틀리면 버튼 비활성화
+            }
+        }
+    });
+</script>
 </body>
 </html>

@@ -91,6 +91,7 @@ public class MemberDto {
         private String password;
         private String nickname;
         private String name;
+        private int point;
         private Date birth;
         private String gender;
         private String email;

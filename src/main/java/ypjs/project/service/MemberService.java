@@ -2,9 +2,7 @@ package ypjs.project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ypjs.project.domain.Member;
@@ -13,6 +11,7 @@ import ypjs.project.dto.memberdto.MemberDto;
 import ypjs.project.repository.MemberRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,11 +37,27 @@ public class MemberService {
         return member;
     }
 
-    // 중복 검증
+    // 아이디 중복 검증
     public void validateDuplicateMember(Member member) {
         List<Member> findMembers = memberRepository.findByUsernames(member.getUsername());
         if(!findMembers.isEmpty()) {
             throw new IllegalStateException("중복된 회원 아이디입니다.");
+        }
+    }
+
+    // 아이디 중복 검증 (버튼용)
+    public void validateButton(String username) {
+        List<Member> member = memberRepository.findByUsernames(username);
+        if(!member.isEmpty()) {
+            throw new IllegalStateException("중복된 회원 아이디입니다.");
+        }
+    }
+
+    // 이메일 중복 검증 (버튼용)
+    public void validateEmail(String email) {
+        List<Member> member = memberRepository.findByEmail(email);
+        if(!member.isEmpty()) {
+            throw new IllegalStateException("중복된 이메일입니다.");
         }
     }
 
