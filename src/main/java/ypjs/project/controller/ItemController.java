@@ -15,6 +15,7 @@ import ypjs.project.dto.itemdto.ItemListDto;
 import ypjs.project.dto.itemdto.ItemOneDto;
 import ypjs.project.dto.itemdto.ItemUpdateDto;
 import ypjs.project.service.CategoryService;
+import ypjs.project.service.ItemQnaService;
 import ypjs.project.service.ItemReviewService;
 import ypjs.project.service.ItemService;
 
@@ -27,6 +28,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemReviewService itemReviewService;
     private final CategoryService categoryService;
+    private final ItemQnaService itemQnaService;
 
 
 
@@ -54,6 +56,10 @@ public class ItemController {
         //리뷰 갯수
         int reviewCount = itemReviewService.countAllItemReview(itemId);
         model.addAttribute("reviewCount", reviewCount);
+
+        //문의 개수
+        int qnaCount = itemQnaService.countByItemId(itemId);
+        model.addAttribute("qnaCount", qnaCount);
 
         return "item/itemGet";
 
