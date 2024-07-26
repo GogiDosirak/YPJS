@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class LoginController {
 
+
     @GetMapping("ypjs/member/login")
     public String login() {
         return "member/login";
     }
+
+
 
     // 로그아웃
     @GetMapping("ypjs/member/logout")

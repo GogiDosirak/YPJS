@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="/css/login.css">
@@ -7,8 +6,60 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<script src="/webjars/jquery/3.6.0/jquery.min.js"></script>-->
+
+
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <!-- <script src="/webjars/jquery/3.6.0/jquery.min.js"></script> -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .login-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 300px;
+        }
+        .input-div {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-div .div h5 {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #999;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 14px;
+        }
+        .input-div input {
+            width: 100%;
+            padding: 10px;
+            padding-top: 30px; /* Add padding to make space for the label */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-div input:focus + .div h5,
+        .input-div input:not(:placeholder-shown) + .div h5 {
+            top: -10px; /* Move label up */
+            font-size: 12px;
+            color: #333;
+        }
+    </style>
+
 
 </head>
 <body>
@@ -22,22 +73,16 @@
             <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg">
             <h2 class="title">Welcome</h2>
             <div class="input-div one">
-                <div class="i">
-                    <i class="fas fa-user"></i>
-                </div>
                 <div class="div">
                     <h5>Username</h5>
-                    <input type="text" id="username" name="username" class="input">
                 </div>
+                <input type="text" id="username" name="username" class="input" placeholder=" ">
             </div>
             <div class="input-div pass">
-                <div class="i">
-                    <i class="fas fa-lock"></i>
-                </div>
                 <div class="div">
                     <h5>Password</h5>
-                    <input type="password" id="password" name="password" class="input">
                 </div>
+                <input type="password" id="password" name="password" class="input" placeholder=" ">
             </div>
             <a href="#">Forgot Password?</a>
             <button class="btn" id="btn-login">로그인</button>
@@ -45,6 +90,5 @@
         </form>
     </div>
 </div>
-
 </body>
 </html>
