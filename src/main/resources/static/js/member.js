@@ -54,6 +54,16 @@ $(document).ready(function() {
         event.preventDefault();
         memberObject.update();
     });
+
+    $("#btn-findId").on("click", function(event) {
+        event.preventDefault();
+        memberObject.findId();
+    });
+
+    $("#btn-findPassword").on("click", function(event) {
+        event.preventDefault();
+        memberObject.findPassword();
+    });
 });
 
 function validateField(field, regex, errorMessage, errorElement) {
@@ -176,6 +186,62 @@ let memberObject = {
             alert("에러 발생: " + jqXHR.responseText);
         });
     },
+
+       findId: function() {
+           let request = {
+               name: $("#name").val(),
+               email: $("#email").val(),
+               phonenumber: $("#phonenumber").val()
+           };
+
+           $.ajax({
+               type: "POST",
+               url: "/api/ypjs/member/findId",
+               data: JSON.stringify(request),
+               contentType: "application/json; charset=utf-8"
+           }).done(function(response) {
+               // 응답에서 username과 message를 확인하여 처리합니다.
+               if (response.username) {
+                   // 아이디를 찾은 경우
+                   alert("이이디는 " + response.username + " 입니다.");
+                   // 또는 원하는 위치에 ID를 표시
+                   // $("#result-message").text("찾은 아이디: " + response.username);
+               } else if (response.message) {
+                   // 에러 메시지 처리
+                   alert("가입되지 않은 회원정보입니다.");
+               }
+               console.log("Find ID successful:", response);
+               location.href = "/ypjs/member/login"; // 로그인 페이지 이동
+           }).fail(function(jqXHR, textStatus, errorThrown) {
+               console.error("Error occurred:", textStatus, errorThrown);
+               alert("가입되지 않은 회원정보입니다.");
+           });
+       },
+
+       findPassword: function() {
+                  let request = {
+                      username: $("#username").val(),
+                      email: $("#email").val()
+                  }
+
+                  $.ajax({
+                      type: "POST",
+                      url: "/api/ypjs/member/findPassword",
+                      data: JSON.stringify(request),
+                      contentType: "application/json; charset=utf-8"
+                  }).done(function(response) {
+                      if (response.password) {
+                          alert("비밀번호는 " + response.password + " 입니다.");
+                      } else if (response.message) {
+                          alert("가입되지 않은 회원정보입니다.");
+                      }
+                      console.log("Find Password successful:", response);
+                      location.href = "/ypjs/member/login"; // 로그인 페이지 이동
+                  }).fail(function(jqXHR, textStatus, errorThrown) {
+                      console.error("Error occurred:", textStatus, errorThrown);
+                      alert("가입되지 않은 회원정보입니다.");
+                  });
+              },
 
     validate: function() {
         let valid = true;

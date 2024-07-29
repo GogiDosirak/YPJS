@@ -102,6 +102,29 @@ public class MemberApiController {
         return new MemberDto.WithdrawalMemberResponse(memberId);
     }
 
+    // 아이디 찾기
+    @PostMapping("/api/ypjs/member/findId")
+    public ResponseEntity<MemberDto.findIdResponse> findId(@RequestBody MemberDto.findIdRequest request) {
+            String username = memberService.findId(request);
+            if (username == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new MemberDto.findIdResponse("가입되지 않은 회원입니다."));
+            } else {
+                return ResponseEntity.ok(new MemberDto.findIdResponse(username));
+            }
+    }
+
+    // 비밀번호 찾기
+    @PostMapping("/api/ypjs/member/findPassword")
+    public ResponseEntity<MemberDto.findPasswordResponse> findPassword(@RequestBody MemberDto.findPasswordRequest request) {
+        String password = memberService.findPassword(request);
+        if (password == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new MemberDto.findPasswordResponse("틀린 회원정보입니다."));
+        } else {
+            return ResponseEntity.ok(new MemberDto.findPasswordResponse(password));
+        }
+    }
 
     @Data
     @AllArgsConstructor
