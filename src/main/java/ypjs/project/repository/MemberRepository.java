@@ -56,6 +56,32 @@ public class MemberRepository {
                 .getResultList();
     }
 
+    public Member findId(String name, String email, String phonenumber) {
+       try {
+           return em.createQuery(
+                           "select m from Member m where m.email = :email and m.name = :name and m.phonenumber = :phonenumber", Member.class)
+                   .setParameter("email", email)
+                   .setParameter("name", name)
+                   .setParameter("phonenumber", phonenumber)
+                   .getSingleResult();
+       } catch (NoResultException e) {
+           return null;
+       }
+
+    }
+
+    public Member findPassword(String username, String email) {
+        try {
+            return em.createQuery(
+                    "select m from Member m where m.username = :username and m.email = :email",Member.class)
+                    .setParameter("username",username)
+                    .setParameter("email",email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
 
 

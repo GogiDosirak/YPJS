@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ypjs.project.domain.Address;
 import ypjs.project.domain.enums.Role;
 
@@ -99,6 +100,37 @@ public class MemberDto {
         private String phonenumber;
         private LocalDateTime joinDate;
         private Role role;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class findIdRequest {
+        private String name;
+        private String email;
+        private String phonenumber;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class findIdResponse {
+        private String username;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class findPasswordRequest {
+        private String username;
+        private String email;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class findPasswordResponse {
+        private String password;
     }
 
 
