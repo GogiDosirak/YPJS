@@ -57,13 +57,13 @@
                         </select>
                     </div>
                 </form>
-                <p th:if="${#lists.isEmpty(likedItems)}">좋아요한 아이템이 없습니다.</p>
+                <p th:if="${#lists.isEmpty(likedItems)}">찜한 아이템이 없습니다.</p>
             </div>
 
             <br>
 
             <div th:if="${not #lists.isEmpty(likedItems)}" class="col-md-12 offset-md-1 mt-2">
-                <h3 class="pb-4">좋아요한 아이템 목록</h3>
+                <h3 class="pb-4">찜한 아이템 목록</h3>
                 <div class="row">
                     <div th:each="item : ${likedItems}" class="col-md-12 mb-3">
                         <div class="row">
