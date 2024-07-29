@@ -86,6 +86,18 @@ public class MemberService {
         return member.getMemberId();
     }
 
+    // 아이디 찾기
+    public String findId(MemberDto.findIdRequest request) {
+        Member member = memberRepository.findId(request.getName(), request.getEmail(), request.getPhonenumber());
+        return member.getUsername();
+    }
+
+    // 비밀번호 찾기
+    public String findPassword(MemberDto.findPasswordRequest request) {
+        Member member = memberRepository.findPassword(request.getUsername(),request.getEmail());
+        return member.getPassword();
+    }
+
     // 출석포인트
     @Transactional
     public Member attendancePoint(Long memberId) {

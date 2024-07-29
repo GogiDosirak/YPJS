@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .recovery-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-div {
+            position: relative;
+            margin-bottom: 25px;
+        }
+        .input-div input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            font-size: 14px;
+        }
+        .input-div input:focus {
+            border-color: #0D6EFD;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: #0D6EFD;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background: #0A58CA;
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #0D6EFD;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #0A58CA;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="recovery-content">
+        <h2>아이디 찾기</h2>
+        <form id="recoverForm">
+            <div class="input-div">
+                <input type="text" id="name" name="name" placeholder="이름" required>
+            </div>
+            <div class="input-div">
+                <input type="email" id="email" name="email" placeholder="이메일 주소" required>
+            </div>
+            <div class="input-div">
+                <input type="text" id="phonenumber" name="phonenumeber" placeholder="전화번호">
+            </div>
+            <button type="submit" class="btn" id="btn-findId">아이디 찾기</button>
+        </form>
+        <a href="/ypjs/member/login">로그인 페이지로 돌아가기</a>
+    </div>
+</div>
+<script src="/js/member.js"></script>
+</body>
+</html>

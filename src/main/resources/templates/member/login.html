@@ -7,8 +7,6 @@
     <script src="https://kit.fontawesome.com/a81368914c.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <!-- <script src="/webjars/jquery/3.6.0/jquery.min.js"></script> -->
     <style>
@@ -59,10 +57,19 @@
             font-size: 12px;
             color: #333;
         }
+        a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            color: #888; /* Set to a medium gray */
+            text-decoration: none;
+            margin-right: 10px;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #555; /* Darker gray on hover */
+        }
     </style>
-
-
-
 </head>
 <body>
 <img class="wave" src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/wave.png">
@@ -73,20 +80,21 @@
     <div class="login-content">
         <form>
             <img src="https://raw.githubusercontent.com/sefyudem/Responsive-Login-Form/master/img/avatar.svg">
-            <h2 class="title">Welcome</h2>
+            <h2 class="title">YPJS</h2>
             <div class="input-div one">
                 <div class="div">
-                    <h5>Username</h5>
+                    <h5>username</h5>
                 </div>
                 <input type="text" id="username" name="username" class="input" placeholder=" ">
             </div>
             <div class="input-div pass">
                 <div class="div">
-                    <h5>Password</h5>
+                    <h5>password</h5>
                 </div>
                 <input type="password" id="password" name="password" class="input" placeholder=" ">
             </div>
-            <a href="#">Forgot Password?</a>
+            <a href="/ypjs/member/findId">아이디 찾기</a>
+            <a href="/ypjs/member/findPassword">비밀번호 찾기</a>
             <button class="btn" id="btn-login">로그인</button>
             <script src="/js/member.js"></script>
         </form>
