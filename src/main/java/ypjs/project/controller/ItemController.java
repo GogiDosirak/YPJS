@@ -1,7 +1,6 @@
 package ypjs.project.controller;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -61,10 +60,6 @@ public class ItemController {
 //        Long memberId = 1L;
 //        model.addAttribute("memberId", memberId);
 
-
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
-        model.addAttribute("memberId", responseLogin.getMemberId());
 
         //조회수
         itemService.increaseItemCnt(itemId);
@@ -134,7 +129,6 @@ public class ItemController {
 
         model.addAttribute("memberId", responseLogin.getMemberId());
 
-        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
         model.addAttribute("loginMemberRole", responseLogin.getRole());
         model.addAttribute("items",items);
         model.addAttribute("category", category);
