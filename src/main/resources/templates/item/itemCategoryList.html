@@ -90,10 +90,17 @@
                                     <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                         <ul class="list-unstyled">
                                             <!-- 좋아요 버튼 시작 -->
-                                            <input type="hidden" id="memberId" th:value="${memberId}">
-                                            <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
-                                                <i class="fas fa-heart"></i>
-                                            </button>
+                                            <div th:if="${session.member != null}">
+                                                <input type="hidden" id="memberId" th:value="${memberId}">
+                                                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
+                                                    <i class="fas fa-heart"></i>
+                                                </button>
+                                            </div>
+                                            <div th:if="${session.member == null}">
+                                                <a class="btn btn-success text-white" href="/ypjs/member/login">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                            </div>
                                             <!-- 좋아요 버튼 끝 -->
                                         </ul>
                                     </div>
