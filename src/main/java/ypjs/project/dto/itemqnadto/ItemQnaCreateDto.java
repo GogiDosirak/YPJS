@@ -14,7 +14,6 @@ public class ItemQnaCreateDto {
     @NotNull
     private Long itemId;
 
-    @NotNull
     private Long memberId;
 
     @NotBlank(message = "내용을 입력해주세요.")

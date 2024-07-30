@@ -78,48 +78,30 @@ https://templatemo.com/tm-559-zay-shop
                             <li class="nav-item">
                                 <a class="nav-link" href="/index">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/about">About</a>
-                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" th:href="@{/ypjs/item/get}">Shop</a>
                             </li>
 
-                            <!-- Admin Link -->
-                            <div th:if="${session.member != null}">
-                                <li class="nav-item" th:if="${session.member.role == 'ROLE_ADMIN'}">
-                                    <a class="nav-link" href="/ypjs/order/list/admin">Admin</a>
-                                </li>
-                            </div>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/contact">Contact</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/ypjs/board/notice/notices">Notice</a>
+                            </li>
+
+                            <!-- Admin Link -->
+                            <li class="nav-item" th:if="${session.member != null and session.member.role.name() == 'ROLE_ADMIN'}">
+                                <a class="nav-link" href="/ypjs/order/list/admin">Admin</a>
                             </li>
 
                         </ul>
                     </div>
                     <div class="navbar align-self-center d-flex">
-                        <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="inputMobileSearch" placeholder="Search ...">
-                                <div class="input-group-text">
-                                    <i class="fa fa-fw fa-search"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
-                            <i class="fa fa-fw fa-search text-dark mr-2"></i>
-                        </a>
+
                         <a class="nav-icon position-relative text-decoration-none" href="/ypjs/cart/list">
                             <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
                             <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark"
                                   th:text="${session.memberCartSize}"></span>
                         </a>
-                        <a class="nav-icon position-relative text-decoration-none" href="/ypjs/order/list">
-                            <i class="fa fa-fw fa-user text-dark mr-3"></i>
-                        </a>
+
                         <!-- 세션에 member가 없을 경우 (로그인되지 않은 상태) -->
                         <div th:if="${session.member == null}">
                             &nbsp;&nbsp;&nbsp;<a href="/ypjs/member/login">로그인</a>

@@ -28,10 +28,7 @@ $(document).ready(function() {
                     icon: "success"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        //상품 상세로 이동
-                        //location = "/ypjs/item/detail?itemId=" + response;
-                        //임시 로케이션
-                        location = "/ypjs/order/hello";
+                        location = "/ypjs/item/get/" + response;
                     }
                 });
             },
