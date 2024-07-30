@@ -36,9 +36,9 @@ public class ItemReviewApiController {
         //멤버정보 찾기
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
+
         Item findItem = itemService.findOneItem(itemId);
         ItemReview memberId = itemReviewService.saveItemReview(requestDto, responseLogin.getMemberId());
-        //ItemReview itemReview = itemReviewService.saveItemReview(requestDto, 1L);
 
 
         model.addAttribute("memberId", memberId);
