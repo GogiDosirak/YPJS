@@ -127,8 +127,6 @@ public class OrderViewController {
             @ModelAttribute OrderSearchDto orderSearchDto) {
         System.out.println("**주문 전체 조회(관리자) 요청됨");
 
-        //todo: 주석 해제
-/*
         HttpSession session = request.getSession();
         LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
 
@@ -140,7 +138,6 @@ public class OrderViewController {
             request.setAttribute("url", "/index");
             return "alert";
         }
-*/
 
         deliveryService.updateStatus();
 

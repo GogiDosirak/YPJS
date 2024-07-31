@@ -53,12 +53,15 @@ public class ItemController {
 
 
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
-        model.addAttribute("memberId", responseLogin.getMemberId());
+
 
 //        //임시 맴버아이디//하드코딩//바꿔치기 해야함
 //        Long memberId = 1L;
 //        model.addAttribute("memberId", memberId);
+
+        if(responseLogin != null) {
+            model.addAttribute("memberId", responseLogin.getMemberId());
+        }
 
 
         //조회수
@@ -78,20 +81,6 @@ public class ItemController {
         return "item/itemGet";
 
     }
-
-
-
-    //category당 아이템 조회
-//    @GetMapping("/ypjs/categoryItem/get/{categoryId}")
-//    public CategoryOneDto getOneCategory(@PathVariable("categoryId") Long categoryId) {
-//
-//        Category category =  categoryService.findOneCategory(categoryId);
-//
-//       List<ItemListDto> items = itemService.findAllItem(categoryId);
-//
-//        return new  CategoryOneDto(category, items);
-//    }
-
 
 
 
@@ -120,14 +109,13 @@ public class ItemController {
         model.addAttribute("parentCategories", parentCategories);
 
 
-        //임시 맴버아이디//하드코딩//바꿔치기 해야함
-//        Long memberId = 1L;
-//        model.addAttribute("memberId", memberId);
-
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
+        if(responseLogin != null) {
+            model.addAttribute("memberId", responseLogin.getMemberId());
+        }
 
-        model.addAttribute("memberId", responseLogin.getMemberId());
+
 
         model.addAttribute("loginMemberRole", responseLogin.getRole());
         model.addAttribute("items",items);
@@ -169,15 +157,12 @@ public class ItemController {
         List<Category> parentCategories = categoryService.findParentCategories();
         model.addAttribute("parentCategories", parentCategories);
 
-        //임시 맴버아이디//하드코딩//바꿔치기 해야함
-//        Long memberId = 1L;
-//        model.addAttribute("memberId", memberId);
 
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-
-        model.addAttribute("memberId", responseLogin.getMemberId());
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
+        if(responseLogin != null) {
+            model.addAttribute("memberId", responseLogin.getMemberId());
+        }
 
         model.addAttribute("items", items);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가

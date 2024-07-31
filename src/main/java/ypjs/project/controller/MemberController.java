@@ -37,6 +37,18 @@ public class MemberController {
         return "member/mypage";
     }
 
+    // 아이디찾기
+    @GetMapping("/ypjs/member/findId")
+    public String findId() {
+        return "member/findId";
+    }
+
+    // 비밀번호찾기
+    @GetMapping("/ypjs/member/findPassword")
+        public String findPassword() {
+            return "member/findPassword";
+    }
+
     // member를 Dto로 감싸주는 역할
     private MemberDto.MypageDto getMypageData(Long memberId) {
         Member member = memberService.findOne(memberId);
