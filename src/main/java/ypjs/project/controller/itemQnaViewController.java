@@ -35,8 +35,19 @@ public class itemQnaViewController {
 
     @GetMapping("/create")
     public String create(
-            @RequestParam(name = "itemId") @Valid Long itemId, Model model) {
+            @RequestParam(name = "itemId") @Valid Long itemId, Model model, HttpServletRequest request) {
         System.out.println("**상품문의 등록 페이지 요청됨");
+
+        HttpSession session = request.getSession();
+        //멤버정보
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+        if(loginMember == null) {
+            request.setAttribute("msg", "로그인이 필요합니다.");
+            request.setAttribute("url", "/ypjs/member/login");
+            return "alert";
+        }
+
         Item i = itemService.findOneItem(itemId);
 
         model.addAttribute("itemId", itemId);
@@ -73,13 +84,19 @@ public class itemQnaViewController {
         System.out.println("**마이 상품문의 내역 페이지 요청됨");
 
         HttpSession session = request.getSession();
-        LoginDto.ResponseLogin member = (LoginDto.ResponseLogin) session.getAttribute("member");
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+        if(loginMember == null) {
+            request.setAttribute("msg", "로그인이 필요합니다.");
+            request.setAttribute("url", "/ypjs/member/login");
+            return "alert";
+        }
 
         Pageable pageable = PageRequest.of(page, size);
-        List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByMemberId(member.getMemberId(), pageable);
+        List<ItemQnaSimpleDto> itemQnaList = itemQnaService.findAllByMemberId(loginMember.getMemberId(), pageable);
 
         //총 페이지 수 계산
-        int totalPages = Page.totalPages(itemQnaService.countByMemberId(member.getMemberId()), size);
+        int totalPages = Page.totalPages(itemQnaService.countByMemberId(loginMember.getMemberId()), size);
 
         model.addAttribute("itemQnaList", itemQnaList);
         model.addAttribute("page", page);
@@ -147,9 +164,9 @@ public class itemQnaViewController {
         model.addAttribute("itemQna", itemQna);
 
         HttpSession session = request.getSession();
-        LoginDto.ResponseLogin member = (LoginDto.ResponseLogin) session.getAttribute("member");
+        LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-        Member m = memberService.findOne(member.getMemberId());
+        Member m = memberService.findOne(loginMember.getMemberId());
 
         model.addAttribute("aMemberUserName",m.getUsername());
         model.addAttribute("aMemberId", m.getMemberId());

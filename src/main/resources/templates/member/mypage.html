@@ -189,18 +189,18 @@
     </div>
     <div class="links-section">
         <div class="link-item">
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/order/list}">
             <div class="icon">📦</div>
             </a>
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/order/list}">
             <div class="link-text">주문배송</div>
             </a>
         </div>
         <div class="link-item">
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/cart/list}">
             <div class="icon">🛒</div>
             </a>
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/cart/list}">
             <div class="link-text">장바구니</div>
             </a>
         </div>
@@ -213,11 +213,19 @@
             </a>
         </div>
         <div class="link-item">
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/itemReviewAll/get/{memberId}(memberId=${memberId})}">
             <div class="icon">💬</div>
             </a>
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/itemReviewAll/get/{memberId}(memberId=${memberId})}">
             <div class="link-text">리뷰보기</div>
+            </a>
+        </div>
+        <div class="link-item">
+            <a th:href="@{/ypjs/itemqna/list/my}">
+                <div class="icon">❓</div>
+            </a>
+            <a th:href="@{/ypjs/itemqna/list/my}">
+                <div class="link-text">상품문의</div>
             </a>
         </div>
     </div>

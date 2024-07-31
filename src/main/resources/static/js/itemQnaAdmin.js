@@ -11,7 +11,7 @@ $(document).ready(function() {
 /** detailAdmin.html **/
     $('#btn-answer').click(function() {
         var itemQnaId = $('#itemQnaId').val();
-        location = '/api/ypjs/itemqna/answer?itemQnaId=' + itemQnaId;
+        location = '/ypjs/itemqna/answer?itemQnaId=' + itemQnaId;
     });
 
 /** answer.html **/

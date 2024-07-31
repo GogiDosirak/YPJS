@@ -75,19 +75,15 @@
 <div class="container py-5 px-5 mx-auto">
     <div class="row align-items-center justify-content-center">
         <div class="col-lg-10">
-            <!--<div th:if="${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">-->
-                <div class="row justify-content-end">
-                    <!-- 수정하기 및 삭제하기 버튼 -->
-                    <div class="row justify-content-end mt-3">
-                        <div class="col-auto">
-                            <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
-                        </div>
-                        <div class="col-auto">
-                            <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
-                        </div>
-                    </div>
+            <!-- 수정하기 및 삭제하기 버튼 -->
+            <div class="row justify-content-end mt-3" th:if="${session.member != null and session.member.role.name() == 'ROLE_ADMIN'}">
+                <div class="col-auto">
+                    <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
                 </div>
-            <!--</div>-->
+                <div class="col-auto">
+                    <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-6">
@@ -103,10 +99,17 @@
                             </div>
                             <div class="col-2 d-flex align-items-center justify-content-end">
                                 <!-- 좋아요 버튼 시작 -->
-                                <input type="hidden" id="memberId" th:value="${memberId}">
-                                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
-                                    <i class="fas fa-heart"></i>
-                                </button>
+                                <div th:if="${session.member != null}">
+                                    <input type="hidden" id="memberId" th:value="${memberId}">
+                                    <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                                <div th:if="${session.member == null}">
+                                    <a class="btn btn-success text-white" href="/ypjs/member/login">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                </div>
                                 <!-- 좋아요 버튼 끝 -->
                             </div>
                         </div>
@@ -182,29 +185,9 @@
 
     <!--상품상세 리뷰 문의-->
     <div class="row">
-
-        <div class="col-lg-7 offset-lg-1">
-            <div style="display: flex; align-items: center;">
-                <h1 id="itemName" class="h2 font-weight-bold" th:text="${item.itemName}" style="margin-bottom: 0; margin-right: 10px; line-height: 1.2;"></h1>
-                <!-- 좋아요 버튼 시작 -->
-                <input type="hidden" id="memberId" th:value="${memberId}">
-                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
-                    <i class="fas fa-heart"></i>
-                </button>
-                <!-- 좋아요 버튼 끝 -->
-            </div>
-
-            <br>
-            <span id="itemPrice" class="font-weight-bold" th:text="${item.itemPrice}"></span>
-            <span class="font-weight-bold">원</span>
-            <p class="h3 py-2"></p>
-        </div>
-    </div>
-
         <nav class="navbar  navbar-expand-lg bg-light justify-content-center">
             <!-- Links -->
             <ul class="nav justify-content-center">
-
 
                 <!-- 리뷰가 있는 경우 -->
                 <div th:if="${reviewCount != null and reviewCount > 0}">
@@ -223,44 +206,6 @@
                     </li>
                 </div>
 
-
-            </div>
-        </div>
-    </div>
-
-
-
-    <div th:if="${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">
-    <!-- 수정하기 및 삭제하기 버튼 -->
-    <div class="row justify-content-end mt-3">
-        <div class="col-auto">
-            <a th:href="@{/ypjs/item/update/{itemId}(itemId=${item.itemId})}" class="btn btn-warning">수정하기</a>
-        </div>
-        <div class="col-auto">
-            <input type="hidden" id="itemId" th:value="${item.itemId}">
-            <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
-        </div>
-    </div>
-    </div>
-
-    <div class="row justify-content-end mt-3">
-        <div class="col-auto">
-            <span class="font-weight-bold"> 조회수 : </span>
-            <span id="itemCnt" class="font-weight-bold" th:text="${item.itemCnt}"></span>
-            <br>
-            <span class="font-weight-bold">작성일 : </span>
-            <span id="itemCreateDate" class="font-weight-bold" th:text="${#temporals.format(item.itemCreateDate, 'yyyy-MM-dd')}"></span>
-        </div>
-        <div class="col-auto">
-
-        </div>
-    </div>
-</div>
-</div>
-</div>
-
-<hr>
-
                 <!-- 문의가 있는 경우 -->
                 <div th:if="${qnaCount != null and qnaCount > 0}">
                     <li class="nav-item" style="width: 400px;">
@@ -270,7 +215,6 @@
                         </a>
                     </li>
                 </div>
-
 
                 <!-- 문의가 없는 경우 -->
                 <div th:if="${qnaCount == null or qnaCount == 0}">
@@ -282,16 +226,6 @@
         </nav>
 
     </div>
-
-
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Close Content -->
-
 
     <section class="bg-light">
         <div class="container pb-5">
@@ -307,10 +241,8 @@
 
 
 
-
 </div>
 <!-- End Content -->
-
 <footer th:replace="frame/footer :: footer"></footer>
 
 </body>

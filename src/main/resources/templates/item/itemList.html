@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="list-inline shop-top-menu pb-3 pt-1">
-                <div th:if="${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">
+                <div th:if="${session.member != null and session.member.role.name() == 'ROLE_ADMIN'}">
                 <li class="list-inline-item">
                     <a class="h3 text-dark text-decoration-none mr-3" th:href="@{/ypjs/item/post}">상품 등록</a>
                 </li>
@@ -114,10 +114,17 @@
                                         <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
                                             <ul class="list-unstyled">
                                                 <!-- 좋아요 버튼 시작 -->
-                                                <input type="hidden" id="memberId" th:value="${memberId}">
-                                                <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
-                                                    <i class="fas fa-heart"></i>
-                                                </button>
+                                                <div th:if="${session.member != null}">
+                                                    <input type="hidden" id="memberId" th:value="${memberId}">
+                                                    <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
+                                                        <i class="fas fa-heart"></i>
+                                                    </button>
+                                                </div>
+                                                <div th:if="${session.member == null}">
+                                                    <a class="btn btn-success text-white" href="/ypjs/member/login">
+                                                        <i class="fas fa-heart"></i>
+                                                    </a>
+                                                </div>
                                                 <!-- 좋아요 버튼 끝 -->
                                             </ul>
                                         </div>

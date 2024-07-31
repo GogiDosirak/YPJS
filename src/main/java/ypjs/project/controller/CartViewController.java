@@ -23,11 +23,14 @@ public class CartViewController {
         HttpSession session = request.getSession();
         //멤버정보
         LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) session.getAttribute("member");
-        Long memberId = loginMember.getMemberId();  //임시
 
-        if(memberId == null) {
-            return "redirect:/ypjs/member/login";
+        if(loginMember == null) {
+            request.setAttribute("msg", "로그인이 필요합니다.");
+            request.setAttribute("url", "/ypjs/member/login");
+            return "alert";
         }
+
+        Long memberId = loginMember.getMemberId();
 
         model.addAttribute("cartList", cartService.findAllByMemberId(memberId));
         return "cart/list";
