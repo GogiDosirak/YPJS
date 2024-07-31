@@ -35,13 +35,15 @@ public class itemQnaApiController {
 
 
     @PostMapping("/create")
-    public ResponseEntity create(@RequestBody @Valid ItemQnaCreateDto itemQnaCreateDto, HttpServletRequest request) {
+    public ResponseEntity create(@RequestBody ItemQnaCreateDto itemQnaCreateDto, HttpServletRequest request) {
         System.out.println("**상품문의 등록 요청됨");
 
         LoginDto.ResponseLogin loginMember = (LoginDto.ResponseLogin) request.getSession().getAttribute("member");
 
         itemQnaCreateDto.setMemberId(loginMember.getMemberId());
+
         Long itemId = itemQnaService.create(itemQnaCreateDto);
+
         return ResponseEntity.ok().body(itemId);
     }
 
