@@ -11,6 +11,7 @@
 <script src="/js/itemQna.js"></script>
 
 
+
 <body>
 <!--header-->
 <header th:replace="frame/header :: header"></header>
@@ -72,6 +73,7 @@
 <div class="container py-5 px-5 mx-auto">
     <div class="row align-items-center justify-content-center">
         <div class="col-lg-10">
+
             <!-- 수정하기 및 삭제하기 버튼 -->
             <div class="row justify-content-end mt-3" th:if="${session.member != null and session.member.role.name() == 'ROLE_ADMIN'}">
                 <div class="col-auto">
@@ -81,6 +83,7 @@
                     <button type="button" id="btn-itemDelete" class="btn btn-danger">삭제하기</button>
                 </div>
             </div>
+
 
             <div class="row">
                 <div class="col-6">
@@ -96,6 +99,7 @@
                             </div>
                             <div class="col-2 d-flex align-items-center justify-content-end">
                                 <!-- 좋아요 버튼 시작 -->
+
                                 <div th:if="${session.member != null}">
                                     <input type="hidden" id="memberId" th:value="${memberId}">
                                     <button class="like-button btn btn-success text-white" th:data-item-id="${item.itemId}">
@@ -107,6 +111,7 @@
                                         <i class="fas fa-heart"></i>
                                     </a>
                                 </div>
+
                                 <!-- 좋아요 버튼 끝 -->
                             </div>
                         </div>
@@ -182,9 +187,11 @@
 
     <!--상품상세 리뷰 문의-->
     <div class="row">
+
         <nav class="navbar  navbar-expand-lg bg-light justify-content-center">
             <!-- Links -->
             <ul class="nav justify-content-center">
+
 
                 <!-- 리뷰가 있는 경우 -->
                 <div th:if="${reviewCount != null and reviewCount > 0}">
@@ -203,6 +210,7 @@
                     </li>
                 </div>
 
+
                 <!-- 문의가 있는 경우 -->
                 <div th:if="${qnaCount != null and qnaCount > 0}">
                     <li class="nav-item" style="width: 400px;">
@@ -212,6 +220,7 @@
                         </a>
                     </li>
                 </div>
+
 
                 <!-- 문의가 없는 경우 -->
                 <div th:if="${qnaCount == null or qnaCount == 0}">
@@ -223,6 +232,8 @@
         </nav>
 
     </div>
+
+
 
     <section class="bg-light">
         <div class="container pb-5">
@@ -238,8 +249,10 @@
 
 
 
+
 </div>
 <!-- End Content -->
+
 <footer th:replace="frame/footer :: footer"></footer>
 
 </body>

@@ -1,8 +1,10 @@
 package ypjs.project.repository;
 
 import jakarta.persistence.EntityManager;
+
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -40,8 +42,9 @@ public class ItemReviewRepository {
 
 
 
-    //아이템 당 리뷰 조회
+
     public List<ItemReview> findItemReview(Long itemId, Pageable pageable, String sortBy) {
+
         // 기본 쿼리 문자열
         String queryString = "select ir from ItemReview ir join fetch ir.item i where i.itemId = :itemId";
 
@@ -64,6 +67,7 @@ public class ItemReviewRepository {
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
+
 
 
     //멤버 당 리뷰 조회
@@ -90,6 +94,7 @@ public class ItemReviewRepository {
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
     }
+
 
 
 

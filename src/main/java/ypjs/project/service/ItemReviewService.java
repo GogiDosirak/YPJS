@@ -65,7 +65,7 @@ public class ItemReviewService {
     }
 
 
-    //아이템 당 리뷰조회
+
     public List<ItemReviewListDto> findItemReview(Long itemId, Pageable pageable, String sortBy) {
         List<ItemReview> reviews = itemReviewRepository.findItemReview(itemId, pageable, sortBy);
         //Member member = memberRepository.findOne(memberId);
@@ -81,6 +81,7 @@ public class ItemReviewService {
     //멤버 당 리뷰조회
     public List<ItemReviewListDto> findItemReviewByMember(Long memberId, Pageable pageable, String sortBy) {
         List<ItemReview> reviews = itemReviewRepository.findItemReviewByMember(memberId, pageable, sortBy);
+
         //Member member = memberRepository.findOne(memberId);
 
         List<ItemReviewListDto> result = reviews.stream()
@@ -89,7 +90,6 @@ public class ItemReviewService {
 
         return result;
     }
-
 
 
 

@@ -32,6 +32,7 @@ public class ItemReviewController {
 
     //리뷰등록 화면
     @GetMapping("/ypjs/itemReview/post/{itemId}")
+
     public String insert(@PathVariable("itemId") Long itemId, Model model, HttpSession session) {
 
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
@@ -42,9 +43,11 @@ public class ItemReviewController {
             return "redirect:/ypjs/itemReview/getOne/" + itemReview.getItemReviewId();
         }
 
+
         Item findItem = itemService.findOneItem(itemId);
 
         model.addAttribute("item", findItem);
+
 
         return "itemreview/itemReviewPost";
     }
@@ -67,9 +70,12 @@ public class ItemReviewController {
 
 
 
+
     //아이템 당 리뷰조회
     @GetMapping("/ypjs/itemReview/get/{itemId}")
+
     public String getItemReview(@PathVariable(name = "itemId") Long itemId, Model model, HttpSession session,
+
                                    @RequestParam(value = "page",defaultValue = "0") int page,
                                    @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
                                    @RequestParam(value = "size",defaultValue = "10") int size) {
@@ -82,12 +88,15 @@ public class ItemReviewController {
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
 
+
         List<ItemReviewListDto> itemReviews = itemReviewService.findItemReview(itemId, pageable, sortBy);
+
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
         model.addAttribute("loginMemberId", responseLogin.getMemberId());
+
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
@@ -122,6 +131,7 @@ public class ItemReviewController {
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(memberId), size);
 
         model.addAttribute("loginMemberId", responseLogin.getMemberId());
+
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
@@ -131,9 +141,6 @@ public class ItemReviewController {
 
         return "itemreview/itemReviewGet";
     }
-
-
-
 
 
 

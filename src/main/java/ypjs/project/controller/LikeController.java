@@ -1,6 +1,8 @@
 package ypjs.project.controller;
 
+
 import jakarta.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ypjs.project.dto.likedto.LikedItemDto;
+
 import ypjs.project.dto.logindto.LoginDto;
+
 import ypjs.project.service.LikeService;
 
 import java.util.List;
@@ -46,6 +50,7 @@ public class LikeController {
         if (responseLogin == null || !responseLogin.getMemberId().equals(memberId)) {
             return "redirect:/";
         }
+
 
         Pageable pageable = PageRequest.of(page,size);
 

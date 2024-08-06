@@ -37,8 +37,10 @@ public class ItemReviewApiController {
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
 
+
         Item findItem = itemService.findOneItem(itemId);
         ItemReview memberId = itemReviewService.saveItemReview(requestDto, responseLogin.getMemberId());
+
 
 
         model.addAttribute("memberId", memberId);
