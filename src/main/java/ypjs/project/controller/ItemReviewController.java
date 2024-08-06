@@ -32,18 +32,50 @@ public class ItemReviewController {
 
     //리뷰등록 화면
     @GetMapping("/ypjs/itemReview/post/{itemId}")
-    public String insert(@PathVariable("itemId") Long itemId, Model model) {
+
+    public String insert(@PathVariable("itemId") Long itemId, Model model, HttpSession session) {
+
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+
+        if(itemReviewService.existsByItemIdAndMemberId(itemId, responseLogin.getMemberId())) {
+            ItemReview itemReview = itemReviewService.findItemReviewByItemIdAndMemberId(itemId, responseLogin.getMemberId());
+            return "redirect:/ypjs/itemReview/getOne/" + itemReview.getItemReviewId();
+        }
+
 
         Item findItem = itemService.findOneItem(itemId);
 
         model.addAttribute("item", findItem);
 
-        return "itemreview/itemReviewPost";}
+
+        return "itemreview/itemReviewPost";
+    }
+
+
+    //아이템 하나 조회
+    @GetMapping("/ypjs/itemReview/getOne/{itemReviewId}")
+    public String getOneItemReview(@PathVariable("itemReviewId") Long itemReviewId, HttpSession session, Model model) {
+        ItemReview itemReview = itemReviewService.findOneItemReview(itemReviewId);
+
+        ItemReviewListDto itemReviewListDto = new ItemReviewListDto(itemReview);
+
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+        model.addAttribute("itemReview",itemReviewListDto);
+        model.addAttribute("memberId", responseLogin.getMemberId());
+
+        return "itemreview/itemReviewGetOne";
+    }
+
+
+
 
 
     //아이템 당 리뷰조회
     @GetMapping("/ypjs/itemReview/get/{itemId}")
-    public String getAllItemReview(@PathVariable(name = "itemId") Long itemId, Model model, HttpSession session,
+
+    public String getItemReview(@PathVariable(name = "itemId") Long itemId, Model model, HttpSession session,
+
                                    @RequestParam(value = "page",defaultValue = "0") int page,
                                    @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
                                    @RequestParam(value = "size",defaultValue = "10") int size) {
@@ -55,13 +87,51 @@ public class ItemReviewController {
 
         LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
 
-        List<ItemReviewListDto> itemReviews = itemReviewService.findAllItemReview(itemId, pageable, sortBy);
+
+
+        List<ItemReviewListDto> itemReviews = itemReviewService.findItemReview(itemId, pageable, sortBy);
+
 
         //총 페이지 수 계산
         int totalPages = Page.totalPages(itemReviewService.countAllItemReview(itemId), size);
 
         model.addAttribute("loginMemberId", responseLogin.getMemberId());
-        model.addAttribute("loginMemberRole", responseLogin.getRole());
+
+        model.addAttribute("itemReviews", itemReviews);
+        model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
+        model.addAttribute("page",page); //페이징
+        model.addAttribute("size",size); //페이징
+        model.addAttribute("totalPages", totalPages); //총 페이지 수
+
+
+
+        return "itemreview/itemReviewGet";
+    }
+
+
+
+
+    //멤버 당 리뷰조회
+    @GetMapping("/ypjs/itemReviewAll/get/{memberId}")
+    public String getItemReviewByMember(@PathVariable(name = "memberId") Long memberId, Model model, HttpSession session,
+                                @RequestParam(value = "page",defaultValue = "0") int page,
+                                @RequestParam(value = "sortBy", defaultValue = "itemReviewId") String sortBy,
+                                @RequestParam(value = "size",defaultValue = "10") int size) {
+
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        memberService.findOne(memberId);
+
+        LoginDto.ResponseLogin responseLogin = (LoginDto.ResponseLogin) session.getAttribute("member");
+
+        List<ItemReviewListDto> itemReviews = itemReviewService.findItemReviewByMember(memberId, pageable, sortBy);
+
+        //총 페이지 수 계산
+        int totalPages = Page.totalPages(itemReviewService.countAllItemReview(memberId), size);
+
+        model.addAttribute("loginMemberId", responseLogin.getMemberId());
+
         model.addAttribute("itemReviews", itemReviews);
         model.addAttribute("sortBy", sortBy); // 정렬 옵션을 다시 모델에 추가
         model.addAttribute("page",page); //페이징
@@ -71,6 +141,7 @@ public class ItemReviewController {
 
         return "itemreview/itemReviewGet";
     }
+
 
 
 

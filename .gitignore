@@ -39,3 +39,5 @@ application.properties
 
 ##APIKEY##
 config/
+.env
+

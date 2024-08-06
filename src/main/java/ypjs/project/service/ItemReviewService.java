@@ -65,9 +65,9 @@ public class ItemReviewService {
     }
 
 
-    //아이템 당 리뷰조회
-    public List<ItemReviewListDto> findAllItemReview(Long itemId, Pageable pageable, String sortBy) {
-        List<ItemReview> reviews = itemReviewRepository.findAllItemReview(itemId, pageable, sortBy);
+
+    public List<ItemReviewListDto> findItemReview(Long itemId, Pageable pageable, String sortBy) {
+        List<ItemReview> reviews = itemReviewRepository.findItemReview(itemId, pageable, sortBy);
         //Member member = memberRepository.findOne(memberId);
 
         List<ItemReviewListDto> result = reviews.stream()
@@ -76,6 +76,21 @@ public class ItemReviewService {
 
         return result;
     }
+
+
+    //멤버 당 리뷰조회
+    public List<ItemReviewListDto> findItemReviewByMember(Long memberId, Pageable pageable, String sortBy) {
+        List<ItemReview> reviews = itemReviewRepository.findItemReviewByMember(memberId, pageable, sortBy);
+
+        //Member member = memberRepository.findOne(memberId);
+
+        List<ItemReviewListDto> result = reviews.stream()
+                .map(ItemReviewListDto::new)
+                .collect(Collectors.toList());
+
+        return result;
+    }
+
 
 
 
@@ -124,6 +139,22 @@ public class ItemReviewService {
     //아이템리뷰 페이징 개수 조회
     public int countAllItemReview(Long itemId){
         return itemReviewRepository.countAllItemReview(itemId);
+    }
+
+    //아이템 리뷰 멤버 당 페이징 개수 조회
+    public int countAllItemReviewByMember(Long memberId){
+        return itemReviewRepository.countAllItemReviewByMember(memberId);
+    }
+
+
+    //리뷰썼을 경우 리뷰쓰기 링크 숨기기
+    public ItemReview findItemReviewByItemIdAndMemberId(Long itemId, Long memberId) {
+
+        return itemReviewRepository.findItemReviewByItemIdAndMemberId(itemId, memberId);
+    }
+
+    public boolean existsByItemIdAndMemberId(Long itemId, Long memberId) {
+        return itemReviewRepository.existsByItemIdAndMemberId(itemId, memberId);
     }
 
 
