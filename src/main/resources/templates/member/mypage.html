@@ -205,18 +205,22 @@
             </a>
         </div>
         <div class="link-item">
-            <a th:href="@{/}">
+
+            <a th:href="@{/ypjs/like/list/{id}(id=${mypage.memberId})}">
             <div class="icon">❤️</div>
             </a>
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/like/list/{id}(id=${mypage.memberId})}">
+
             <div class="link-text">찜목록</div>
             </a>
         </div>
         <div class="link-item">
-            <a th:href="@{/}">
+
+            <a th:href="@{/ypjs/itemReviewAll/get/{memberId}(memberId=${memberId})}">
             <div class="icon">💬</div>
             </a>
-            <a th:href="@{/}">
+            <a th:href="@{/ypjs/itemReviewAll/get/{memberId}(memberId=${memberId})}">
+
             <div class="link-text">리뷰보기</div>
             </a>
         </div>

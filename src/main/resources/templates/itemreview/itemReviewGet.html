@@ -152,7 +152,9 @@ font-weight: bold;
 
                             <input type="hidden" id="itemId" th:value="${itemReview.itemId}">
 
-                            <div th:if="${loginMemberId == itemReview.memberId} or ${loginMemberRole == T(ypjs.project.domain.enums.Role).ROLE_ADMIN}">
+
+                            <div th:if="${loginMemberId == itemReview.memberId} or ${session.member != null and session.member.role.name() == 'ROLE_ADMIN'}">
+
                         <!-- 수정 및 삭제 버튼 -->
                         <div class="container">
                             <div class="row justify-content-end">
